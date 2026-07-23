@@ -47,6 +47,7 @@ import com.zafar.ichatai.R
 import com.zafar.ichatai.data.ChatMessage
 import com.zafar.ichatai.ui.ChatViewModel
 import com.zafar.ichatai.ui.theme.IChatAITheme
+import dev.jeziellago.compose.markdowntext.MarkdownText
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
@@ -281,11 +282,14 @@ fun AiMessage(text: String) {
             color = MaterialTheme.colorScheme.surfaceVariant,
             shadowElevation = 0.5.dp
         ) {
-            Text(
-                text = text,
+            MarkdownText(
+                markdown = text,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
-                fontSize = 15.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontSize = 15.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                ),
+                isTextSelectable = true
             )
         }
     }
@@ -318,10 +322,13 @@ fun UserMessage(message: ChatMessage) {
                     }
                 }
                 if (message.content.isNotBlank()) {
-                    Text(
-                        text = message.content,
-                        fontSize = 15.sp,
-                        color = MaterialTheme.colorScheme.onPrimary
+                    MarkdownText(
+                        markdown = message.content,
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontSize = 15.sp,
+                            color = MaterialTheme.colorScheme.onPrimary
+                        ),
+                        isTextSelectable = true
                     )
                 }
             }

@@ -90,6 +90,7 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
     implementation(libs.coil.compose)
+    implementation(libs.compose.markdown)
 
     // Testing
     testImplementation(libs.junit)
