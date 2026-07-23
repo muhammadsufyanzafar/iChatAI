@@ -9,6 +9,9 @@ import androidx.lifecycle.viewModelScope
 import com.zafar.ichatai.data.ChatMessage
 import com.zafar.ichatai.network.AiClient
 import kotlinx.coroutines.launch
+import java.io.IOException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
 class ChatViewModel : ViewModel() {
     var inputText = mutableStateOf("")
@@ -70,7 +73,16 @@ class ChatViewModel : ViewModel() {
                 val responseContent = AiClient.getResponse(query, imageBase64)
                 messages.add(ChatMessage("assistant", responseContent))
             } catch (e: Exception) {
-                messages.add(ChatMessage("assistant", "Error: ${e.message}"))
+                val errorMessage = when (e) {
+                    is SocketTimeoutException -> {
+                        "The connection timed out. The AI is taking too long to respond. Please try again later."
+                    }
+                    is UnknownHostException, is IOException -> {
+                        "It looks like you're offline. Please check your internet connection and try again."
+                    }
+                    else -> "Something went wrong. Please try again. (Error: ${e.localizedMessage ?: "Unknown"})"
+                }
+                messages.add(ChatMessage("assistant", errorMessage))
             } finally {
                 isTyping.value = false
             }

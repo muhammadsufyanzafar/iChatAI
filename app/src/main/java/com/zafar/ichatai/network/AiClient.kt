@@ -65,15 +65,11 @@ object AiClient {
             messages = listOf(ApiMessage(role = "user", content = contents))
         )
 
-        return try {
-            val response = service.getChatCompletion(
-                token = "Bearer ${BuildConfig.OPENROUTER_API_KEY}",
-                request = request
-            )
-            response.choices.firstOrNull()?.message?.content ?: "No response from AI."
-        } catch (e: Exception) {
-            "Error: ${e.message}"
-        }
+        val response = service.getChatCompletion(
+            token = "Bearer ${BuildConfig.OPENROUTER_API_KEY}",
+            request = request
+        )
+        return response.choices.firstOrNull()?.message?.content ?: "No response from AI."
     }
 
     /**
