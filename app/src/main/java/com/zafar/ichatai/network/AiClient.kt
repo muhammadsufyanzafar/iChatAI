@@ -6,116 +6,79 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Base64
 import com.zafar.ichatai.BuildConfig
-import okhttp3.*
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.RequestBody.Companion.toRequestBody
-import org.json.JSONArray
-import org.json.JSONObject
+import com.zafar.ichatai.data.*
+import okhttp3.OkHttpClient
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Body
+import retrofit2.http.Header
+import retrofit2.http.POST
 import java.io.ByteArrayOutputStream
-import java.io.IOException
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
-import kotlinx.coroutines.suspendCancellableCoroutine
+
+/**
+ * Requirement 3 (Interface): Repository/Network Call structure
+ */
+interface OpenRouterService {
+    @POST("chat/completions")
+    suspend fun getChatCompletion(
+        @Header("Authorization") token: String,
+        @Header("HTTP-Referer") referer: String = "com.zafar.ichatai",
+        @Header("X-Title") title: String = "iChatAI",
+        @Body request: OpenRouterRequest
+    ): OpenRouterResponse
+}
 
 object AiClient {
-    private const val BASE_URL = "https://openrouter.ai/api/v1/chat/completions"
-    private val JSON = "application/json; charset=utf-8".toMediaType()
-    private val httpClient = OkHttpClient()
+    private const val BASE_URL = "https://openrouter.ai/api/v1/"
 
-    suspend fun getResponse(query: String, imageBase64: String? = null): String = suspendCancellableCoroutine { continuation ->
-        try {
-            val contentArray = JSONArray()
+    private val okHttpClient = OkHttpClient.Builder().build()
 
-            // Add text content
-            if (query.isNotBlank()) {
-                contentArray.put(JSONObject().apply {
-                    put("type", "text")
-                    put("text", query)
-                })
-            } else if (imageBase64 != null) {
-                // If only image, add a default prompt
-                contentArray.put(JSONObject().apply {
-                    put("type", "text")
-                    put("text", "Please identify this image")
-                })
-            }
+    private val retrofit = Retrofit.Builder()
+        .baseUrl(BASE_URL)
+        .client(okHttpClient)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
 
-            // Add image content if available
-            if (imageBase64 != null) {
-                contentArray.put(JSONObject().apply {
-                    put("type", "image_url")
-                    put("image_url", JSONObject().apply {
-                        put("url", "data:image/jpeg;base64,$imageBase64")
-                    })
-                })
-            }
+    private val service: OpenRouterService = retrofit.create(OpenRouterService::class.java)
 
-            val body = JSONObject().apply {
-                put("model", "openrouter/free")
-                put("messages", JSONArray().apply {
-                    put(JSONObject().apply {
-                        put("role", "user")
-                        put("content", contentArray)
-                    })
-                })
-                put("temperature", 0.7)
-            }
+    /**
+     * Requirement 3 (Implementation): Suspend function for network call
+     */
+    suspend fun getResponse(query: String, imageBase64DataUrl: String? = null): String {
+        val contents = mutableListOf<ContentBlock>()
+        
+        // Add text block
+        contents.add(ContentBlock(
+            type = "text", 
+            text = if (query.isBlank() && imageBase64DataUrl != null) "Describe this image" else query
+        ))
+        
+        // Add image block if available (Requirement 2 structure)
+        imageBase64DataUrl?.let {
+            contents.add(ContentBlock(
+                type = "image_url", 
+                imageUrl = ImageUrl(url = it)
+            ))
+        }
 
-            val request = Request.Builder()
-                .url(BASE_URL)
-                .addHeader("Authorization", "Bearer ${BuildConfig.OPENROUTER_API_KEY}")
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .addHeader("HTTP-Referer", "com.zafar.ichatai")
-                .addHeader("X-Title", "iChatAI")
-                .post(body.toString().toRequestBody(JSON))
-                .build()
+        val request = OpenRouterRequest(
+            messages = listOf(ApiMessage(role = "user", content = contents))
+        )
 
-            val call = httpClient.newCall(request)
-            
-            continuation.invokeOnCancellation {
-                call.cancel()
-            }
-
-            call.enqueue(object : Callback {
-                override fun onFailure(call: Call, e: IOException) {
-                    if (continuation.isActive) {
-                        continuation.resumeWithException(e)
-                    }
-                }
-
-                override fun onResponse(call: Call, response: Response) {
-                    response.use { 
-                        if (!response.isSuccessful) {
-                            val errorBody = response.body?.string() ?: ""
-                            continuation.resumeWithException(IOException("HTTP ${response.code}: ${response.message}\n$errorBody"))
-                            return
-                        }
-                        
-                        val respBody = response.body?.string() ?: ""
-                        try {
-                            val json = JSONObject(respBody)
-                            val choices = json.optJSONArray("choices")
-                            if (choices != null && choices.length() > 0) {
-                                val choice0 = choices.getJSONObject(0)
-                                val messageObj = choice0.optJSONObject("message")
-                                val content = messageObj?.optString("content", "") ?: ""
-                                continuation.resume(content.trim())
-                            } else {
-                                continuation.resumeWithException(IOException("Empty response from model."))
-                            }
-                        } catch (e: Exception) {
-                            continuation.resumeWithException(e)
-                        }
-                    }
-                }
-            })
-
+        return try {
+            val response = service.getChatCompletion(
+                token = "Bearer ${BuildConfig.OPENROUTER_API_KEY}",
+                request = request
+            )
+            response.choices.firstOrNull()?.message?.content ?: "No response from AI."
         } catch (e: Exception) {
-            continuation.resumeWithException(e)
+            "Error: ${e.message}"
         }
     }
 
+    /**
+     * Requirement 1: File Selection & Base64 Conversion to Data URL
+     */
     fun uriToBase64(context: Context, uri: Uri): String? {
         return try {
             val inputStream = context.contentResolver.openInputStream(uri)
@@ -123,16 +86,21 @@ object AiClient {
             inputStream?.close()
 
             val outputStream = ByteArrayOutputStream()
-            // Resize if too large (OpenRouter/Gemini might have limits)
-            val scaledBitmap = if (bitmap.width > 1024 || bitmap.height > 1024) {
-                val ratio = Math.min(1024f / bitmap.width, 1024f / bitmap.height)
+            // Resize for optimal API performance
+            val maxDimension = 1024
+            val scaledBitmap = if (bitmap.width > maxDimension || bitmap.height > maxDimension) {
+                val ratio = Math.min(maxDimension.toFloat() / bitmap.width, maxDimension.toFloat() / bitmap.height)
                 Bitmap.createScaledBitmap(bitmap, (bitmap.width * ratio).toInt(), (bitmap.height * ratio).toInt(), true)
             } else {
                 bitmap
             }
+
             scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream)
             val bytes = outputStream.toByteArray()
-            Base64.encodeToString(bytes, Base64.NO_WRAP)
+            val base64 = Base64.encodeToString(bytes, Base64.NO_WRAP)
+            
+            // Returns the formatted Data URL
+            "data:image/jpeg;base64,$base64"
         } catch (e: Exception) {
             e.printStackTrace()
             null

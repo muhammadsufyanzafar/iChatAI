@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Base application theme. -->
-    <style name="Theme.IChatAI" parent="android:Theme.Material.Light.NoActionBar" />
-
-    <!-- Splash Screen Theme -->
+    <!-- Splash Screen Theme for Dark Mode -->
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">#F8FAFC</item>
+        <item name="windowSplashScreenBackground">#12141C</item>
         <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
         <item name="postSplashScreenTheme">@style/Theme.IChatAI</item>
     </style>
