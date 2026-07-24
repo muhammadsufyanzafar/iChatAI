@@ -3,6 +3,7 @@ package com.zafar.ichatai.data.repository
 import com.zafar.ichatai.data.local.dao.ChatDao
 import com.zafar.ichatai.data.local.entity.ChatMessageEntity
 import com.zafar.ichatai.data.local.entity.ChatSessionEntity
+import com.zafar.ichatai.data.local.entity.ChatSessionWithCount
 import kotlinx.coroutines.flow.Flow
 
 class ChatRepository(private val chatDao: ChatDao) {
@@ -35,8 +36,8 @@ class ChatRepository(private val chatDao: ChatDao) {
     suspend fun getMessagesListBySessionId(sessionId: Long): List<ChatMessageEntity> =
         chatDao.getMessagesListBySessionId(sessionId)
 
-    fun searchSessions(query: String): Flow<List<ChatSessionEntity>> =
-        chatDao.searchSessions(query)
+    fun searchSessions(query: String): Flow<List<ChatSessionWithCount>> =
+        chatDao.searchSessionsWithCount(query)
 
     suspend fun deleteSession(sessionId: Long) {
         chatDao.deleteSession(sessionId)
@@ -50,9 +51,16 @@ class ChatRepository(private val chatDao: ChatDao) {
         chatDao.updatePinnedStatus(sessionId, isPinned)
     }
 
+    suspend fun updateTopPinnedStatus(sessionId: Long, isTopPinned: Boolean) {
+        chatDao.updateTopPinnedStatus(sessionId, isTopPinned)
+    }
+
     suspend fun getSessionById(sessionId: Long): ChatSessionEntity? =
         chatDao.getSessionById(sessionId)
 
     fun getMessageCountForSession(sessionId: Long): Flow<Int> =
         chatDao.getMessageCountForSession(sessionId)
+
+    fun searchFavoriteSessions(query: String): Flow<List<ChatSessionWithCount>> =
+        chatDao.searchFavoriteSessions(query)
 }

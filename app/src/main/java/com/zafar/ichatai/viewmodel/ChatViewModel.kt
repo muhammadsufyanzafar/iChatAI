@@ -10,6 +10,7 @@ import com.zafar.ichatai.data.ChatMessage
 import com.zafar.ichatai.data.local.AppDatabase
 import com.zafar.ichatai.data.local.entity.ChatMessageEntity
 import com.zafar.ichatai.data.local.entity.ChatSessionEntity
+import com.zafar.ichatai.data.local.entity.ChatSessionWithCount
 import com.zafar.ichatai.data.repository.ChatRepository
 import com.zafar.ichatai.network.AiClient
 import com.zafar.ichatai.utils.NetworkObserver
@@ -50,10 +51,18 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
-    val chatHistory: StateFlow<List<ChatSessionEntity>> = _searchQuery
+    private val _favoriteSearchQuery = MutableStateFlow("")
+    val favoriteSearchQuery: StateFlow<String> = _favoriteSearchQuery.asStateFlow()
+
+    val chatHistory: StateFlow<List<ChatSessionWithCount>> = _searchQuery
         .flatMapLatest { query ->
-            if (query.isEmpty()) repository.getAllSessions()
-            else repository.searchSessions(query)
+            repository.searchSessions(query)
+        }
+        .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+
+    val favoriteHistory: StateFlow<List<ChatSessionWithCount>> = _favoriteSearchQuery
+        .flatMapLatest { query ->
+            repository.searchFavoriteSessions(query)
         }
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
@@ -79,6 +88,10 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
 
     fun onSearchQueryChange(query: String) {
         _searchQuery.value = query
+    }
+
+    fun onFavoriteSearchQueryChange(query: String) {
+        _favoriteSearchQuery.value = query
     }
 
     fun onImageSelected(uri: Uri?) {
@@ -191,6 +204,12 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     fun togglePinChat(sessionId: Long, isPinned: Boolean) {
         viewModelScope.launch {
             repository.updatePinnedStatus(sessionId, !isPinned)
+        }
+    }
+
+    fun toggleTopPinnedChat(sessionId: Long, isTopPinned: Boolean) {
+        viewModelScope.launch {
+            repository.updateTopPinnedStatus(sessionId, !isTopPinned)
         }
     }
 

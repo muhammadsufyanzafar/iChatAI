@@ -20,8 +20,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zafar.ichatai.data.local.entity.ChatSessionEntity
+import com.zafar.ichatai.data.local.entity.ChatSessionWithCount
 import com.zafar.ichatai.viewmodel.ChatViewModel
-import java.text.SimpleDateFormat
+import com.zafar.ichatai.utils.TimeUtils
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -33,6 +34,40 @@ fun ChatHistoryScreen(
 ) {
     val chatHistory by viewModel.chatHistory.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
+    
+    var showDeleteDialog by remember { mutableStateOf(false) }
+    var sessionToDelete by remember { mutableStateOf<ChatSessionEntity?>(null) }
+
+    if (showDeleteDialog && sessionToDelete != null) {
+        AlertDialog(
+            onDismissRequest = { 
+                showDeleteDialog = false
+                sessionToDelete = null
+            },
+            title = { Text("Delete Chat") },
+            text = { Text("Are you sure you want to delete this chat? This action cannot be undone.") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        sessionToDelete?.let { viewModel.deleteChat(it.id) }
+                        showDeleteDialog = false
+                        sessionToDelete = null
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                ) {
+                    Text("Delete")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { 
+                    showDeleteDialog = false
+                    sessionToDelete = null
+                }) {
+                    Text("Cancel")
+                }
+            }
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -104,12 +139,15 @@ fun ChatHistoryScreen(
                                 modifier = Modifier.padding(start = 8.dp, top = 8.dp, bottom = 4.dp)
                             )
                         }
-                        items(sessions, key = { it.id }) { session ->
+                        items(sessions, key = { it.session.id }) { item ->
                             HistoryItemCard(
-                                session = session,
-                                onClick = { onChatClick(session.id) },
-                                onDelete = { viewModel.deleteChat(session.id) },
-                                onPin = { viewModel.togglePinChat(session.id, session.isPinned) }
+                                item = item,
+                                onClick = { onChatClick(item.session.id) },
+                                onDelete = { 
+                                    sessionToDelete = item.session
+                                    showDeleteDialog = true
+                                },
+                                onFavorite = { viewModel.togglePinChat(item.session.id, item.session.isPinned) }
                             )
                         }
                     }
@@ -121,19 +159,19 @@ fun ChatHistoryScreen(
 
 @Composable
 fun HistoryItemCard(
-    session: ChatSessionEntity,
+    item: ChatSessionWithCount,
     onClick: () -> Unit,
     onDelete: () -> Unit,
-    onPin: () -> Unit
+    onFavorite: () -> Unit
 ) {
-    val isPinned = session.isPinned
+    val isFavorite = item.session.isPinned
     
     Surface(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
-        border = if (isPinned) androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)) else null
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+        border = if (isFavorite) androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)) else null
     ) {
         Row(
             modifier = Modifier
@@ -148,8 +186,8 @@ fun HistoryItemCard(
                     .background(
                         Brush.linearGradient(
                             colors = listOf(
-                                MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
-                                MaterialTheme.colorScheme.secondary.copy(alpha = 0.7f)
+                                MaterialTheme.colorScheme.primary,
+                                MaterialTheme.colorScheme.secondary
                             )
                         )
                     ),
@@ -167,7 +205,7 @@ fun HistoryItemCard(
             
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = session.title,
+                    text = item.session.title,
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
                     maxLines = 1,
@@ -176,18 +214,18 @@ fun HistoryItemCard(
                 Spacer(modifier = Modifier.height(4.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = formatRelativeTime(session.timestamp),
+                        text = "Last accessed: ${TimeUtils.formatRelativeTime(item.session.timestamp)} | ${item.messageCount} messages",
                         fontSize = 12.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
             
-            IconButton(onClick = onPin) {
+            IconButton(onClick = onFavorite) {
                 Icon(
-                    imageVector = if (isPinned) Icons.Default.PushPin else Icons.Default.PushPin,
-                    contentDescription = "Pin",
-                    tint = if (isPinned) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                    imageVector = if (isFavorite) Icons.Default.Star else Icons.Default.StarBorder,
+                    contentDescription = "Favorite",
+                    tint = if (isFavorite) Color(0xFFFFC107) else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                     modifier = Modifier.size(20.dp)
                 )
             }
@@ -204,35 +242,21 @@ fun HistoryItemCard(
     }
 }
 
-fun groupHistoryByDate(sessions: List<ChatSessionEntity>): Map<String, List<ChatSessionEntity>> {
-    val grouped = linkedMapOf<String, MutableList<ChatSessionEntity>>()
+fun groupHistoryByDate(sessions: List<ChatSessionWithCount>): Map<String, List<ChatSessionWithCount>> {
+    val grouped = linkedMapOf<String, MutableList<ChatSessionWithCount>>()
     val today = Calendar.getInstance().apply { set(Calendar.HOUR_OF_DAY, 0); set(Calendar.MINUTE, 0); set(Calendar.SECOND, 0); set(Calendar.MILLISECOND, 0) }
     val yesterday = (today.clone() as Calendar).apply { add(Calendar.DATE, -1) }
     val lastWeek = (today.clone() as Calendar).apply { add(Calendar.DATE, -7) }
 
-    sessions.forEach { session ->
-        val sessionDate = Calendar.getInstance().apply { timeInMillis = session.timestamp }
+    sessions.forEach { item ->
+        val sessionDate = Calendar.getInstance().apply { timeInMillis = item.session.timestamp }
         val header = when {
             sessionDate.after(today) -> "Today"
             sessionDate.after(yesterday) -> "Yesterday"
             sessionDate.after(lastWeek) -> "Last Week"
             else -> "Older"
         }
-        grouped.getOrPut(header) { mutableListOf() }.add(session)
+        grouped.getOrPut(header) { mutableListOf() }.add(item)
     }
     return grouped
-}
-
-fun formatRelativeTime(timestamp: Long): String {
-    val now = System.currentTimeMillis()
-    val diff = now - timestamp
-    return when {
-        diff < 60000 -> "Just now"
-        diff < 3600000 -> "${diff / 60000} mins ago"
-        diff < 86400000 -> "${diff / 3600000} hours ago"
-        else -> {
-            val sdf = SimpleDateFormat("MMM dd", Locale.getDefault())
-            sdf.format(Date(timestamp))
-        }
-    }
 }

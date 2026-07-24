@@ -46,7 +46,6 @@ import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import kotlinx.coroutines.launch
 import androidx.compose.ui.draw.blur
-import androidx.compose.animation.core.animateDpAsState
 import android.os.Build
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
@@ -62,13 +61,16 @@ import java.io.FileOutputStream
 @Composable
 fun MainScreen(
     viewModel: ChatViewModel = viewModel(),
-    onNavigateToHistory: () -> Unit = {}
+    onNavigateToHistory: () -> Unit = {},
+    onNavigateToFavorites: () -> Unit = {}
 ) {
     val messages by viewModel.messages.collectAsState()
     val inputText by viewModel.inputText
     val isTyping by viewModel.isTyping
     val selectedImageUri by viewModel.selectedImageUri
     val isOnline by viewModel.isOnline.collectAsState()
+    val searchQuery by viewModel.searchQuery.collectAsState()
+    val chatHistory by viewModel.chatHistory.collectAsState()
     val listState = rememberLazyListState()
     val context = LocalContext.current
 
@@ -76,10 +78,8 @@ fun MainScreen(
     val scope = rememberCoroutineScope()
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    val blurRadius by animateDpAsState(
-        targetValue = if (drawerState.isOpen || drawerState.isAnimationRunning) 12.dp else 0.dp,
-        label = "blur"
-    )
+    val blurRadius = if (drawerState.currentValue == DrawerValue.Open || 
+        (drawerState.isAnimationRunning && drawerState.targetValue == DrawerValue.Open)) 12.dp else 0.dp
 
     var showAttachmentMenu by remember { mutableStateOf(false) }
     var showExitDialog by remember { mutableStateOf(false) }
@@ -195,11 +195,26 @@ fun MainScreen(
         drawerContent = {
             NavDrawerContent(
                 isOnline = isOnline,
+                searchQuery = searchQuery,
+                onSearchQueryChange = { viewModel.onSearchQueryChange(it) },
+                chatHistory = chatHistory,
+                onChatClick = { chat ->
+                    scope.launch {
+                        viewModel.loadChat(chat.id)
+                        drawerState.close()
+                    }
+                },
                 onItemClick = { route ->
                     if (route == "history") {
                         scope.launch {
                             viewModel.saveCurrentSessionSuspend()
                             onNavigateToHistory()
+                            drawerState.close()
+                        }
+                    } else if (route == "favorites") {
+                        scope.launch {
+                            viewModel.saveCurrentSessionSuspend()
+                            onNavigateToFavorites()
                             drawerState.close()
                         }
                     }
@@ -478,6 +493,7 @@ fun BottomSection(
                 item { PromptChip("Summarize Text", hasIcon = true, onClick = { onPromptClick("Summarize Text") }) }
                 item { PromptChip("Explain a Concept", hasIcon = false, onClick = { onPromptClick("Explain a Concept") }) }
                 item { PromptChip("Write an Email Draft", hasIcon = false, onClick = { onPromptClick("Write an Email Draft") }) }
+                
             }
 
             // Image Preview Area
@@ -589,10 +605,10 @@ fun AttachmentMenu(
 ) {
     Surface(
         shape = RoundedCornerShape(24.dp),
-        color = Color(0xFF1E1E1E).copy(alpha = 0.9f),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.95f),
         modifier = Modifier
             .width(200.dp)
-            .border(0.5.dp, Color.White.copy(alpha = 0.2f), RoundedCornerShape(24.dp)),
+            .border(0.5.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.2f), RoundedCornerShape(24.dp)),
         shadowElevation = 8.dp
     ) {
         Column(
@@ -620,13 +636,13 @@ fun AttachmentItem(icon: ImageVector, text: String, onClick: () -> Unit) {
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = Color.White,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(20.dp)
             )
             Spacer(modifier = Modifier.width(12.dp))
             Text(
                 text = text,
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Medium
             )

@@ -26,10 +26,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zafar.ichatai.R
+import com.zafar.ichatai.data.local.entity.ChatSessionEntity
+import com.zafar.ichatai.data.local.entity.ChatSessionWithCount
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 
 data class NavItem(
     val icon: ImageVector,
@@ -41,13 +49,17 @@ data class NavItem(
 @Composable
 fun NavDrawerContent(
     isOnline: Boolean = true,
+    searchQuery: String = "",
+    onSearchQueryChange: (String) -> Unit = {},
+    chatHistory: List<ChatSessionWithCount> = emptyList(),
+    onChatClick: (ChatSessionEntity) -> Unit = {},
     onItemClick: (String) -> Unit = {},
     onLogoutClick: () -> Unit = {}
 ) {
-    val isDark = isSystemInDarkTheme()
-    val drawerBg = if (isDark) Color(0xFF1A1A1A).copy(alpha = 0.92f) else Color(0xFFFFFFFF).copy(alpha = 0.92f)
-    val textColor = if (isDark) Color.White else Color.Black
-    val sectionHeaderColor = if (isDark) Color.Gray else Color.DarkGray
+    val colorScheme = MaterialTheme.colorScheme
+    val drawerBg = colorScheme.surface
+    val textColor = colorScheme.onSurface
+    val sectionHeaderColor = colorScheme.onSurfaceVariant
 
     val generalItems = listOf(
         NavItem(Icons.Rounded.History, "Chat History", "history", "View chat history"),
@@ -119,30 +131,69 @@ fun NavDrawerContent(
                 Spacer(modifier = Modifier.height(24.dp))
 
                 // Search Bar
-                Surface(
-                    color = textColor.copy(alpha = 0.05f),
-                    shape = RoundedCornerShape(25.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(48.dp)
-                        .padding(horizontal = 4.dp)
-                ) {
-                    Row(
-                        modifier = Modifier.padding(horizontal = 16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
+                OutlinedTextField(
+                    value = searchQuery,
+                    onValueChange = onSearchQueryChange,
+                    placeholder = {
+                        Text(
+                            text = "Find previous chats...",
+                            color = textColor.copy(alpha = 0.5f),
+                            fontSize = 14.sp
+                        )
+                    },
+                    leadingIcon = {
                         Icon(
                             imageVector = Icons.Rounded.Search,
                             contentDescription = "Search icon",
                             tint = textColor.copy(alpha = 0.5f),
                             modifier = Modifier.size(20.dp)
                         )
-                        Spacer(modifier = Modifier.width(12.dp))
-                        Text(
-                            text = "Find previous chats...",
-                            color = textColor.copy(alpha = 0.5f),
-                            fontSize = 14.sp
-                        )
+                    },
+                    trailingIcon = if (searchQuery.isNotEmpty()) {
+                        {
+                            IconButton(onClick = { onSearchQueryChange("") }) {
+                                Icon(
+                                    imageVector = Icons.Rounded.Close,
+                                    contentDescription = "Clear search",
+                                    tint = textColor.copy(alpha = 0.5f),
+                                    modifier = Modifier.size(20.dp)
+                                )
+                            }
+                        }
+                    } else null,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 4.dp),
+                    shape = RoundedCornerShape(25.dp),
+                    singleLine = true,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = textColor.copy(alpha = 0.2f),
+                        unfocusedBorderColor = textColor.copy(alpha = 0.1f),
+                        focusedContainerColor = textColor.copy(alpha = 0.05f),
+                        unfocusedContainerColor = textColor.copy(alpha = 0.05f),
+                        cursorColor = textColor
+                    ),
+                    textStyle = TextStyle(fontSize = 14.sp, color = textColor)
+                )
+
+                if (chatHistory.isNotEmpty()) {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = if (searchQuery.isEmpty()) "Recent Chats" else "Search Results",
+                        color = sectionHeaderColor,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(horizontal = 12.dp)
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    LazyRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentPadding = PaddingValues(horizontal = 4.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(chatHistory.take(8)) { chat ->
+                            QuickChatChip(chat, textColor, onChatClick)
+                        }
                     }
                 }
 
@@ -218,6 +269,41 @@ fun NavDrawerContent(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun QuickChatChip(
+    chat: ChatSessionWithCount,
+    textColor: Color,
+    onClick: (ChatSessionEntity) -> Unit
+) {
+    Surface(
+        onClick = { onClick(chat.session) },
+        shape = RoundedCornerShape(16.dp),
+        color = textColor.copy(alpha = 0.08f),
+        border = BorderStroke(1.dp, textColor.copy(alpha = 0.1f)),
+        modifier = Modifier.widthIn(max = 120.dp)
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = Icons.Rounded.ChatBubbleOutline,
+                contentDescription = null,
+                tint = textColor.copy(alpha = 0.6f),
+                modifier = Modifier.size(16.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = chat.session.title,
+                color = textColor,
+                fontSize = 12.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
         }
     }
 }

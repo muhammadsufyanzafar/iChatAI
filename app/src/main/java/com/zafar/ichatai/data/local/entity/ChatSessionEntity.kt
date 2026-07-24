@@ -8,5 +8,6 @@ data class ChatSessionEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val title: String,
     val timestamp: Long,
-    val isPinned: Boolean = false
+    val isPinned: Boolean = false,
+    val isTopPinned: Boolean = false
 )
