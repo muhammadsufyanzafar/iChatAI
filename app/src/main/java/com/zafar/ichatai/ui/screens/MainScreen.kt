@@ -2,6 +2,8 @@ package com.zafar.ichatai.ui.screens
 
 import android.net.Uri
 import android.widget.Toast
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
@@ -50,7 +52,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.zafar.ichatai.R
 import com.zafar.ichatai.data.ChatMessage
-import com.zafar.ichatai.ui.ChatViewModel
+import com.zafar.ichatai.viewmodel.ChatViewModel
 import com.zafar.ichatai.ui.components.NavDrawerContent
 import com.zafar.ichatai.ui.theme.IChatAITheme
 import dev.jeziellago.compose.markdowntext.MarkdownText
@@ -58,8 +60,11 @@ import java.io.File
 import java.io.FileOutputStream
 
 @Composable
-fun MainScreen(viewModel: ChatViewModel = viewModel()) {
-    val messages = viewModel.messages
+fun MainScreen(
+    viewModel: ChatViewModel = viewModel(),
+    onNavigateToHistory: () -> Unit = {}
+) {
+    val messages by viewModel.messages.collectAsState()
     val inputText by viewModel.inputText
     val isTyping by viewModel.isTyping
     val selectedImageUri by viewModel.selectedImageUri
@@ -77,6 +82,15 @@ fun MainScreen(viewModel: ChatViewModel = viewModel()) {
     )
 
     var showAttachmentMenu by remember { mutableStateOf(false) }
+    var showExitDialog by remember { mutableStateOf(false) }
+
+    BackHandler(enabled = true) {
+        if (drawerState.isOpen) {
+            scope.launch { drawerState.close() }
+        } else {
+            showExitDialog = true
+        }
+    }
 
     // Close keyboard when drawer opens
     LaunchedEffect(drawerState.isOpen) {
@@ -135,11 +149,61 @@ fun MainScreen(viewModel: ChatViewModel = viewModel()) {
         }
     }
 
+    if (showExitDialog) {
+        AlertDialog(
+            onDismissRequest = { showExitDialog = false },
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.error
+                )
+            },
+            title = {
+                Text(
+                    text = "Exit Application",
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.headlineSmall
+                )
+            },
+            text = {
+                Text(
+                    text = "Are you sure you want to leave iChatAI? Your current session is automatically saved.",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            },
+            confirmButton = {
+                Button(
+                    onClick = { (context as? ComponentActivity)?.finish() },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                ) {
+                    Text("Exit", color = Color.White)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showExitDialog = false }) {
+                    Text("Cancel")
+                }
+            },
+            shape = RoundedCornerShape(28.dp),
+            containerColor = MaterialTheme.colorScheme.surface
+        )
+    }
+
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
             NavDrawerContent(
                 isOnline = isOnline,
+                onItemClick = { route ->
+                    if (route == "history") {
+                        scope.launch {
+                            viewModel.saveCurrentSessionSuspend()
+                            onNavigateToHistory()
+                            drawerState.close()
+                        }
+                    }
+                },
                 onLogoutClick = { /* No logic implemented yet */ }
             )
         },
@@ -155,7 +219,7 @@ fun MainScreen(viewModel: ChatViewModel = viewModel()) {
                 ),
             topBar = {
                 TopBar(
-                    onNewChatClick = { viewModel.clearChat() },
+                    onNewChatClick = { viewModel.createNewChat() },
                     onMenuClick = {
                         scope.launch { drawerState.open() }
                     }

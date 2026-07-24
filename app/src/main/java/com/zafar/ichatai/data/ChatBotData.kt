@@ -9,7 +9,9 @@ import com.google.gson.annotations.SerializedName
 data class ChatMessage(
     val role: String,
     val content: String,
-    val imageUri: Uri? = null
+    val imageUri: Uri? = null,
+    val id: Long = 0,
+    val timestamp: Long = System.currentTimeMillis()
 )
 
 /**

@@ -9,8 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.zafar.ichatai.ui.screens.MainScreen
 import com.zafar.ichatai.ui.screens.SplashScreen
+import com.zafar.ichatai.ui.screens.ChatHistoryScreen
+import com.zafar.ichatai.viewmodel.ChatViewModel
 import com.zafar.ichatai.ui.theme.IChatAITheme
 
 class MainActivity : ComponentActivity() {
@@ -29,6 +32,9 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
+    // Create ViewModel at this level so it's shared between screens
+    val chatViewModel: ChatViewModel = viewModel()
+    
     NavHost(navController = navController, startDestination = "splash") {
         composable("splash") {
             SplashScreen(onNavigateToMain = {
@@ -38,7 +44,23 @@ fun AppNavigation() {
             })
         }
         composable("main") {
-            MainScreen()
+            MainScreen(
+                viewModel = chatViewModel,
+                onNavigateToHistory = {
+                    // Use a coroutine to ensure save finishes before navigation
+                    navController.navigate("history")
+                }
+            )
+        }
+        composable("history") {
+            ChatHistoryScreen(
+                viewModel = chatViewModel,
+                onBackClick = { navController.popBackStack() },
+                onChatClick = { sessionId ->
+                    chatViewModel.loadChat(sessionId)
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }

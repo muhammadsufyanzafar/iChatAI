@@ -41,6 +41,7 @@ data class NavItem(
 @Composable
 fun NavDrawerContent(
     isOnline: Boolean = true,
+    onItemClick: (String) -> Unit = {},
     onLogoutClick: () -> Unit = {}
 ) {
     val isDark = isSystemInDarkTheme()
@@ -153,19 +154,19 @@ fun NavDrawerContent(
                 ) {
                     item { DrawerSectionHeader("General", sectionHeaderColor) }
                     items(generalItems.size) { index ->
-                        DrawerNavigationItem(generalItems[index], textColor)
+                        DrawerNavigationItem(generalItems[index], textColor, onItemClick)
                     }
 
                     item { Spacer(modifier = Modifier.height(16.dp)) }
                     item { DrawerSectionHeader("Account", sectionHeaderColor) }
                     items(accountItems.size) { index ->
-                        DrawerNavigationItem(accountItems[index], textColor)
+                        DrawerNavigationItem(accountItems[index], textColor, onItemClick)
                     }
 
                     item { Spacer(modifier = Modifier.height(16.dp)) }
                     item { DrawerSectionHeader("Support", sectionHeaderColor) }
                     items(supportItems.size) { index ->
-                        DrawerNavigationItem(supportItems[index], textColor)
+                        DrawerNavigationItem(supportItems[index], textColor, onItemClick)
                     }
                 }
 
@@ -233,7 +234,7 @@ fun DrawerSectionHeader(text: String, color: Color) {
 }
 
 @Composable
-fun DrawerNavigationItem(item: NavItem, textColor: Color) {
+fun DrawerNavigationItem(item: NavItem, textColor: Color, onClick: (String) -> Unit) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val scale by animateFloatAsState(if (isPressed) 0.98f else 1f, label = "scale")
@@ -254,7 +255,7 @@ fun DrawerNavigationItem(item: NavItem, textColor: Color) {
             )
         },
         selected = false,
-        onClick = { },
+        onClick = { onClick(item.route) },
         shape = RoundedCornerShape(12.dp),
         colors = NavigationDrawerItemDefaults.colors(
             unselectedContainerColor = Color.Transparent,
