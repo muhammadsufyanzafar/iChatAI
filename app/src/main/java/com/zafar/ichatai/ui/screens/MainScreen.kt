@@ -23,7 +23,6 @@ import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Hub
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -36,29 +35,27 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
+import androidx.compose.foundation.clickable
+import androidx.compose.material.icons.filled.AutoAwesome
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import kotlinx.coroutines.launch
+import androidx.compose.ui.draw.blur
+import androidx.compose.animation.core.animateDpAsState
+import android.os.Build
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.zafar.ichatai.R
 import com.zafar.ichatai.data.ChatMessage
 import com.zafar.ichatai.ui.ChatViewModel
+import com.zafar.ichatai.ui.components.NavDrawerContent
 import com.zafar.ichatai.ui.theme.IChatAITheme
 import dev.jeziellago.compose.markdowntext.MarkdownText
-import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
-
-@Preview(showBackground = true)
-@Composable
-fun MainScreenPreview() {
-    IChatAITheme {
-        MainScreen(viewModel = ChatViewModel())
-    }
-}
 
 @Composable
 fun MainScreen(viewModel: ChatViewModel = viewModel()) {
@@ -66,10 +63,27 @@ fun MainScreen(viewModel: ChatViewModel = viewModel()) {
     val inputText by viewModel.inputText
     val isTyping by viewModel.isTyping
     val selectedImageUri by viewModel.selectedImageUri
+    val isOnline by viewModel.isOnline.collectAsState()
     val listState = rememberLazyListState()
     val context = LocalContext.current
 
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    val blurRadius by animateDpAsState(
+        targetValue = if (drawerState.isOpen || drawerState.isAnimationRunning) 12.dp else 0.dp,
+        label = "blur"
+    )
+
     var showAttachmentMenu by remember { mutableStateOf(false) }
+
+    // Close keyboard when drawer opens
+    LaunchedEffect(drawerState.isOpen) {
+        if (drawerState.isOpen) {
+            keyboardController?.hide()
+        }
+    }
 
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
@@ -121,61 +135,85 @@ fun MainScreen(viewModel: ChatViewModel = viewModel()) {
         }
     }
 
-    Scaffold(
-        modifier = Modifier.imePadding(),
-        topBar = { TopBar(onNewChatClick = { viewModel.clearChat() }) },
-        bottomBar = {
-            Box {
-                BottomSection(
-                    inputText = inputText,
-                    selectedImageUri = selectedImageUri,
-                    onValueChange = { viewModel.onInputChange(it) },
-                    onSendClick = { viewModel.sendMessage(context) },
-                    onPromptClick = { viewModel.sendPrompt(context, it) },
-                    onAddClick = { showAttachmentMenu = !showAttachmentMenu },
-                    onRemoveImage = { viewModel.removeSelectedImage() },
-                    isTyping = isTyping
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            NavDrawerContent(
+                isOnline = isOnline,
+                onLogoutClick = { /* No logic implemented yet */ }
+            )
+        },
+        gesturesEnabled = true
+    ) {
+        Scaffold(
+            modifier = Modifier
+                .imePadding()
+                .then(
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                        Modifier.blur(blurRadius)
+                    } else Modifier
+                ),
+            topBar = {
+                TopBar(
+                    onNewChatClick = { viewModel.clearChat() },
+                    onMenuClick = {
+                        scope.launch { drawerState.open() }
+                    }
                 )
+            },
+            bottomBar = {
+                Box {
+                    BottomSection(
+                        inputText = inputText,
+                        selectedImageUri = selectedImageUri,
+                        onValueChange = { viewModel.onInputChange(it) },
+                        onSendClick = { viewModel.sendMessage(context) },
+                        onPromptClick = { viewModel.sendPrompt(context, it) },
+                        onAddClick = { showAttachmentMenu = !showAttachmentMenu },
+                        onRemoveImage = { viewModel.removeSelectedImage() },
+                        isTyping = isTyping
+                    )
 
-                if (showAttachmentMenu) {
-                    Popup(
-                        alignment = Alignment.BottomStart,
-                        offset = IntOffset(16, -260),
-                        onDismissRequest = { showAttachmentMenu = false }
-                    ) {
-                        AttachmentMenu(
-                            onCameraClick = {
-                                permissionLauncher.launch(android.Manifest.permission.CAMERA)
-                            },
-                            onGalleryClick = { galleryLauncher.launch("image/*") },
-                            onFilesClick = { fileLauncher.launch("*/*") }
-                        )
+                    if (showAttachmentMenu) {
+                        Popup(
+                            alignment = Alignment.BottomStart,
+                            offset = IntOffset(16, -260),
+                            onDismissRequest = { showAttachmentMenu = false }
+                        ) {
+                            AttachmentMenu(
+                                onCameraClick = {
+                                    permissionLauncher.launch(android.Manifest.permission.CAMERA)
+                                },
+                                onGalleryClick = { galleryLauncher.launch("image/*") },
+                                onFilesClick = { fileLauncher.launch("*/*") }
+                            )
+                        }
                     }
                 }
-            }
-        },
-        containerColor = MaterialTheme.colorScheme.background
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-        ) {
-            ChatList(
-                messages = messages,
-                isTyping = isTyping,
-                listState = listState,
+            },
+            containerColor = MaterialTheme.colorScheme.background
+        ) { paddingValues ->
+            Column(
                 modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-            )
+                    .fillMaxSize()
+                    .padding(paddingValues)
+            ) {
+                ChatList(
+                    messages = messages,
+                    isTyping = isTyping,
+                    listState = listState,
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                )
+            }
         }
     }
 }
 
 @Composable
-fun TopBar(onNewChatClick: () -> Unit) {
+fun TopBar(onNewChatClick: () -> Unit, onMenuClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -185,12 +223,13 @@ fun TopBar(onNewChatClick: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(id = R.drawable.avatar_user),
+            painter = painterResource(id = R.drawable.avatar_user_male),
             contentDescription = "User Profile",
             modifier = Modifier
-                .size(48.dp)
+                .size(44.dp)
                 .clip(CircleShape)
-                .border(1.5.dp, MaterialTheme.colorScheme.primary, CircleShape),
+                .border(1.5.dp, MaterialTheme.colorScheme.primary, CircleShape)
+                .clickable { onMenuClick() },
             contentScale = ContentScale.Crop
         )
 
@@ -202,9 +241,9 @@ fun TopBar(onNewChatClick: () -> Unit) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                imageVector = Icons.Default.Add,
+                imageVector = Icons.Default.AutoAwesome,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.secondary,
+                tint = Color(0xFF64B5F6),
                 modifier = Modifier.size(18.dp)
             )
             Spacer(modifier = Modifier.width(6.dp))

@@ -1,19 +1,24 @@
 package com.zafar.ichatai.ui
 
+import android.app.Application
 import android.content.Context
 import android.net.Uri
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.zafar.ichatai.data.ChatMessage
 import com.zafar.ichatai.network.AiClient
+import com.zafar.ichatai.utils.NetworkObserver
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
-class ChatViewModel : ViewModel() {
+class ChatViewModel(application: Application) : AndroidViewModel(application) {
     var inputText = mutableStateOf("")
         private set
 
@@ -25,8 +30,21 @@ class ChatViewModel : ViewModel() {
 
     val messages = mutableStateListOf<ChatMessage>()
 
+    private val networkObserver = NetworkObserver(application)
+    private val _isOnline = MutableStateFlow(true)
+    val isOnline: StateFlow<Boolean> = _isOnline.asStateFlow()
+
     init {
         messages.add(ChatMessage("assistant", "New chat started. Ask me anything!"))
+        observeNetwork()
+    }
+
+    private fun observeNetwork() {
+        viewModelScope.launch {
+            networkObserver.observe.collect { status ->
+                _isOnline.value = status == NetworkObserver.Status.Available
+            }
+        }
     }
 
     fun onInputChange(newValue: String) {
