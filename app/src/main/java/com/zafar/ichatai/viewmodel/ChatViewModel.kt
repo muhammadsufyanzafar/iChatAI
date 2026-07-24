@@ -20,6 +20,14 @@ import java.io.IOException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
+enum class SortOrder {
+    NEWEST_FIRST, OLDEST_FIRST, ALPHABETICAL, MOST_MESSAGES
+}
+
+enum class FilterCriteria {
+    ALL, TODAY, YESTERDAY, THIS_WEEK, PINNED_ONLY
+}
+
 @OptIn(ExperimentalCoroutinesApi::class)
 class ChatViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: ChatRepository
@@ -51,20 +59,82 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
+    private val _historySortOrder = MutableStateFlow(SortOrder.NEWEST_FIRST)
+    val historySortOrder: StateFlow<SortOrder> = _historySortOrder.asStateFlow()
+
+    private val _historyFilter = MutableStateFlow(FilterCriteria.ALL)
+    val historyFilter: StateFlow<FilterCriteria> = _historyFilter.asStateFlow()
+
     private val _favoriteSearchQuery = MutableStateFlow("")
     val favoriteSearchQuery: StateFlow<String> = _favoriteSearchQuery.asStateFlow()
 
-    val chatHistory: StateFlow<List<ChatSessionWithCount>> = _searchQuery
-        .flatMapLatest { query ->
-            repository.searchSessions(query)
-        }
-        .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+    private val _favoriteSortOrder = MutableStateFlow(SortOrder.NEWEST_FIRST)
+    val favoriteSortOrder: StateFlow<SortOrder> = _favoriteSortOrder.asStateFlow()
 
-    val favoriteHistory: StateFlow<List<ChatSessionWithCount>> = _favoriteSearchQuery
-        .flatMapLatest { query ->
-            repository.searchFavoriteSessions(query)
+    val chatHistory: StateFlow<List<ChatSessionWithCount>> = combine(
+        _searchQuery, _historySortOrder, _historyFilter
+    ) { query, sort, filter ->
+        Triple(query, sort, filter)
+    }.flatMapLatest { (query, sort, filter) ->
+        repository.searchSessions(query).map { list ->
+            list.filter { item ->
+                when (filter) {
+                    FilterCriteria.ALL -> true
+                    FilterCriteria.TODAY -> isToday(item.session.timestamp)
+                    FilterCriteria.YESTERDAY -> isYesterday(item.session.timestamp)
+                    FilterCriteria.THIS_WEEK -> isWithinLastWeek(item.session.timestamp)
+                    FilterCriteria.PINNED_ONLY -> item.session.isPinned
+                }
+            }.sortedWith(getComparator(sort))
         }
-        .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+    }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+
+    val favoriteHistory: StateFlow<List<ChatSessionWithCount>> = combine(
+        _favoriteSearchQuery, _favoriteSortOrder
+    ) { query, sort ->
+        Pair(query, sort)
+    }.flatMapLatest { (query, sort) ->
+        repository.searchFavoriteSessions(query).map { list ->
+            list.sortedWith(getComparator(sort))
+        }
+    }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+
+    private fun getComparator(sort: SortOrder): Comparator<ChatSessionWithCount> {
+        return when (sort) {
+            SortOrder.NEWEST_FIRST -> compareByDescending { it.session.timestamp }
+            SortOrder.OLDEST_FIRST -> compareBy { it.session.timestamp }
+            SortOrder.ALPHABETICAL -> compareBy { it.session.title.lowercase() }
+            SortOrder.MOST_MESSAGES -> compareByDescending { it.messageCount }
+        }
+    }
+
+    private fun isToday(timestamp: Long): Boolean {
+        val calendar = java.util.Calendar.getInstance()
+        val today = calendar.get(java.util.Calendar.DAY_OF_YEAR)
+        val year = calendar.get(java.util.Calendar.YEAR)
+        calendar.timeInMillis = timestamp
+        return calendar.get(java.util.Calendar.DAY_OF_YEAR) == today && 
+               calendar.get(java.util.Calendar.YEAR) == year
+    }
+
+    private fun isYesterday(timestamp: Long): Boolean {
+        val calendar = java.util.Calendar.getInstance()
+        calendar.add(java.util.Calendar.DAY_OF_YEAR, -1)
+        val yesterday = calendar.get(java.util.Calendar.DAY_OF_YEAR)
+        val year = calendar.get(java.util.Calendar.YEAR)
+        calendar.timeInMillis = timestamp
+        return calendar.get(java.util.Calendar.DAY_OF_YEAR) == yesterday && 
+               calendar.get(java.util.Calendar.YEAR) == year
+    }
+
+    private fun isWithinLastWeek(timestamp: Long): Boolean {
+        val weekAgo = System.currentTimeMillis() - (7 * 24 * 60 * 60 * 1000L)
+        return timestamp >= weekAgo
+    }
+
+    fun onHistorySortChange(order: SortOrder) { _historySortOrder.value = order }
+    fun onHistoryFilterChange(filter: FilterCriteria) { _historyFilter.value = filter }
+    fun onFavoriteSortChange(order: SortOrder) { _favoriteSortOrder.value = order }
 
     private val networkObserver = NetworkObserver(application)
     private val _isOnline = MutableStateFlow(true)

@@ -6,8 +6,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import com.zafar.ichatai.viewmodel.SortOrder
+import com.zafar.ichatai.viewmodel.FilterCriteria
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Chat
+import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -34,9 +37,14 @@ fun ChatHistoryScreen(
 ) {
     val chatHistory by viewModel.chatHistory.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
+    val currentSort by viewModel.historySortOrder.collectAsState()
+    val currentFilter by viewModel.historyFilter.collectAsState()
     
     var showDeleteDialog by remember { mutableStateOf(false) }
     var sessionToDelete by remember { mutableStateOf<ChatSessionEntity?>(null) }
+    
+    var showSortMenu by remember { mutableStateOf(false) }
+    var showFilterMenu by remember { mutableStateOf(false) }
 
     if (showDeleteDialog && sessionToDelete != null) {
         AlertDialog(
@@ -79,8 +87,49 @@ fun ChatHistoryScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = { /* Sort logic */ }) {
-                        Icon(Icons.Default.FilterList, contentDescription = "Filter")
+                    Box {
+                        IconButton(onClick = { showSortMenu = true }) {
+                            Icon(Icons.AutoMirrored.Filled.Sort, contentDescription = "Sort")
+                        }
+                        DropdownMenu(
+                            expanded = showSortMenu,
+                            onDismissRequest = { showSortMenu = false }
+                        ) {
+                            SortOrder.entries.forEach { order ->
+                                DropdownMenuItem(
+                                    text = { Text(order.name.replace("_", " ").lowercase().replaceFirstChar { it.uppercase() }) },
+                                    onClick = {
+                                        viewModel.onHistorySortChange(order)
+                                        showSortMenu = false
+                                    },
+                                    leadingIcon = {
+                                        if (currentSort == order) Icon(Icons.Default.Check, contentDescription = null)
+                                    }
+                                )
+                            }
+                        }
+                    }
+                    Box {
+                        IconButton(onClick = { showFilterMenu = true }) {
+                            Icon(Icons.Default.FilterList, contentDescription = "Filter")
+                        }
+                        DropdownMenu(
+                            expanded = showFilterMenu,
+                            onDismissRequest = { showFilterMenu = false }
+                        ) {
+                            FilterCriteria.entries.forEach { criteria ->
+                                DropdownMenuItem(
+                                    text = { Text(criteria.name.replace("_", " ").lowercase().replaceFirstChar { it.uppercase() }) },
+                                    onClick = {
+                                        viewModel.onHistoryFilterChange(criteria)
+                                        showFilterMenu = false
+                                    },
+                                    leadingIcon = {
+                                        if (currentFilter == criteria) Icon(Icons.Default.Check, contentDescription = null)
+                                    }
+                                )
+                            }
+                        }
                     }
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
