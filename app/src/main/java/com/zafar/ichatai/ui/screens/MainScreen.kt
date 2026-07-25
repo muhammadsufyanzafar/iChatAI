@@ -490,10 +490,14 @@ fun BottomSection(
                 contentPadding = PaddingValues(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                item { PromptChip("Summarize Text", hasIcon = true, onClick = { onPromptClick("Summarize Text") }) }
-                item { PromptChip("Explain a Concept", hasIcon = false, onClick = { onPromptClick("Explain a Concept") }) }
-                item { PromptChip("Write an Email Draft", hasIcon = false, onClick = { onPromptClick("Write an Email Draft") }) }
-                
+                item { PromptChip("Write a first draft", hasIcon = false, onClick = { onPromptClick("Write a short blog post introduction about the benefits of time blocking for remote workers.") }) }
+                item { PromptChip("Brainstorm ideas", hasIcon = false, onClick = { onPromptClick("Give me 5 unique gift ideas for a coffee enthusiast who already owns standard brewing gear.") }) }
+                item { PromptChip("Break the ice", hasIcon = false, onClick = { onPromptClick("Give me three fun, low-pressure conversation starters to use during a virtual team-building meeting.") }) }
+                item { PromptChip("Fix a clunky sentence", hasIcon = false, onClick = { onPromptClick("Rewrite the sentence which i will provide to you to make it sound more professional and engaging") }) }
+                item { PromptChip("Write code", hasIcon = false, onClick = { onPromptClick("Write a simple Python script to read a CSV file and print out the top 5 rows.") }) }
+                item { PromptChip("Build a playlist", hasIcon = false, onClick = { onPromptClick("Create a 10-song upbeat indie-pop playlist designed to keep energy high while coding or studying.") }) }
+                item { PromptChip("Take a quiz", hasIcon = false, onClick = { onPromptClick("Quiz me on basic geography with 5 multiple-choice questions, and give me my score at the end.") }) }
+                item { PromptChip("Plan a project", hasIcon = false, onClick = { onPromptClick("Outline a 4-week study plan for learning the basics of data analysis from scratch.") }) }
             }
 
             // Image Preview Area
@@ -666,7 +670,7 @@ fun PromptChip(text: String, hasIcon: Boolean, onClick: () -> Unit) {
                 Box(
                     modifier = Modifier
                         .size(14.dp)
-                        .background(Color(0xFFFFC107), RoundedCornerShape(2.dp))
+                        .background(Color(0xF2FFC107), RoundedCornerShape(2.dp))
                 )
                 Spacer(modifier = Modifier.width(8.dp))
             }
