@@ -12,6 +12,7 @@ import com.zafar.ichatai.data.local.entity.ChatMessageEntity
 import com.zafar.ichatai.data.local.entity.ChatSessionEntity
 import com.zafar.ichatai.data.local.entity.ChatSessionWithCount
 import com.zafar.ichatai.data.repository.ChatRepository
+import com.zafar.ichatai.data.repository.PromptRepository
 import com.zafar.ichatai.network.AiClient
 import com.zafar.ichatai.utils.NetworkObserver
 import kotlinx.coroutines.*
@@ -31,12 +32,14 @@ enum class FilterCriteria {
 @OptIn(ExperimentalCoroutinesApi::class)
 class ChatViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: ChatRepository
+    private val promptRepository: PromptRepository
     // A separate scope for persistence to ensure it survives viewModelScope cancellation
     private val persistenceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     init {
         val database = AppDatabase.getDatabase(application)
         repository = ChatRepository(database.chatDao())
+        promptRepository = PromptRepository(database.promptDao())
     }
 
     var inputText = mutableStateOf("")
@@ -293,6 +296,12 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
             inputText.value = ""
             selectedImageUri.value = null
             
+            if (text.isNotBlank()) {
+                viewModelScope.launch {
+                    promptRepository.saveRecentPrompt(text)
+                }
+            }
+            
             fetchAiResponse(context, text, imageUri)
         }
     }
@@ -300,6 +309,11 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     fun sendPrompt(context: Context, prompt: String) {
         val userMsg = ChatMessage("user", prompt)
         _messages.value = _messages.value + userMsg
+        
+        viewModelScope.launch {
+            promptRepository.saveRecentPrompt(prompt)
+        }
+
         fetchAiResponse(context, prompt, null)
     }
 

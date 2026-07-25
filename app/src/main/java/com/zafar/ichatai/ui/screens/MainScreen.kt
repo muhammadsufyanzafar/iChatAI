@@ -62,7 +62,8 @@ import java.io.FileOutputStream
 fun MainScreen(
     viewModel: ChatViewModel = viewModel(),
     onNavigateToHistory: () -> Unit = {},
-    onNavigateToFavorites: () -> Unit = {}
+    onNavigateToFavorites: () -> Unit = {},
+    onNavigateToPrompts: () -> Unit = {}
 ) {
     val messages by viewModel.messages.collectAsState()
     val inputText by viewModel.inputText
@@ -215,6 +216,12 @@ fun MainScreen(
                         scope.launch {
                             viewModel.saveCurrentSessionSuspend()
                             onNavigateToFavorites()
+                            drawerState.close()
+                        }
+                    } else if (route == "prompts") {
+                        scope.launch {
+                            viewModel.saveCurrentSessionSuspend()
+                            onNavigateToPrompts()
                             drawerState.close()
                         }
                     }

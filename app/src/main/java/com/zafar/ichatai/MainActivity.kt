@@ -14,6 +14,7 @@ import com.zafar.ichatai.ui.screens.MainScreen
 import com.zafar.ichatai.ui.screens.SplashScreen
 import com.zafar.ichatai.ui.screens.ChatHistoryScreen
 import com.zafar.ichatai.ui.screens.FavoriteChatScreen
+import com.zafar.ichatai.ui.screens.SavedPromptsScreen
 import com.zafar.ichatai.viewmodel.ChatViewModel
 import com.zafar.ichatai.ui.theme.IChatAITheme
 
@@ -52,6 +53,9 @@ fun AppNavigation() {
                 },
                 onNavigateToFavorites = {
                     navController.navigate("favorites")
+                },
+                onNavigateToPrompts = {
+                    navController.navigate("prompts")
                 }
             )
         }
@@ -71,6 +75,15 @@ fun AppNavigation() {
                 onBackClick = { navController.popBackStack() },
                 onChatClick = { sessionId ->
                     chatViewModel.loadChat(sessionId)
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable("prompts") {
+            SavedPromptsScreen(
+                onBackClick = { navController.popBackStack() },
+                onPromptClick = { content: String ->
+                    chatViewModel.onInputChange(content)
                     navController.popBackStack()
                 }
             )
