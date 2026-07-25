@@ -226,7 +226,7 @@ fun NavDrawerContent(
                     val scale by animateFloatAsState(if (isPressed) 0.95f else 1f, label = "scale")
 
                     Surface(
-                        onClick = {},
+                        onClick = { onItemClick("credits") },
                         interactionSource = interactionSource,
                         shape = RoundedCornerShape(24.dp),
                         color = textColor.copy(alpha = 0.1f),

@@ -5,7 +5,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.google.android.gms.ads.MobileAds
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -16,6 +22,8 @@ import com.zafar.ichatai.ui.screens.ChatHistoryScreen
 import com.zafar.ichatai.ui.screens.FavoriteChatScreen
 import com.zafar.ichatai.ui.screens.SavedPromptsScreen
 import com.zafar.ichatai.ui.screens.SubscriptionScreen
+import com.zafar.ichatai.ui.screens.CreditsScreen
+import com.zafar.ichatai.ui.screens.CheckInScreen
 import com.zafar.ichatai.viewmodel.ChatViewModel
 import com.zafar.ichatai.ui.theme.IChatAITheme
 
@@ -23,6 +31,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
+        
+        // Initialize Mobile Ads SDK
+        MobileAds.initialize(this) {}
+
         enableEdgeToEdge()
         setContent {
             IChatAITheme {
@@ -60,6 +72,9 @@ fun AppNavigation() {
                 },
                 onNavigateToSubscription = {
                     navController.navigate("subscription")
+                },
+                onNavigateToCredits = {
+                    navController.navigate("credits")
                 }
             )
         }
@@ -94,6 +109,19 @@ fun AppNavigation() {
         }
         composable("subscription") {
             SubscriptionScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+        composable("credits") {
+            CreditsScreen(
+                onBackClick = { navController.popBackStack() },
+                onNavigateToCheckIn = {
+                    navController.navigate("checkin")
+                }
+            )
+        }
+        composable("checkin") {
+            CheckInScreen(
                 onBackClick = { navController.popBackStack() }
             )
         }

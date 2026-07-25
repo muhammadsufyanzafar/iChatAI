@@ -52,6 +52,7 @@ import coil.compose.AsyncImage
 import com.zafar.ichatai.R
 import com.zafar.ichatai.data.ChatMessage
 import com.zafar.ichatai.viewmodel.ChatViewModel
+import com.zafar.ichatai.viewmodel.CreditsViewModel
 import com.zafar.ichatai.ui.components.NavDrawerContent
 import dev.jeziellago.compose.markdowntext.MarkdownText
 import com.zafar.ichatai.ui.components.GlowBackground
@@ -61,10 +62,12 @@ import java.io.FileOutputStream
 @Composable
 fun MainScreen(
     viewModel: ChatViewModel = viewModel(),
+    creditsViewModel: CreditsViewModel = viewModel(),
     onNavigateToHistory: () -> Unit = {},
     onNavigateToFavorites: () -> Unit = {},
     onNavigateToPrompts: () -> Unit = {},
-    onNavigateToSubscription: () -> Unit = {}
+    onNavigateToSubscription: () -> Unit = {},
+    onNavigateToCredits: () -> Unit = {}
 ) {
     val messages by viewModel.messages.collectAsState()
     val inputText by viewModel.inputText
@@ -73,6 +76,7 @@ fun MainScreen(
     val isOnline by viewModel.isOnline.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
     val chatHistory by viewModel.chatHistory.collectAsState()
+    val totalCredits by creditsViewModel.totalCredits.collectAsState()
     val listState = rememberLazyListState()
     val context = LocalContext.current
 
@@ -236,6 +240,13 @@ fun MainScreen(
                                 drawerState.close()
                             }
                         }
+                        "credits" -> {
+                            scope.launch {
+                                viewModel.saveCurrentSessionSuspend()
+                                onNavigateToCredits()
+                                drawerState.close()
+                            }
+                        }
                     }
                 },
                 onLogoutClick = { /* No logic implemented yet */ }
@@ -254,12 +265,13 @@ fun MainScreen(
                     ),
                 topBar = {
                     TopBar(
+                        credits = totalCredits,
                         onNewChatClick = { viewModel.createNewChat() },
                         onMenuClick = {
                             scope.launch { drawerState.open() }
                         },
                         onCreditsClick = {
-                            onNavigateToSubscription()
+                            onNavigateToCredits()
                         }
                     )
                 },
@@ -316,7 +328,7 @@ fun MainScreen(
 }
 
 @Composable
-fun TopBar(onNewChatClick: () -> Unit, onMenuClick: () -> Unit, onCreditsClick: () -> Unit = {}) {
+fun TopBar(credits: Int, onNewChatClick: () -> Unit, onMenuClick: () -> Unit, onCreditsClick: () -> Unit = {}) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -352,7 +364,7 @@ fun TopBar(onNewChatClick: () -> Unit, onMenuClick: () -> Unit, onCreditsClick: 
             )
             Spacer(modifier = Modifier.width(6.dp))
             Text(
-                text = "25 Credits",
+                text = "$credits Credits",
                 color = MaterialTheme.colorScheme.onSurface,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Medium

@@ -91,6 +91,7 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.coil.compose)
     implementation(libs.compose.markdown)
+    implementation(libs.google.play.services.ads)
 
     // Testing
     testImplementation(libs.junit)
