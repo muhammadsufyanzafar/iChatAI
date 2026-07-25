@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.zafar.ichatai.viewmodel.CheckInViewModel
 import com.zafar.ichatai.ui.components.GlowBackground
 import java.util.*
@@ -37,7 +38,7 @@ import java.util.*
 @Composable
 fun CheckInScreen(
     onBackClick: () -> Unit = {},
-    viewModel: CheckInViewModel = viewModel()
+    viewModel: CheckInViewModel = hiltViewModel()
 ) {
     val checkInState by viewModel.checkInState.collectAsState()
     

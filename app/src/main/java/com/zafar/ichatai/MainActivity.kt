@@ -26,7 +26,10 @@ import com.zafar.ichatai.ui.screens.CreditsScreen
 import com.zafar.ichatai.ui.screens.CheckInScreen
 import com.zafar.ichatai.viewmodel.ChatViewModel
 import com.zafar.ichatai.ui.theme.IChatAITheme
+import dagger.hilt.android.AndroidEntryPoint
+import androidx.hilt.navigation.compose.hiltViewModel
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
@@ -48,7 +51,7 @@ class MainActivity : ComponentActivity() {
 fun AppNavigation() {
     val navController = rememberNavController()
     // Create ViewModel at this level so it's shared between screens
-    val chatViewModel: ChatViewModel = viewModel()
+    val chatViewModel: ChatViewModel = hiltViewModel()
     
     NavHost(navController = navController, startDestination = "splash") {
         composable("splash") {

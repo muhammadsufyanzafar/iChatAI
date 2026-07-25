@@ -8,16 +8,20 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
-import com.zafar.ichatai.data.local.AppDatabase
 import com.zafar.ichatai.data.repository.CreditRepository
 import com.zafar.ichatai.data.local.entity.CreditTransactionEntity
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CreditsViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class CreditsViewModel @Inject constructor(
+    application: Application,
     private val repository: CreditRepository
+) : AndroidViewModel(application) {
     
     val allTransactions: StateFlow<List<CreditTransactionEntity>>
     val totalCredits: StateFlow<Int>
@@ -26,9 +30,6 @@ class CreditsViewModel(application: Application) : AndroidViewModel(application)
     private val adUnitId = "ca-app-pub-3940256099942544/5224354917" // Test ID
 
     init {
-        val database = AppDatabase.getDatabase(application)
-        repository = CreditRepository(database.creditDao())
-        
         allTransactions = repository.allTransactions.stateIn(
             viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList()
         )

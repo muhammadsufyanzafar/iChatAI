@@ -1,19 +1,21 @@
 package com.zafar.ichatai.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.zafar.ichatai.data.local.AppDatabase
+import com.zafar.ichatai.data.local.dao.CheckInDao
 import com.zafar.ichatai.data.local.entity.CheckInStateEntity
 import com.zafar.ichatai.data.repository.CreditRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.*
+import javax.inject.Inject
 
-class CheckInViewModel(application: Application) : AndroidViewModel(application) {
-    private val database = AppDatabase.getDatabase(application)
-    private val checkInDao = database.checkInDao()
-    private val creditRepository = CreditRepository(database.creditDao())
+@HiltViewModel
+class CheckInViewModel @Inject constructor(
+    private val checkInDao: CheckInDao,
+    private val creditRepository: CreditRepository
+) : ViewModel() {
 
     val checkInState: StateFlow<CheckInStateEntity> = checkInDao.getCheckInState()
         .map { it ?: CheckInStateEntity() }

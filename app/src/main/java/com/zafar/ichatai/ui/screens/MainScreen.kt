@@ -48,6 +48,7 @@ import kotlinx.coroutines.launch
 import androidx.compose.ui.draw.blur
 import android.os.Build
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.zafar.ichatai.R
 import com.zafar.ichatai.data.ChatMessage
@@ -61,8 +62,8 @@ import java.io.FileOutputStream
 
 @Composable
 fun MainScreen(
-    viewModel: ChatViewModel = viewModel(),
-    creditsViewModel: CreditsViewModel = viewModel(),
+    viewModel: ChatViewModel = hiltViewModel(),
+    creditsViewModel: CreditsViewModel = hiltViewModel(),
     onNavigateToHistory: () -> Unit = {},
     onNavigateToFavorites: () -> Unit = {},
     onNavigateToPrompts: () -> Unit = {},

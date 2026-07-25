@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.zafar.ichatai.viewmodel.CreditsViewModel
 import com.zafar.ichatai.data.local.entity.CreditTransactionEntity
 import com.zafar.ichatai.ui.components.GlowBackground
@@ -33,7 +34,7 @@ import java.util.*
 fun CreditsScreen(
     onBackClick: () -> Unit = {},
     onNavigateToCheckIn: () -> Unit = {},
-    viewModel: CreditsViewModel = viewModel()
+    viewModel: CreditsViewModel = hiltViewModel()
 ) {
     val totalCredits by viewModel.totalCredits.collectAsState()
     val transactions by viewModel.allTransactions.collectAsState()

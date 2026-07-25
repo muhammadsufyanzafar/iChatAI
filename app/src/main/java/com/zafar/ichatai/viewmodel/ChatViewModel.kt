@@ -1,25 +1,24 @@
 package com.zafar.ichatai.viewmodel
 
-import android.app.Application
 import android.content.Context
 import android.net.Uri
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zafar.ichatai.data.ChatMessage
-import com.zafar.ichatai.data.local.AppDatabase
 import com.zafar.ichatai.data.local.entity.ChatMessageEntity
-import com.zafar.ichatai.data.local.entity.ChatSessionEntity
 import com.zafar.ichatai.data.local.entity.ChatSessionWithCount
 import com.zafar.ichatai.data.repository.ChatRepository
 import com.zafar.ichatai.data.repository.PromptRepository
 import com.zafar.ichatai.network.AiClient
 import com.zafar.ichatai.utils.NetworkObserver
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import java.io.IOException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
+import javax.inject.Inject
 
 enum class SortOrder {
     NEWEST_FIRST, OLDEST_FIRST, ALPHABETICAL, MOST_MESSAGES
@@ -29,18 +28,15 @@ enum class FilterCriteria {
     ALL, TODAY, YESTERDAY, THIS_WEEK, PINNED_ONLY
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
-class ChatViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository: ChatRepository
-    private val promptRepository: PromptRepository
+@HiltViewModel
+class ChatViewModel @Inject constructor(
+    private val repository: ChatRepository,
+    private val promptRepository: PromptRepository,
+    private val networkObserver: NetworkObserver
+) : ViewModel() {
+    
     // A separate scope for persistence to ensure it survives viewModelScope cancellation
     private val persistenceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-
-    init {
-        val database = AppDatabase.getDatabase(application)
-        repository = ChatRepository(database.chatDao())
-        promptRepository = PromptRepository(database.promptDao())
-    }
 
     var inputText = mutableStateOf("")
         private set
@@ -74,6 +70,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     private val _favoriteSortOrder = MutableStateFlow(SortOrder.NEWEST_FIRST)
     val favoriteSortOrder: StateFlow<SortOrder> = _favoriteSortOrder.asStateFlow()
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     val chatHistory: StateFlow<List<ChatSessionWithCount>> = combine(
         _searchQuery, _historySortOrder, _historyFilter
     ) { query, sort, filter ->
@@ -92,6 +89,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
         }
     }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     val favoriteHistory: StateFlow<List<ChatSessionWithCount>> = combine(
         _favoriteSearchQuery, _favoriteSortOrder
     ) { query, sort ->
@@ -139,7 +137,6 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     fun onHistoryFilterChange(filter: FilterCriteria) { _historyFilter.value = filter }
     fun onFavoriteSortChange(order: SortOrder) { _favoriteSortOrder.value = order }
 
-    private val networkObserver = NetworkObserver(application)
     private val _isOnline = MutableStateFlow(true)
     val isOnline: StateFlow<Boolean> = _isOnline.asStateFlow()
 

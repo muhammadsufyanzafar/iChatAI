@@ -22,6 +22,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.zafar.ichatai.ui.components.GlowBackground
 import com.zafar.ichatai.data.local.entity.PromptFolderEntity
 import com.zafar.ichatai.data.local.entity.PromptFolderWithCount
@@ -32,7 +33,7 @@ import com.zafar.ichatai.viewmodel.PromptViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SavedPromptsScreen(
-    promptViewModel: PromptViewModel = viewModel(),
+    promptViewModel: PromptViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
     onPromptClick: (String) -> Unit
 ) {

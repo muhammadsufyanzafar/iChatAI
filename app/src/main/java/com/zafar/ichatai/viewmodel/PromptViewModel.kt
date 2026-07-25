@@ -1,23 +1,25 @@
 package com.zafar.ichatai.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.zafar.ichatai.data.local.AppDatabase
 import com.zafar.ichatai.data.local.entity.PromptFolderEntity
 import com.zafar.ichatai.data.local.entity.PromptFolderWithCount
 import com.zafar.ichatai.data.local.entity.SavedPromptEntity
 import com.zafar.ichatai.data.repository.PromptRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 enum class PromptSortOrder {
     NEWEST, ALPHABETICAL, MOST_USED
 }
 
-class PromptViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository: PromptRepository = PromptRepository(AppDatabase.getDatabase(application).promptDao())
+@HiltViewModel
+class PromptViewModel @Inject constructor(
+    private val repository: PromptRepository
+) : ViewModel() {
     
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
