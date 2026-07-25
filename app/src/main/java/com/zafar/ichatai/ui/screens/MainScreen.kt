@@ -53,11 +53,8 @@ import com.zafar.ichatai.R
 import com.zafar.ichatai.data.ChatMessage
 import com.zafar.ichatai.viewmodel.ChatViewModel
 import com.zafar.ichatai.ui.components.NavDrawerContent
-import com.zafar.ichatai.ui.theme.IChatAITheme
 import dev.jeziellago.compose.markdowntext.MarkdownText
 import com.zafar.ichatai.ui.components.GlowBackground
-import com.zafar.ichatai.ui.components.NavDrawerContent
-import com.zafar.ichatai.ui.theme.IChatAITheme
 import java.io.File
 import java.io.FileOutputStream
 
