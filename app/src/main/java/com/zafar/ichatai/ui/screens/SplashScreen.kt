@@ -6,6 +6,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.zafar.ichatai.ui.components.GlowBackground
 import com.zafar.ichatai.R
 import kotlinx.coroutines.delay
 
@@ -61,67 +63,65 @@ fun SplashScreen(onNavigateToMain: () -> Unit) {
     }
 
     // Modern colors based on theme
-    val backgroundColor = if (isDarkTheme) Color(0xFF12141C) else Color(0xFFF8FAFC)
-    val textColor = if (isDarkTheme) Color.White else Color(0xFF1A1C1E)
-    val subTextColor = if (isDarkTheme) Color.White.copy(alpha = 0.6f) else Color.Black.copy(alpha = 0.5f)
+    val textColor = MaterialTheme.colorScheme.onBackground
+    val subTextColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(backgroundColor),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxWidth()
+    GlowBackground {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
         ) {
-            // App Icon with Floating Animation
-            // Using ic_launcher as placeholder for ichatai_icon (ensure it exists in your project)
-            Image(
-                painter = painterResource(id = R.drawable.ichatai_icon),
-                contentDescription = "Logo",
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                // App Icon with Floating Animation
+                Image(
+                    painter = painterResource(id = R.drawable.ichatai_icon),
+                    contentDescription = "Logo",
+                    modifier = Modifier
+                        .size(140.dp)
+                        .offset(y = floatAnim.dp)
+                        .scale(scaleAnim.value)
+                        .alpha(alphaAnim.value)
+                )
+
+                Spacer(modifier = Modifier.height(32.dp))
+
+                // App Name
+                Text(
+                    text = "iChatAI",
+                    color = textColor,
+                    fontSize = 42.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    modifier = Modifier.alpha(alphaAnim.value)
+                )
+
+                Text(
+                    text = "Your Friendly AI Companion",
+                    color = subTextColor,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier.alpha(alphaAnim.value)
+                )
+
+                Spacer(modifier = Modifier.height(80.dp))
+
+                // Animated Pulse Effect
+                PulseAnimation(isDarkTheme)
+            }
+
+            // Footer
+            Text(
+                text = "Muhammad Sufyan Zafar",
+                color = subTextColor.copy(alpha = 0.4f),
+                fontSize = 14.sp,
                 modifier = Modifier
-                    .size(140.dp)
-                    .offset(y = floatAnim.dp)
-                    .scale(scaleAnim.value)
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 48.dp)
                     .alpha(alphaAnim.value)
             )
-
-            Spacer(modifier = Modifier.height(32.dp))
-
-            // App Name
-            Text(
-                text = "iChatAI",
-                color = textColor,
-                fontSize = 42.sp,
-                fontWeight = FontWeight.ExtraBold,
-                modifier = Modifier.alpha(alphaAnim.value)
-            )
-
-            Text(
-                text = "Your Friendly AI Companion",
-                color = subTextColor,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Medium,
-                modifier = Modifier.alpha(alphaAnim.value)
-            )
-
-            Spacer(modifier = Modifier.height(80.dp))
-
-            // Animated Pulse Effect
-            PulseAnimation(isDarkTheme)
         }
-
-        // Footer
-        Text(
-            text = "Muhammad Sufyan Zafar",
-            color = subTextColor.copy(alpha = 0.4f),
-            fontSize = 14.sp,
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 48.dp)
-                .alpha(alphaAnim.value)
-        )
     }
 }
 

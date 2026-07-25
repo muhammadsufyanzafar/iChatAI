@@ -23,6 +23,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.zafar.ichatai.ui.components.GlowBackground
 import com.zafar.ichatai.data.local.entity.PromptFolderEntity
 import com.zafar.ichatai.data.local.entity.PromptFolderWithCount
 import com.zafar.ichatai.data.local.entity.SavedPromptEntity
@@ -51,159 +52,162 @@ fun SavedPromptsScreen(
     var editingFolder by remember { mutableStateOf<PromptFolderEntity?>(null) }
     var editingPrompt by remember { mutableStateOf<SavedPromptEntity?>(null) }
     var showSortMenu by remember { mutableStateOf(false) }
+    var itemToDelete by remember { mutableStateOf<Any?>(null) }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { 
-                    Text(
-                        selectedFolder?.name ?: "Saved Prompts", 
-                        fontWeight = FontWeight.Bold, 
-                        fontSize = 24.sp,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    ) 
-                },
-                navigationIcon = {
-                    IconButton(onClick = {
-                        if (selectedFolderId != null) {
-                            promptViewModel.selectFolder(null)
-                        } else {
-                            onBackClick()
+    GlowBackground {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { 
+                        Text(
+                            selectedFolder?.name ?: "Saved Prompts", 
+                            fontWeight = FontWeight.Bold, 
+                            fontSize = 24.sp,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        ) 
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = {
+                            if (selectedFolderId != null) {
+                                promptViewModel.selectFolder(null)
+                            } else {
+                                onBackClick()
+                            }
+                        }) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                         }
-                    }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                    }
-                },
-                actions = {
-                    Box {
-                        IconButton(onClick = { showSortMenu = true }) {
-                            Icon(Icons.Rounded.FilterList, contentDescription = "Filter")
+                    },
+                    actions = {
+                        Box {
+                            IconButton(onClick = { showSortMenu = true }) {
+                                Icon(Icons.Rounded.FilterList, contentDescription = "Filter")
+                            }
+                            DropdownMenu(expanded = showSortMenu, onDismissRequest = { showSortMenu = false }) {
+                                PromptSortOrder.entries.forEach { order ->
+                                    DropdownMenuItem(
+                                        text = { Text(order.name.replace("_", " ").lowercase().replaceFirstChar { it.uppercase() }) },
+                                        onClick = {
+                                            promptViewModel.onSortOrderChange(order)
+                                            showSortMenu = false
+                                        },
+                                        trailingIcon = { if (sortOrder == order) Icon(Icons.Default.Check, null) }
+                                    )
+                                }
+                            }
                         }
-                        DropdownMenu(expanded = showSortMenu, onDismissRequest = { showSortMenu = false }) {
-                            PromptSortOrder.entries.forEach { order ->
-                                DropdownMenuItem(
-                                    text = { Text(order.name.replace("_", " ").lowercase().replaceFirstChar { it.uppercase() }) },
-                                    onClick = {
-                                        promptViewModel.onSortOrderChange(order)
-                                        showSortMenu = false
-                                    },
-                                    trailingIcon = { if (sortOrder == order) Icon(Icons.Default.Check, null) }
+                        if (selectedFolderId == null) {
+                            IconButton(onClick = { showAddFolderDialog = true }) {
+                                Icon(Icons.Rounded.CreateNewFolder, contentDescription = "New Folder")
+                            }
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = Color.Transparent,
+                        titleContentColor = MaterialTheme.colorScheme.onBackground
+                    )
+                )
+            },
+            floatingActionButton = {
+                FloatingActionButton(
+                    onClick = { showAddPromptDialog = true },
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                    shape = CircleShape
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = "Add Prompt")
+                }
+            },
+            containerColor = Color.Transparent
+        ) { paddingValues ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+            ) {
+                // Search Bar
+                OutlinedTextField(
+                    value = searchQuery,
+                    onValueChange = { promptViewModel.onSearchQueryChange(it) },
+                    placeholder = { Text("Search prompts...", color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)) },
+                    leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    singleLine = true,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                        focusedBorderColor = Color.Transparent,
+                        unfocusedBorderColor = Color.Transparent
+                    )
+                )
+
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 80.dp)
+                ) {
+                    if (selectedFolderId == null) {
+                        if (folders.isNotEmpty()) {
+                            item {
+                                Text(
+                                    "My Folders",
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    modifier = Modifier.padding(vertical = 8.dp)
+                                )
+                            }
+                            items(folders) { folderWithCount ->
+                                FolderItem(
+                                    folderWithCount = folderWithCount,
+                                    onEdit = { editingFolder = folderWithCount.folder },
+                                    onDelete = { itemToDelete = folderWithCount.folder },
+                                    onClick = { promptViewModel.selectFolder(folderWithCount.folder.id) }
                                 )
                             }
                         }
-                    }
-                    if (selectedFolderId == null) {
-                        IconButton(onClick = { showAddFolderDialog = true }) {
-                            Icon(Icons.Rounded.CreateNewFolder, contentDescription = "New Folder")
-                        }
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background,
-                    titleContentColor = MaterialTheme.colorScheme.onBackground
-                )
-            )
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = { showAddPromptDialog = true },
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-                shape = CircleShape
-            ) {
-                Icon(Icons.Default.Add, contentDescription = "Add Prompt")
-            }
-        }
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .background(MaterialTheme.colorScheme.background)
-        ) {
-            // Search Bar
-            OutlinedTextField(
-                value = searchQuery,
-                onValueChange = { promptViewModel.onSearchQueryChange(it) },
-                placeholder = { Text("Search prompts...", color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)) },
-                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                shape = RoundedCornerShape(12.dp),
-                singleLine = true,
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
-                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
-                    focusedBorderColor = Color.Transparent,
-                    unfocusedBorderColor = Color.Transparent
-                )
-            )
 
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 80.dp)
-            ) {
-                if (selectedFolderId == null) {
-                    if (folders.isNotEmpty()) {
                         item {
                             Text(
-                                "My Folders",
+                                "Recent & Individual Prompts",
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onBackground,
+                                modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+                            )
+                        }
+                    } else {
+                        item {
+                            Text(
+                                "Prompts in ${selectedFolder?.name}",
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onBackground,
                                 modifier = Modifier.padding(vertical = 8.dp)
                             )
                         }
-                        items(folders) { folderWithCount ->
-                            FolderItem(
-                                folderWithCount = folderWithCount,
-                                onEdit = { editingFolder = folderWithCount.folder },
-                                onDelete = { promptViewModel.deleteFolder(folderWithCount.folder) },
-                                onClick = { promptViewModel.selectFolder(folderWithCount.folder.id) }
-                            )
-                        }
                     }
 
-                    item {
-                        Text(
-                            "Recent & Individual Prompts",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onBackground,
-                            modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+                    items(individualPrompts) { prompt ->
+                        PromptItem(
+                            prompt = prompt,
+                            onEdit = { editingPrompt = prompt },
+                            onDelete = { itemToDelete = prompt },
+                            onClick = {
+                                promptViewModel.updatePromptUsage(prompt.id)
+                                onPromptClick(prompt.content)
+                            }
                         )
                     }
-                } else {
-                    item {
-                        Text(
-                            "Prompts in ${selectedFolder?.name}",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onBackground,
-                            modifier = Modifier.padding(vertical = 8.dp)
-                        )
-                    }
-                }
 
-                items(individualPrompts) { prompt ->
-                    PromptItem(
-                        prompt = prompt,
-                        onEdit = { editingPrompt = prompt },
-                        onDelete = { promptViewModel.deletePrompt(prompt) },
-                        onClick = {
-                            promptViewModel.updatePromptUsage(prompt.id)
-                            onPromptClick(prompt.content)
-                        }
-                    )
-                }
-
-                if (individualPrompts.isEmpty() && selectedFolderId != null) {
-                    item {
-                        Box(modifier = Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) {
-                            Text("No prompts in this folder", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    if (individualPrompts.isEmpty() && selectedFolderId != null) {
+                        item {
+                            Box(modifier = Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) {
+                                Text("No prompts in this folder", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            }
                         }
                     }
                 }
@@ -251,6 +255,44 @@ fun SavedPromptsScreen(
             }
         )
     }
+
+    if (itemToDelete != null) {
+        val isFolder = itemToDelete is PromptFolderEntity
+        val itemName = if (isFolder) (itemToDelete as PromptFolderEntity).name else (itemToDelete as SavedPromptEntity).title
+        
+        AlertDialog(
+            onDismissRequest = { itemToDelete = null },
+            title = { Text("Delete ${if (isFolder) "Folder" else "Prompt"}?") },
+            text = { 
+                Text(
+                    if (isFolder) 
+                        "Are you sure you want to delete '$itemName'? This will also delete all prompts inside this folder."
+                    else 
+                        "Are you sure you want to delete '$itemName'?"
+                ) 
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        if (isFolder) {
+                            promptViewModel.deleteFolder(itemToDelete as PromptFolderEntity)
+                        } else {
+                            promptViewModel.deletePrompt(itemToDelete as SavedPromptEntity)
+                        }
+                        itemToDelete = null
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                ) {
+                    Text("Delete", color = Color.White)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { itemToDelete = null }) {
+                    Text("Cancel")
+                }
+            }
+        )
+    }
 }
 
 @Composable
@@ -276,8 +318,7 @@ fun FolderItem(
                     .clip(RoundedCornerShape(10.dp))
                     .background(parseColorSafe(folderWithCount.folder.colorHex)),
                 contentAlignment = Alignment.Center
-            )
- {
+            ) {
                 Icon(Icons.Rounded.Folder, contentDescription = null, tint = Color.White, modifier = Modifier.size(20.dp))
             }
             Spacer(modifier = Modifier.width(12.dp))

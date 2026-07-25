@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.zafar.ichatai.ui.components.GlowBackground
 import com.zafar.ichatai.data.local.entity.ChatSessionEntity
 import com.zafar.ichatai.data.local.entity.ChatSessionWithCount
 import com.zafar.ichatai.viewmodel.ChatViewModel
@@ -74,11 +75,7 @@ fun FavoriteChatScreen(
         )
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-    ) {
+    GlowBackground {
         Scaffold(
             topBar = {
                 CenterAlignedTopAppBar(
@@ -123,7 +120,7 @@ fun FavoriteChatScreen(
                     )
                 )
             },
-            containerColor = MaterialTheme.colorScheme.background
+            containerColor = Color.Transparent
         ) { paddingValues ->
             Column(
                 modifier = Modifier

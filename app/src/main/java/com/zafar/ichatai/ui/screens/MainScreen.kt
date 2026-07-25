@@ -55,6 +55,9 @@ import com.zafar.ichatai.viewmodel.ChatViewModel
 import com.zafar.ichatai.ui.components.NavDrawerContent
 import com.zafar.ichatai.ui.theme.IChatAITheme
 import dev.jeziellago.compose.markdowntext.MarkdownText
+import com.zafar.ichatai.ui.components.GlowBackground
+import com.zafar.ichatai.ui.components.NavDrawerContent
+import com.zafar.ichatai.ui.theme.IChatAITheme
 import java.io.File
 import java.io.FileOutputStream
 
@@ -63,7 +66,8 @@ fun MainScreen(
     viewModel: ChatViewModel = viewModel(),
     onNavigateToHistory: () -> Unit = {},
     onNavigateToFavorites: () -> Unit = {},
-    onNavigateToPrompts: () -> Unit = {}
+    onNavigateToPrompts: () -> Unit = {},
+    onNavigateToSubscription: () -> Unit = {}
 ) {
     val messages by viewModel.messages.collectAsState()
     val inputText by viewModel.inputText
@@ -206,23 +210,34 @@ fun MainScreen(
                     }
                 },
                 onItemClick = { route ->
-                    if (route == "history") {
-                        scope.launch {
-                            viewModel.saveCurrentSessionSuspend()
-                            onNavigateToHistory()
-                            drawerState.close()
+                    when (route) {
+                        "history" -> {
+                            scope.launch {
+                                viewModel.saveCurrentSessionSuspend()
+                                onNavigateToHistory()
+                                drawerState.close()
+                            }
                         }
-                    } else if (route == "favorites") {
-                        scope.launch {
-                            viewModel.saveCurrentSessionSuspend()
-                            onNavigateToFavorites()
-                            drawerState.close()
+                        "favorites" -> {
+                            scope.launch {
+                                viewModel.saveCurrentSessionSuspend()
+                                onNavigateToFavorites()
+                                drawerState.close()
+                            }
                         }
-                    } else if (route == "prompts") {
-                        scope.launch {
-                            viewModel.saveCurrentSessionSuspend()
-                            onNavigateToPrompts()
-                            drawerState.close()
+                        "prompts" -> {
+                            scope.launch {
+                                viewModel.saveCurrentSessionSuspend()
+                                onNavigateToPrompts()
+                                drawerState.close()
+                            }
+                        }
+                        "subscription" -> {
+                            scope.launch {
+                                viewModel.saveCurrentSessionSuspend()
+                                onNavigateToSubscription()
+                                drawerState.close()
+                            }
                         }
                     }
                 },
@@ -231,75 +246,80 @@ fun MainScreen(
         },
         gesturesEnabled = true
     ) {
-        Scaffold(
-            modifier = Modifier
-                .imePadding()
-                .then(
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                        Modifier.blur(blurRadius)
-                    } else Modifier
-                ),
-            topBar = {
-                TopBar(
-                    onNewChatClick = { viewModel.createNewChat() },
-                    onMenuClick = {
-                        scope.launch { drawerState.open() }
-                    }
-                )
-            },
-            bottomBar = {
-                Box {
-                    BottomSection(
-                        inputText = inputText,
-                        selectedImageUri = selectedImageUri,
-                        onValueChange = { viewModel.onInputChange(it) },
-                        onSendClick = { viewModel.sendMessage(context) },
-                        onPromptClick = { viewModel.sendPrompt(context, it) },
-                        onAddClick = { showAttachmentMenu = !showAttachmentMenu },
-                        onRemoveImage = { viewModel.removeSelectedImage() },
-                        isTyping = isTyping
+        GlowBackground {
+            Scaffold(
+                modifier = Modifier
+                    .imePadding()
+                    .then(
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                            Modifier.blur(blurRadius)
+                        } else Modifier
+                    ),
+                topBar = {
+                    TopBar(
+                        onNewChatClick = { viewModel.createNewChat() },
+                        onMenuClick = {
+                            scope.launch { drawerState.open() }
+                        },
+                        onCreditsClick = {
+                            onNavigateToSubscription()
+                        }
                     )
+                },
+                bottomBar = {
+                    Box {
+                        BottomSection(
+                            inputText = inputText,
+                            selectedImageUri = selectedImageUri,
+                            onValueChange = { viewModel.onInputChange(it) },
+                            onSendClick = { viewModel.sendMessage(context) },
+                            onPromptClick = { viewModel.sendPrompt(context, it) },
+                            onAddClick = { showAttachmentMenu = !showAttachmentMenu },
+                            onRemoveImage = { viewModel.removeSelectedImage() },
+                            isTyping = isTyping
+                        )
 
-                    if (showAttachmentMenu) {
-                        Popup(
-                            alignment = Alignment.BottomStart,
-                            offset = IntOffset(16, -260),
-                            onDismissRequest = { showAttachmentMenu = false }
-                        ) {
-                            AttachmentMenu(
-                                onCameraClick = {
-                                    permissionLauncher.launch(android.Manifest.permission.CAMERA)
-                                },
-                                onGalleryClick = { galleryLauncher.launch("image/*") },
-                                onFilesClick = { fileLauncher.launch("*/*") }
-                            )
+                        if (showAttachmentMenu) {
+                            Popup(
+                                alignment = Alignment.BottomStart,
+                                offset = IntOffset(16, -260),
+                                onDismissRequest = { showAttachmentMenu = false }
+                            ) {
+                                AttachmentMenu(
+                                    onCameraClick = {
+                                        permissionLauncher.launch(android.Manifest.permission.CAMERA)
+                                    },
+                                    onGalleryClick = { galleryLauncher.launch("image/*") },
+                                    onFilesClick = { fileLauncher.launch("*/*") }
+                                )
+                            }
                         }
                     }
-                }
-            },
-            containerColor = MaterialTheme.colorScheme.background
-        ) { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-            ) {
-                ChatList(
-                    messages = messages,
-                    isTyping = isTyping,
-                    listState = listState,
+                },
+                containerColor = Color.Transparent
+            ) { paddingValues ->
+                Column(
                     modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                )
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                ) {
+                    ChatList(
+                        messages = messages,
+                        isTyping = isTyping,
+                        listState = listState,
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-fun TopBar(onNewChatClick: () -> Unit, onMenuClick: () -> Unit) {
+fun TopBar(onNewChatClick: () -> Unit, onMenuClick: () -> Unit, onCreditsClick: () -> Unit = {}) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -323,6 +343,7 @@ fun TopBar(onNewChatClick: () -> Unit, onMenuClick: () -> Unit) {
             modifier = Modifier
                 .clip(RoundedCornerShape(24.dp))
                 .background(MaterialTheme.colorScheme.surface)
+                .clickable { onCreditsClick() }
                 .padding(horizontal = 14.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {

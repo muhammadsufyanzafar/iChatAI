@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.zafar.ichatai.ui.components.GlowBackground
 import com.zafar.ichatai.data.local.entity.ChatSessionEntity
 import com.zafar.ichatai.data.local.entity.ChatSessionWithCount
 import com.zafar.ichatai.viewmodel.ChatViewModel
@@ -77,127 +78,129 @@ fun ChatHistoryScreen(
         )
     }
 
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = { Text("Chat History", fontWeight = FontWeight.Bold) },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                    }
-                },
-                actions = {
-                    Box {
-                        IconButton(onClick = { showSortMenu = true }) {
-                            Icon(Icons.AutoMirrored.Filled.Sort, contentDescription = "Sort")
+    GlowBackground {
+        Scaffold(
+            topBar = {
+                CenterAlignedTopAppBar(
+                    title = { Text("Chat History", fontWeight = FontWeight.Bold) },
+                    navigationIcon = {
+                        IconButton(onClick = onBackClick) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                         }
-                        DropdownMenu(
-                            expanded = showSortMenu,
-                            onDismissRequest = { showSortMenu = false }
-                        ) {
-                            SortOrder.entries.forEach { order ->
-                                DropdownMenuItem(
-                                    text = { Text(order.name.replace("_", " ").lowercase().replaceFirstChar { it.uppercase() }) },
-                                    onClick = {
-                                        viewModel.onHistorySortChange(order)
-                                        showSortMenu = false
-                                    },
-                                    leadingIcon = {
-                                        if (currentSort == order) Icon(Icons.Default.Check, contentDescription = null)
-                                    }
-                                )
+                    },
+                    actions = {
+                        Box {
+                            IconButton(onClick = { showSortMenu = true }) {
+                                Icon(Icons.AutoMirrored.Filled.Sort, contentDescription = "Sort")
+                            }
+                            DropdownMenu(
+                                expanded = showSortMenu,
+                                onDismissRequest = { showSortMenu = false }
+                            ) {
+                                SortOrder.entries.forEach { order ->
+                                    DropdownMenuItem(
+                                        text = { Text(order.name.replace("_", " ").lowercase().replaceFirstChar { it.uppercase() }) },
+                                        onClick = {
+                                            viewModel.onHistorySortChange(order)
+                                            showSortMenu = false
+                                        },
+                                        leadingIcon = {
+                                            if (currentSort == order) Icon(Icons.Default.Check, contentDescription = null)
+                                        }
+                                    )
+                                }
                             }
                         }
-                    }
-                    Box {
-                        IconButton(onClick = { showFilterMenu = true }) {
-                            Icon(Icons.Default.FilterList, contentDescription = "Filter")
-                        }
-                        DropdownMenu(
-                            expanded = showFilterMenu,
-                            onDismissRequest = { showFilterMenu = false }
-                        ) {
-                            FilterCriteria.entries.forEach { criteria ->
-                                DropdownMenuItem(
-                                    text = { Text(criteria.name.replace("_", " ").lowercase().replaceFirstChar { it.uppercase() }) },
-                                    onClick = {
-                                        viewModel.onHistoryFilterChange(criteria)
-                                        showFilterMenu = false
-                                    },
-                                    leadingIcon = {
-                                        if (currentFilter == criteria) Icon(Icons.Default.Check, contentDescription = null)
-                                    }
-                                )
+                        Box {
+                            IconButton(onClick = { showFilterMenu = true }) {
+                                Icon(Icons.Default.FilterList, contentDescription = "Filter")
+                            }
+                            DropdownMenu(
+                                expanded = showFilterMenu,
+                                onDismissRequest = { showFilterMenu = false }
+                            ) {
+                                FilterCriteria.entries.forEach { criteria ->
+                                    DropdownMenuItem(
+                                        text = { Text(criteria.name.replace("_", " ").lowercase().replaceFirstChar { it.uppercase() }) },
+                                        onClick = {
+                                            viewModel.onHistoryFilterChange(criteria)
+                                            showFilterMenu = false
+                                        },
+                                        leadingIcon = {
+                                            if (currentFilter == criteria) Icon(Icons.Default.Check, contentDescription = null)
+                                        }
+                                    )
+                                }
                             }
                         }
-                    }
-                },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = Color.Transparent
+                    },
+                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                        containerColor = Color.Transparent
+                    )
                 )
-            )
-        },
-        containerColor = MaterialTheme.colorScheme.background
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(horizontal = 16.dp)
-        ) {
-            // Search Bar
-            OutlinedTextField(
-                value = searchQuery,
-                onValueChange = { viewModel.onSearchQueryChange(it) },
+            },
+            containerColor = Color.Transparent
+        ) { paddingValues ->
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 12.dp),
-                placeholder = { Text("Search history...", color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)) },
-                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = MaterialTheme.colorScheme.primary) },
-                shape = RoundedCornerShape(28.dp),
-                singleLine = true,
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
-                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
-                    focusedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
-                    unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
-                )
-            )
-
-            // History List
-            val groupedHistory = groupHistoryByDate(chatHistory)
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(vertical = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .padding(horizontal = 16.dp)
             ) {
-                if (chatHistory.isEmpty()) {
-                    item {
-                        Box(modifier = Modifier.fillParentMaxSize(), contentAlignment = Alignment.Center) {
-                            Text("No history found", color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        }
-                    }
-                } else {
-                    groupedHistory.forEach { (header, sessions) ->
+                // Search Bar
+                OutlinedTextField(
+                    value = searchQuery,
+                    onValueChange = { viewModel.onSearchQueryChange(it) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 12.dp),
+                    placeholder = { Text("Search history...", color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)) },
+                    leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = MaterialTheme.colorScheme.primary) },
+                    shape = RoundedCornerShape(28.dp),
+                    singleLine = true,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                        focusedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+                        unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+                    )
+                )
+
+                // History List
+                val groupedHistory = groupHistoryByDate(chatHistory)
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(vertical = 8.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    if (chatHistory.isEmpty()) {
                         item {
-                            Text(
-                                text = header,
-                                style = MaterialTheme.typography.labelLarge,
-                                color = MaterialTheme.colorScheme.primary,
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier.padding(start = 8.dp, top = 8.dp, bottom = 4.dp)
-                            )
+                            Box(modifier = Modifier.fillParentMaxSize(), contentAlignment = Alignment.Center) {
+                                Text("No history found", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            }
                         }
-                        items(sessions, key = { it.session.id }) { item ->
-                            HistoryItemCard(
-                                item = item,
-                                onClick = { onChatClick(item.session.id) },
-                                onDelete = { 
-                                    sessionToDelete = item.session
-                                    showDeleteDialog = true
-                                },
-                                onFavorite = { viewModel.togglePinChat(item.session.id, item.session.isPinned) }
-                            )
+                    } else {
+                        groupedHistory.forEach { (header, sessions) ->
+                            item {
+                                Text(
+                                    text = header,
+                                    style = MaterialTheme.typography.labelLarge,
+                                    color = MaterialTheme.colorScheme.primary,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = Modifier.padding(start = 8.dp, top = 8.dp, bottom = 4.dp)
+                                )
+                            }
+                            items(sessions, key = { it.session.id }) { item ->
+                                HistoryItemCard(
+                                    item = item,
+                                    onClick = { onChatClick(item.session.id) },
+                                    onDelete = { 
+                                        sessionToDelete = item.session
+                                        showDeleteDialog = true
+                                    },
+                                    onFavorite = { viewModel.togglePinChat(item.session.id, item.session.isPinned) }
+                                )
+                            }
                         }
                     }
                 }

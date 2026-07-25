@@ -15,6 +15,7 @@ import com.zafar.ichatai.ui.screens.SplashScreen
 import com.zafar.ichatai.ui.screens.ChatHistoryScreen
 import com.zafar.ichatai.ui.screens.FavoriteChatScreen
 import com.zafar.ichatai.ui.screens.SavedPromptsScreen
+import com.zafar.ichatai.ui.screens.SubscriptionScreen
 import com.zafar.ichatai.viewmodel.ChatViewModel
 import com.zafar.ichatai.ui.theme.IChatAITheme
 
@@ -56,6 +57,9 @@ fun AppNavigation() {
                 },
                 onNavigateToPrompts = {
                     navController.navigate("prompts")
+                },
+                onNavigateToSubscription = {
+                    navController.navigate("subscription")
                 }
             )
         }
@@ -86,6 +90,11 @@ fun AppNavigation() {
                     chatViewModel.onInputChange(content)
                     navController.popBackStack()
                 }
+            )
+        }
+        composable("subscription") {
+            SubscriptionScreen(
+                onBackClick = { navController.popBackStack() }
             )
         }
     }
