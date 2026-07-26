@@ -35,6 +35,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import coil.compose.AsyncImage
 
 data class NavItem(
     val icon: ImageVector,
@@ -47,6 +48,9 @@ data class NavItem(
 fun NavDrawerContent(
     isOnline: Boolean = true,
     searchQuery: String = "",
+    userName: String = "User",
+    userAvatarUri: String? = null,
+    userGender: String = "Male",
     onSearchQueryChange: (String) -> Unit = {},
     chatHistory: List<ChatSessionWithCount> = emptyList(),
     onChatClick: (ChatSessionEntity) -> Unit = {},
@@ -94,25 +98,58 @@ fun NavDrawerContent(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(horizontal = 4.dp)
                 ) {
+                    val profileImageModifier = Modifier
+                        .fillMaxSize()
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.primaryContainer)
+
                     Box(modifier = Modifier.size(54.dp)) {
-                        Image(
-                            painter = painterResource(id = R.drawable.avatar_user_male),
-                            contentDescription = "User Profile Picture",
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .clip(CircleShape)
-                                .background(Color(0xFF673AB7)),
-                            contentScale = ContentScale.Crop
-                        )
+                        if (userAvatarUri != null) {
+                            if (userAvatarUri.startsWith("res:")) {
+                                val resId = when (userAvatarUri) {
+                                    "res:avatar_user_male" -> R.drawable.avatar_user_male
+                                    "res:avatar_user_female" -> R.drawable.avatar_user_female
+                                    else -> R.drawable.avatar_default
+                                }
+                                Image(
+                                    painter = painterResource(id = resId),
+                                    contentDescription = "User Profile Picture",
+                                    modifier = profileImageModifier,
+                                    contentScale = ContentScale.Crop
+                                )
+                            } else {
+                                AsyncImage(
+                                    model = userAvatarUri,
+                                    contentDescription = "User Profile Picture",
+                                    modifier = profileImageModifier,
+                                    contentScale = ContentScale.Crop
+                                )
+                            }
+                        } else {
+                            val avatarRes = when (userGender) {
+                                "Female" -> R.drawable.avatar_user_female
+                                "Male" -> R.drawable.avatar_user_male
+                                else -> R.drawable.avatar_default
+                            }
+                            Image(
+                                painter = painterResource(id = avatarRes),
+                                contentDescription = "User Profile Picture",
+                                modifier = profileImageModifier,
+                                contentScale = ContentScale.Crop
+                            )
+                        }
                     }
                     Spacer(modifier = Modifier.width(12.dp))
                     Column {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
-                                text = "Muhammad Sufyan Zafar",
+                                text = userName,
                                 color = textColor,
                                 fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.Bold,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                modifier = Modifier.weight(1f, fill = false)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Box(

@@ -11,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.ads.MobileAds
+import com.zafar.ichatai.ui.screens.AccountDetailsScreen
 import com.zafar.ichatai.ui.screens.ChatHistoryScreen
 import com.zafar.ichatai.ui.screens.CheckInScreen
 import com.zafar.ichatai.ui.screens.CreditsScreen
@@ -22,6 +23,7 @@ import com.zafar.ichatai.ui.screens.SplashScreen
 import com.zafar.ichatai.ui.screens.SubscriptionScreen
 import com.zafar.ichatai.ui.theme.IChatAITheme
 import com.zafar.ichatai.viewmodel.ChatViewModel
+import com.zafar.ichatai.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -45,8 +47,9 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
-    // Create ViewModel at this level so it's shared between screens
+    // Create ViewModels at this level so they're shared between screens
     val chatViewModel: ChatViewModel = hiltViewModel()
+    val userViewModel: UserViewModel = hiltViewModel()
     
     NavHost(navController = navController, startDestination = "splash") {
         composable("splash") {
@@ -59,6 +62,7 @@ fun AppNavigation() {
         composable("main") {
             MainScreen(
                 viewModel = chatViewModel,
+                userViewModel = userViewModel,
                 onNavigateToHistory = {
                     navController.navigate("history")
                 },
@@ -76,6 +80,9 @@ fun AppNavigation() {
                 },
                 onNavigateToSettings = {
                     navController.navigate("settings")
+                },
+                onNavigateToAccount = {
+                    navController.navigate("account")
                 }
             )
         }
@@ -129,7 +136,19 @@ fun AppNavigation() {
         composable("settings") {
             SettingsScreen(
                 onBackClick = { navController.popBackStack() },
-                onNavigateToSubscription = { navController.navigate("subscription") }
+                onNavigateToSubscription = { navController.navigate("subscription") },
+                onNavigateToAccount = { navController.navigate("account") }
+            )
+        }
+        composable("account") {
+            AccountDetailsScreen(
+                viewModel = userViewModel,
+                onBackClick = { navController.popBackStack() },
+                onAccountDeleted = {
+                    navController.navigate("splash") {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
             )
         }
     }

@@ -92,6 +92,7 @@ import com.zafar.ichatai.ui.components.GlowBackground
 import com.zafar.ichatai.ui.components.NavDrawerContent
 import com.zafar.ichatai.viewmodel.ChatViewModel
 import com.zafar.ichatai.viewmodel.CreditsViewModel
+import com.zafar.ichatai.viewmodel.UserViewModel
 import dev.jeziellago.compose.markdowntext.MarkdownText
 import kotlinx.coroutines.launch
 import java.io.File
@@ -100,13 +101,15 @@ import java.io.FileOutputStream
 @Composable
 fun MainScreen(
     viewModel: ChatViewModel = hiltViewModel(),
+    userViewModel: UserViewModel = hiltViewModel(),
     creditsViewModel: CreditsViewModel = hiltViewModel(),
     onNavigateToHistory: () -> Unit = {},
     onNavigateToFavorites: () -> Unit = {},
     onNavigateToPrompts: () -> Unit = {},
     onNavigateToSubscription: () -> Unit = {},
     onNavigateToCredits: () -> Unit = {},
-    onNavigateToSettings: () -> Unit = {}
+    onNavigateToSettings: () -> Unit = {},
+    onNavigateToAccount: () -> Unit = {}
 ) {
     val messages by viewModel.messages.collectAsState()
     val inputText by viewModel.inputText
@@ -116,6 +119,11 @@ fun MainScreen(
     val searchQuery by viewModel.searchQuery.collectAsState()
     val chatHistory by viewModel.chatHistory.collectAsState()
     val totalCredits by creditsViewModel.totalCredits.collectAsState()
+
+    val userName by userViewModel.userName.collectAsState()
+    val userAvatarUri by userViewModel.avatarUri.collectAsState()
+    val userGender by userViewModel.gender.collectAsState()
+
     val listState = rememberLazyListState()
     val context = LocalContext.current
 
@@ -243,6 +251,9 @@ fun MainScreen(
                 searchQuery = searchQuery,
                 onSearchQueryChange = { viewModel.onSearchQueryChange(it) },
                 chatHistory = chatHistory,
+                userName = userName,
+                userAvatarUri = userAvatarUri,
+                userGender = userGender,
                 onChatClick = { chat ->
                     scope.launch {
                         viewModel.loadChat(chat.id)
@@ -293,6 +304,13 @@ fun MainScreen(
                                 drawerState.close()
                             }
                         }
+                        "account" -> {
+                            scope.launch {
+                                viewModel.saveCurrentSessionSuspend()
+                                onNavigateToAccount()
+                                drawerState.close()
+                            }
+                        }
                     }
                 },
                 onLogoutClick = { /* No logic implemented yet */ }
@@ -312,6 +330,8 @@ fun MainScreen(
                 topBar = {
                     TopBar(
                         credits = totalCredits,
+                        userAvatarUri = userAvatarUri,
+                        userGender = userGender,
                         onNewChatClick = { viewModel.createNewChat() },
                         onMenuClick = {
                             scope.launch { drawerState.open() }
@@ -374,7 +394,14 @@ fun MainScreen(
 }
 
 @Composable
-fun TopBar(credits: Int, onNewChatClick: () -> Unit, onMenuClick: () -> Unit, onCreditsClick: () -> Unit = {}) {
+fun TopBar(
+    credits: Int,
+    userAvatarUri: String?,
+    userGender: String,
+    onNewChatClick: () -> Unit,
+    onMenuClick: () -> Unit,
+    onCreditsClick: () -> Unit = {}
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -383,16 +410,46 @@ fun TopBar(credits: Int, onNewChatClick: () -> Unit, onMenuClick: () -> Unit, on
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.avatar_user_male),
-            contentDescription = "User Profile",
-            modifier = Modifier
-                .size(44.dp)
-                .clip(CircleShape)
-                .border(1.5.dp, MaterialTheme.colorScheme.primary, CircleShape)
-                .clickable { onMenuClick() },
-            contentScale = ContentScale.Crop
-        )
+        val avatarModifier = Modifier
+            .size(44.dp)
+            .clip(CircleShape)
+            .border(1.5.dp, MaterialTheme.colorScheme.primary, CircleShape)
+            .clickable { onMenuClick() }
+
+        if (userAvatarUri != null) {
+            if (userAvatarUri.startsWith("res:")) {
+                val resId = when (userAvatarUri) {
+                    "res:avatar_user_male" -> R.drawable.avatar_user_male
+                    "res:avatar_user_female" -> R.drawable.avatar_user_female
+                    else -> R.drawable.avatar_default
+                }
+                Image(
+                    painter = painterResource(id = resId),
+                    contentDescription = "User Profile",
+                    modifier = avatarModifier,
+                    contentScale = ContentScale.Crop
+                )
+            } else {
+                AsyncImage(
+                    model = userAvatarUri,
+                    contentDescription = "User Profile",
+                    modifier = avatarModifier,
+                    contentScale = ContentScale.Crop
+                )
+            }
+        } else {
+            val avatarRes = when (userGender) {
+                "Female" -> R.drawable.avatar_user_female
+                "Male" -> R.drawable.avatar_user_male
+                else -> R.drawable.avatar_default
+            }
+            Image(
+                painter = painterResource(id = avatarRes),
+                contentDescription = "User Profile",
+                modifier = avatarModifier,
+                contentScale = ContentScale.Crop
+            )
+        }
 
         Row(
             modifier = Modifier

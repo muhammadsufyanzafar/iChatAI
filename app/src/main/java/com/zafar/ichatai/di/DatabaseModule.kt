@@ -6,6 +6,7 @@ import com.zafar.ichatai.data.local.dao.ChatDao
 import com.zafar.ichatai.data.local.dao.CheckInDao
 import com.zafar.ichatai.data.local.dao.CreditDao
 import com.zafar.ichatai.data.local.dao.PromptDao
+import com.zafar.ichatai.data.local.dao.UserDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,4 +35,7 @@ object DatabaseModule {
 
     @Provides
     fun provideCheckInDao(database: AppDatabase): CheckInDao = database.checkInDao()
+
+    @Provides
+    fun provideUserDao(database: AppDatabase): UserDao = database.userDao()
 }

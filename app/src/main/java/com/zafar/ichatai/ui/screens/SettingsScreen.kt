@@ -59,7 +59,8 @@ import com.zafar.ichatai.ui.components.GlowBackground
 @Composable
 fun SettingsScreen(
     onBackClick: () -> Unit = {},
-    onNavigateToSubscription: () -> Unit = {}
+    onNavigateToSubscription: () -> Unit = {},
+    onNavigateToAccount: () -> Unit = {}
 ) {
     val colorScheme = MaterialTheme.colorScheme
 
@@ -118,7 +119,7 @@ fun SettingsScreen(
                                 icon = Icons.Outlined.Person,
                                 title = "User Profile",
                                 subtitle = "Tapping this opens profile Name, Email, Change Avatar",
-                                onClick = { /* TODO */ }
+                                onClick = onNavigateToAccount
                             )
                             Spacer(modifier = Modifier.width(16.dp))
                             SettingsItem(
