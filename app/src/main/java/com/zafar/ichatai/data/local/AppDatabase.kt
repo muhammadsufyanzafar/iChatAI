@@ -25,7 +25,7 @@ import com.zafar.ichatai.data.local.entity.CheckInStateEntity
         CreditTransactionEntity::class,
         CheckInStateEntity::class
     ],
-    version = 5,
+    version = 6,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

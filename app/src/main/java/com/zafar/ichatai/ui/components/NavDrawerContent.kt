@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import com.zafar.ichatai.R
 import com.zafar.ichatai.data.local.entity.ChatSessionEntity
 import com.zafar.ichatai.data.local.entity.ChatSessionWithCount
+import com.zafar.ichatai.ui.components.GlassCard
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.ui.text.style.TextOverflow
@@ -225,12 +226,9 @@ fun NavDrawerContent(
                     val isPressed by interactionSource.collectIsPressedAsState()
                     val scale by animateFloatAsState(if (isPressed) 0.95f else 1f, label = "scale")
 
-                    Surface(
+                    GlassCard(
                         onClick = { onItemClick("credits") },
-                        interactionSource = interactionSource,
                         shape = RoundedCornerShape(24.dp),
-                        color = textColor.copy(alpha = 0.1f),
-                        border = BorderStroke(1.dp, textColor.copy(alpha = 0.15f)),
                         modifier = Modifier.scale(scale)
                     ) {
                         Row(
@@ -252,17 +250,6 @@ fun NavDrawerContent(
                             )
                         }
                     }
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    TextButton(onClick = onLogoutClick) {
-                        Text(
-                            text = "Log Out",
-                            color = Color.Red,
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
                 }
             }
         }
@@ -275,11 +262,9 @@ fun QuickChatChip(
     textColor: Color,
     onClick: (ChatSessionEntity) -> Unit
 ) {
-    Surface(
+    GlassCard(
         onClick = { onClick(chat.session) },
         shape = RoundedCornerShape(16.dp),
-        color = textColor.copy(alpha = 0.08f),
-        border = BorderStroke(1.dp, textColor.copy(alpha = 0.1f)),
         modifier = Modifier.widthIn(max = 120.dp)
     ) {
         Row(

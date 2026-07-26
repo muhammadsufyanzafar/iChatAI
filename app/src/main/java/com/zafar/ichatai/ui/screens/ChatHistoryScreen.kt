@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zafar.ichatai.ui.components.GlowBackground
+import com.zafar.ichatai.ui.components.GlassCard
 import com.zafar.ichatai.data.local.entity.ChatSessionEntity
 import com.zafar.ichatai.data.local.entity.ChatSessionWithCount
 import com.zafar.ichatai.viewmodel.ChatViewModel
@@ -218,12 +219,11 @@ fun HistoryItemCard(
 ) {
     val isFavorite = item.session.isPinned
     
-    Surface(
+    GlassCard(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-        border = if (isFavorite) androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)) else null
+        borderAlpha = if (isFavorite) 0.3f else 0.1f
     ) {
         Row(
             modifier = Modifier

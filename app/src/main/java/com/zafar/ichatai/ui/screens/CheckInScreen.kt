@@ -32,6 +32,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.zafar.ichatai.viewmodel.CheckInViewModel
 import com.zafar.ichatai.ui.components.GlowBackground
+import com.zafar.ichatai.ui.components.GlassCard
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -119,13 +120,10 @@ fun CheckInScreen(
 
 @Composable
 fun StreakInfoCard(streak: Int, fireColor: Color, streakActive: Boolean) {
-    Card(
+    GlassCard(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
-        shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.7f)),
-        border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.1f))
+            .padding(vertical = 8.dp)
     ) {
         Column(
             modifier = Modifier.padding(24.dp),
@@ -206,20 +204,14 @@ fun DayCard(
     isCurrent: Boolean,
     onCheckIn: () -> Unit
 ) {
-    val borderColor = if (isCurrent) Color(0xFF8B5CF6) else Color.Transparent
-    
-    Card(
+    GlassCard(
         modifier = Modifier
             .fillMaxWidth()
-            .height(140.dp)
-            .border(if (isCurrent) 1.dp else 0.dp, borderColor, RoundedCornerShape(16.dp)),
+            .height(140.dp),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = if (isClaimed) 
-                MaterialTheme.colorScheme.surface.copy(alpha = 0.4f) 
-            else 
-                MaterialTheme.colorScheme.surface.copy(alpha = 0.8f)
-        )
+        alpha = if (isClaimed) 0.2f else 0.4f,
+        borderAlpha = if (isCurrent) 0.6f else 0.1f,
+        borderWidth = if (isCurrent) 2.dp else 1.dp
     ) {
         Column(
             modifier = Modifier
@@ -282,17 +274,13 @@ fun JackpotCard(
     isCurrent: Boolean,
     onCheckIn: () -> Unit
 ) {
-    val borderColor = if (isCurrent) Color(0xFFFFD700) else MaterialTheme.colorScheme.outline.copy(alpha = 0.1f)
-    
-    Card(
+    GlassCard(
         modifier = Modifier
             .fillMaxWidth()
-            .height(140.dp)
-            .border(1.5.dp, borderColor, RoundedCornerShape(20.dp)),
+            .height(140.dp),
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.8f)
-        )
+        borderAlpha = if (isCurrent) 0.8f else 0.1f,
+        borderWidth = if (isCurrent) 2.dp else 1.dp
     ) {
         Row(
             modifier = Modifier

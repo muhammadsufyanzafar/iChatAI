@@ -1,6 +1,7 @@
 package com.zafar.ichatai.ui.screens
 
 import android.net.Uri
+import android.os.Build
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
@@ -10,7 +11,24 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
@@ -23,40 +41,59 @@ import androidx.compose.material.icons.automirrored.filled.InsertDriveFile
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Image
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDrawerState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
-import androidx.compose.foundation.clickable
-import androidx.compose.material.icons.filled.AutoAwesome
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import kotlinx.coroutines.launch
-import androidx.compose.ui.draw.blur
-import android.os.Build
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.zafar.ichatai.R
 import com.zafar.ichatai.data.ChatMessage
+import com.zafar.ichatai.ui.components.GlassCard
+import com.zafar.ichatai.ui.components.GlowBackground
+import com.zafar.ichatai.ui.components.NavDrawerContent
 import com.zafar.ichatai.viewmodel.ChatViewModel
 import com.zafar.ichatai.viewmodel.CreditsViewModel
-import com.zafar.ichatai.ui.components.NavDrawerContent
 import dev.jeziellago.compose.markdowntext.MarkdownText
-import com.zafar.ichatai.ui.components.GlowBackground
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 
@@ -68,7 +105,8 @@ fun MainScreen(
     onNavigateToFavorites: () -> Unit = {},
     onNavigateToPrompts: () -> Unit = {},
     onNavigateToSubscription: () -> Unit = {},
-    onNavigateToCredits: () -> Unit = {}
+    onNavigateToCredits: () -> Unit = {},
+    onNavigateToSettings: () -> Unit = {}
 ) {
     val messages by viewModel.messages.collectAsState()
     val inputText by viewModel.inputText
@@ -245,6 +283,13 @@ fun MainScreen(
                             scope.launch {
                                 viewModel.saveCurrentSessionSuspend()
                                 onNavigateToCredits()
+                                drawerState.close()
+                            }
+                        }
+                        "settings" -> {
+                            scope.launch {
+                                viewModel.saveCurrentSessionSuspend()
+                                onNavigateToSettings()
                                 drawerState.close()
                             }
                         }
@@ -433,10 +478,8 @@ fun AiMessage(text: String) {
             contentScale = ContentScale.Crop
         )
         Spacer(modifier = Modifier.width(10.dp))
-        Surface(
+        GlassCard(
             shape = RoundedCornerShape(topStart = 0.dp, topEnd = 24.dp, bottomStart = 24.dp, bottomEnd = 24.dp),
-            color = MaterialTheme.colorScheme.surfaceVariant,
-            shadowElevation = 0.5.dp
         ) {
             MarkdownText(
                 markdown = text,
@@ -645,13 +688,11 @@ fun AttachmentMenu(
     onGalleryClick: () -> Unit,
     onFilesClick: () -> Unit
 ) {
-    Surface(
+    GlassCard(
         shape = RoundedCornerShape(24.dp),
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.95f),
-        modifier = Modifier
-            .width(200.dp)
-            .border(0.5.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.2f), RoundedCornerShape(24.dp)),
-        shadowElevation = 8.dp
+        alpha = 0.9f,
+        borderAlpha = 0.2f,
+        modifier = Modifier.width(200.dp)
     ) {
         Column(
             modifier = Modifier.padding(vertical = 8.dp)
