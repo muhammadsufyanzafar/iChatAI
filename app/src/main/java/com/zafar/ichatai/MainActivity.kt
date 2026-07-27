@@ -1,10 +1,18 @@
 package com.zafar.ichatai
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
@@ -17,6 +25,8 @@ import com.zafar.ichatai.ui.screens.CheckInScreen
 import com.zafar.ichatai.ui.screens.CreditsScreen
 import com.zafar.ichatai.ui.screens.FavoriteChatScreen
 import com.zafar.ichatai.ui.screens.MainScreen
+import com.zafar.ichatai.ui.screens.NotificationSettingsScreen
+import com.zafar.ichatai.ui.screens.QuietHoursScreen
 import com.zafar.ichatai.ui.screens.SavedPromptsScreen
 import com.zafar.ichatai.ui.screens.SettingsScreen
 import com.zafar.ichatai.ui.screens.SplashScreen
@@ -25,6 +35,7 @@ import com.zafar.ichatai.ui.theme.IChatAITheme
 import com.zafar.ichatai.viewmodel.ChatViewModel
 import com.zafar.ichatai.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -50,6 +61,30 @@ fun AppNavigation() {
     // Create ViewModels at this level so they're shared between screens
     val chatViewModel: ChatViewModel = hiltViewModel()
     val userViewModel: UserViewModel = hiltViewModel()
+    val context = LocalContext.current
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted ->
+            // Handle result if needed
+        }
+    )
+
+    LaunchedEffect(Unit) {
+        if (userViewModel.isFirstRun()) {
+            delay(1000)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                if (ContextCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.POST_NOTIFICATIONS
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                }
+            }
+            userViewModel.setFirstRunComplete()
+        }
+    }
     
     NavHost(navController = navController, startDestination = "splash") {
         composable("splash") {
@@ -137,7 +172,19 @@ fun AppNavigation() {
             SettingsScreen(
                 onBackClick = { navController.popBackStack() },
                 onNavigateToSubscription = { navController.navigate("subscription") },
-                onNavigateToAccount = { navController.navigate("account") }
+                onNavigateToAccount = { navController.navigate("account") },
+                onNavigateToNotifications = { navController.navigate("notification_settings") }
+            )
+        }
+        composable("notification_settings") {
+            NotificationSettingsScreen(
+                onBackClick = { navController.popBackStack() },
+                onNavigateToQuietHours = { navController.navigate("quiet_hours") }
+            )
+        }
+        composable("quiet_hours") {
+            QuietHoursScreen(
+                onBackClick = { navController.popBackStack() }
             )
         }
         composable("account") {

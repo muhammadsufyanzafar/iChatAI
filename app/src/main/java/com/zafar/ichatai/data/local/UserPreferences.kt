@@ -53,6 +53,14 @@ class UserPreferences @Inject constructor(
         sharedPreferences.edit().putString("user_avatar_uri", uri).apply()
     }
 
+    fun isFirstRun(): Boolean {
+        return sharedPreferences.getBoolean("is_first_run", true)
+    }
+
+    fun setFirstRunComplete() {
+        sharedPreferences.edit().putBoolean("is_first_run", false).apply()
+    }
+
     fun clearAllData() {
         sharedPreferences.edit().clear().apply()
     }

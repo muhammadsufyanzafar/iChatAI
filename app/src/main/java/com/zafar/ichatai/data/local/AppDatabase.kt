@@ -10,6 +10,7 @@ import com.zafar.ichatai.data.local.dao.PromptDao
 import com.zafar.ichatai.data.local.dao.CreditDao
 import com.zafar.ichatai.data.local.dao.CheckInDao
 import com.zafar.ichatai.data.local.dao.UserDao
+import com.zafar.ichatai.data.local.dao.NotificationPreferencesDao
 import com.zafar.ichatai.data.local.entity.ChatMessageEntity
 import com.zafar.ichatai.data.local.entity.ChatSessionEntity
 import com.zafar.ichatai.data.local.entity.PromptFolderEntity
@@ -17,6 +18,7 @@ import com.zafar.ichatai.data.local.entity.SavedPromptEntity
 import com.zafar.ichatai.data.local.entity.CreditTransactionEntity
 import com.zafar.ichatai.data.local.entity.CheckInStateEntity
 import com.zafar.ichatai.data.local.entity.UserEntity
+import com.zafar.ichatai.data.local.entity.NotificationPreferencesEntity
 
 @Database(
     entities = [
@@ -26,9 +28,10 @@ import com.zafar.ichatai.data.local.entity.UserEntity
         SavedPromptEntity::class,
         CreditTransactionEntity::class,
         CheckInStateEntity::class,
-        UserEntity::class
+        UserEntity::class,
+        NotificationPreferencesEntity::class
     ],
-    version = 7,
+    version = 8,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -38,6 +41,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun creditDao(): CreditDao
     abstract fun checkInDao(): CheckInDao
     abstract fun userDao(): UserDao
+    abstract fun notificationPreferencesDao(): NotificationPreferencesDao
 
     companion object {
         @Volatile

@@ -152,4 +152,8 @@ class UserViewModel @Inject constructor(
             onComplete()
         }
     }
+
+    fun isFirstRun() = userPreferences.isFirstRun()
+
+    fun setFirstRunComplete() = userPreferences.setFirstRunComplete()
 }

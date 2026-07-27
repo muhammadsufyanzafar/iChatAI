@@ -7,6 +7,7 @@ import com.zafar.ichatai.data.local.dao.CheckInDao
 import com.zafar.ichatai.data.local.dao.CreditDao
 import com.zafar.ichatai.data.local.dao.PromptDao
 import com.zafar.ichatai.data.local.dao.UserDao
+import com.zafar.ichatai.data.local.dao.NotificationPreferencesDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -38,4 +39,7 @@ object DatabaseModule {
 
     @Provides
     fun provideUserDao(database: AppDatabase): UserDao = database.userDao()
+
+    @Provides
+    fun provideNotificationPreferencesDao(database: AppDatabase): NotificationPreferencesDao = database.notificationPreferencesDao()
 }

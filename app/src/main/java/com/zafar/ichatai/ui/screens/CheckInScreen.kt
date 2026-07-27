@@ -1,5 +1,10 @@
 package com.zafar.ichatai.ui.screens
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
@@ -24,10 +29,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.zafar.ichatai.viewmodel.CheckInViewModel
@@ -42,7 +49,26 @@ fun CheckInScreen(
     viewModel: CheckInViewModel = hiltViewModel()
 ) {
     val checkInState by viewModel.checkInState.collectAsState()
+    val context = LocalContext.current
     
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { _ -> }
+    )
+
+    val handleCheckIn = {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+        viewModel.performCheckIn()
+    }
+
     val canCheckInToday = remember(checkInState.lastCheckInMillis) {
         val lastCal = Calendar.getInstance().apply { timeInMillis = checkInState.lastCheckInMillis }
         val nowCal = Calendar.getInstance()
@@ -98,7 +124,7 @@ fun CheckInScreen(
                         reward = 5 + (index * 5),
                         isClaimed = isClaimed,
                         isCurrent = isCurrent,
-                        onCheckIn = { viewModel.performCheckIn() }
+                        onCheckIn = handleCheckIn
                     )
                 }
 
@@ -110,7 +136,7 @@ fun CheckInScreen(
                     JackpotCard(
                         isClaimed = isDay7Claimed,
                         isCurrent = isDay7Current,
-                        onCheckIn = { viewModel.performCheckIn() }
+                        onCheckIn = handleCheckIn
                     )
                 }
             }

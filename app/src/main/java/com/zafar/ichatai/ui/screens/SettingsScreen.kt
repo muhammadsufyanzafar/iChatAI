@@ -60,7 +60,8 @@ import com.zafar.ichatai.ui.components.GlowBackground
 fun SettingsScreen(
     onBackClick: () -> Unit = {},
     onNavigateToSubscription: () -> Unit = {},
-    onNavigateToAccount: () -> Unit = {}
+    onNavigateToAccount: () -> Unit = {},
+    onNavigateToNotifications: () -> Unit = {}
 ) {
     val colorScheme = MaterialTheme.colorScheme
 
@@ -167,8 +168,8 @@ fun SettingsScreen(
                                 modifier = Modifier.weight(1f),
                                 icon = Icons.Outlined.Notifications,
                                 title = "Notifications",
-                                subtitle = "Push, Email, Sound",
-                                onClick = { /* TODO */ }
+                                subtitle = "Push, Sound, Vibration",
+                                onClick = onNavigateToNotifications
                             )
                             Spacer(modifier = Modifier.width(16.dp))
                             SettingsItem(

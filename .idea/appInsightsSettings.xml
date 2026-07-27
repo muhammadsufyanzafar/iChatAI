@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.zafar.ichatai" />
+                  <option name="mobileSdkAppId" value="1:662619264204:android:632bf8e8e80eb2e3091e69" />
+                  <option name="projectId" value="ichatai-950fc" />
+                  <option name="projectNumber" value="662619264204" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
