@@ -61,6 +61,22 @@ class UserPreferences @Inject constructor(
         sharedPreferences.edit().putBoolean("is_first_run", false).apply()
     }
 
+    fun isAutoCleanupEnabled(): Boolean {
+        return sharedPreferences.getBoolean("auto_cleanup_enabled", false)
+    }
+
+    fun setAutoCleanupEnabled(enabled: Boolean) {
+        sharedPreferences.edit().putBoolean("auto_cleanup_enabled", enabled).apply()
+    }
+
+    fun getAutoCleanupDays(): Int {
+        return sharedPreferences.getInt("auto_cleanup_days", 30)
+    }
+
+    fun setAutoCleanupDays(days: Int) {
+        sharedPreferences.edit().putInt("auto_cleanup_days", days).apply()
+    }
+
     fun clearAllData() {
         sharedPreferences.edit().clear().apply()
     }

@@ -65,4 +65,13 @@ interface ChatDao {
 
     @Query("SELECT COUNT(*) FROM chat_messages WHERE sessionId = :sessionId")
     fun getMessageCountForSession(sessionId: Long): Flow<Int>
+
+    @Query("DELETE FROM chat_messages")
+    suspend fun deleteAllMessages()
+
+    @Query("DELETE FROM chat_sessions")
+    suspend fun deleteAllSessions()
+
+    @Query("SELECT * FROM chat_messages")
+    suspend fun getAllMessages(): List<ChatMessageEntity>
 }

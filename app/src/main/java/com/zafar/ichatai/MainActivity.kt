@@ -30,6 +30,7 @@ import com.zafar.ichatai.ui.screens.QuietHoursScreen
 import com.zafar.ichatai.ui.screens.SavedPromptsScreen
 import com.zafar.ichatai.ui.screens.SettingsScreen
 import com.zafar.ichatai.ui.screens.SplashScreen
+import com.zafar.ichatai.ui.screens.StorageManagementScreen
 import com.zafar.ichatai.ui.screens.SubscriptionScreen
 import com.zafar.ichatai.ui.theme.IChatAITheme
 import com.zafar.ichatai.viewmodel.ChatViewModel
@@ -173,7 +174,13 @@ fun AppNavigation() {
                 onBackClick = { navController.popBackStack() },
                 onNavigateToSubscription = { navController.navigate("subscription") },
                 onNavigateToAccount = { navController.navigate("account") },
-                onNavigateToNotifications = { navController.navigate("notification_settings") }
+                onNavigateToNotifications = { navController.navigate("notification_settings") },
+                onNavigateToStorage = { navController.navigate("storage_management") }
+            )
+        }
+        composable("storage_management") {
+            StorageManagementScreen(
+                onBackClick = { navController.popBackStack() }
             )
         }
         composable("notification_settings") {

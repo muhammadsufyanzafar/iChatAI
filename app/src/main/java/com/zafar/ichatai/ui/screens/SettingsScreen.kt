@@ -61,7 +61,8 @@ fun SettingsScreen(
     onBackClick: () -> Unit = {},
     onNavigateToSubscription: () -> Unit = {},
     onNavigateToAccount: () -> Unit = {},
-    onNavigateToNotifications: () -> Unit = {}
+    onNavigateToNotifications: () -> Unit = {},
+    onNavigateToStorage: () -> Unit = {}
 ) {
     val colorScheme = MaterialTheme.colorScheme
 
@@ -192,7 +193,7 @@ fun SettingsScreen(
                                 icon = Icons.Outlined.Storage,
                                 title = "Data & Storage Management",
                                 subtitle = "Clear cache, export history",
-                                onClick = { /* TODO */ }
+                                onClick = onNavigateToStorage
                             )
                             Spacer(modifier = Modifier.width(16.dp))
                             SettingsItem(
