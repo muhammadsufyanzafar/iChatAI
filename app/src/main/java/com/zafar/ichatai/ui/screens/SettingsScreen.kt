@@ -62,7 +62,8 @@ fun SettingsScreen(
     onNavigateToSubscription: () -> Unit = {},
     onNavigateToAccount: () -> Unit = {},
     onNavigateToNotifications: () -> Unit = {},
-    onNavigateToStorage: () -> Unit = {}
+    onNavigateToStorage: () -> Unit = {},
+    onNavigateToCloudSync: () -> Unit = {}
 ) {
     val colorScheme = MaterialTheme.colorScheme
 
@@ -201,7 +202,7 @@ fun SettingsScreen(
                                 icon = Icons.Outlined.CloudQueue,
                                 title = "Cloud Sync",
                                 subtitle = "On/Off, Sync Now",
-                                onClick = { /* TODO */ }
+                                onClick = onNavigateToCloudSync
                             )
                         }
                     }

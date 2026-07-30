@@ -10,6 +10,15 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        getByName("debug") {
+            storeFile =
+                file("C:\\Users\\user\\Desktop\\Imp\\Android Studio Projects\\Key Database\\ichatai")
+            storePassword = "03446177876"
+            keyAlias = "key0"
+            keyPassword = "03446177876"
+        }
+    }
     namespace = "com.zafar.ichatai" // Update with your actual namespace/package
     compileSdk = 34
 
@@ -60,6 +69,10 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/DEPENDENCIES"
+            excludes += "/META-INF/LICENSE*"
+            excludes += "/META-INF/NOTICE*"
+            excludes += "/META-INF/INDEX.LIST"
         }
     }
 }
@@ -97,6 +110,8 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.hilt.work)
+    ksp(libs.androidx.hilt.compiler)
 
     // Firebase
     implementation(platform(libs.firebase.bom))
@@ -104,6 +119,15 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.messaging)
+
+    // Google Drive & Auth
+    implementation(libs.google.play.services.auth)
+    implementation(libs.google.api.client.android)
+    implementation(libs.google.api.services.drive)
+    implementation(libs.google.http.client.gson)
+
+    // WorkManager
+    implementation(libs.androidx.work.runtime.ktx)
 
     // Testing
     testImplementation(libs.junit)

@@ -77,6 +77,37 @@ class UserPreferences @Inject constructor(
         sharedPreferences.edit().putInt("auto_cleanup_days", days).apply()
     }
 
+    // Cloud Sync Preferences
+    fun isCloudSyncEnabled(): Boolean = sharedPreferences.getBoolean("cloud_sync_enabled", false)
+    fun setCloudSyncEnabled(enabled: Boolean) = sharedPreferences.edit().putBoolean("cloud_sync_enabled", enabled).apply()
+
+    fun isSyncOverWifiOnly(): Boolean = sharedPreferences.getBoolean("sync_wifi_only", true)
+    fun setSyncOverWifiOnly(onlyWifi: Boolean) = sharedPreferences.edit().putBoolean("sync_wifi_only", onlyWifi).apply()
+
+    fun getLastSyncTime(): Long = sharedPreferences.getLong("last_sync_time", 0L)
+    fun setLastSyncTime(time: Long) = sharedPreferences.edit().putLong("last_sync_time", time).apply()
+
+    fun isSyncHistoryEnabled(): Boolean = sharedPreferences.getBoolean("sync_history", true)
+    fun setSyncHistoryEnabled(enabled: Boolean) = sharedPreferences.edit().putBoolean("sync_history", enabled).apply()
+
+    fun isSyncImagesEnabled(): Boolean = sharedPreferences.getBoolean("sync_images", false)
+    fun setSyncImagesEnabled(enabled: Boolean) = sharedPreferences.edit().putBoolean("sync_images", enabled).apply()
+
+    fun isSyncSettingsEnabled(): Boolean = sharedPreferences.getBoolean("sync_settings", true)
+    fun setSyncSettingsEnabled(enabled: Boolean) = sharedPreferences.edit().putBoolean("sync_settings", enabled).apply()
+
+    fun isSyncPromptsEnabled(): Boolean = sharedPreferences.getBoolean("sync_prompts", true)
+    fun setSyncPromptsEnabled(enabled: Boolean) = sharedPreferences.edit().putBoolean("sync_prompts", enabled).apply()
+
+    fun getSyncErrorLog(): String = sharedPreferences.getString("sync_error_log", "") ?: ""
+    fun appendSyncError(error: String) {
+        val currentLog = getSyncErrorLog()
+        val timestamp = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault()).format(java.util.Date())
+        val newLog = "$timestamp: $error\n$currentLog".take(5000) // Keep last 5000 chars
+        sharedPreferences.edit().putString("sync_error_log", newLog).apply()
+    }
+    fun clearSyncErrorLog() = sharedPreferences.edit().remove("sync_error_log").apply()
+
     fun clearAllData() {
         sharedPreferences.edit().clear().apply()
     }

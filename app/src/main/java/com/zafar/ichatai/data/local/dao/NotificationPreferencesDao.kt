@@ -14,4 +14,7 @@ interface NotificationPreferencesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updatePreferences(preferences: NotificationPreferencesEntity)
+
+    @Query("SELECT * FROM notification_preferences WHERE id = 0")
+    suspend fun getPreferencesSync(): NotificationPreferencesEntity?
 }

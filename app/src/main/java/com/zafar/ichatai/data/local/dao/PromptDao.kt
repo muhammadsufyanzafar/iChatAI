@@ -70,4 +70,10 @@ interface PromptDao {
         ORDER BY lastUsed DESC
     """)
     fun searchPrompts(query: String): Flow<List<SavedPromptEntity>>
+
+    @Query("SELECT * FROM saved_prompts")
+    suspend fun getAllSavedPromptsList(): List<SavedPromptEntity>
+
+    @Query("SELECT * FROM prompt_folders")
+    suspend fun getAllFoldersList(): List<PromptFolderEntity>
 }

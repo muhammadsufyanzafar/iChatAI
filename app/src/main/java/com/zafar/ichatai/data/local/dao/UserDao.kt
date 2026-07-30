@@ -17,4 +17,7 @@ interface UserDao {
 
     @Query("DELETE FROM user_profile")
     suspend fun deleteUser()
+
+    @Query("SELECT * FROM user_profile WHERE id = 0")
+    suspend fun getUserSync(): UserEntity?
 }

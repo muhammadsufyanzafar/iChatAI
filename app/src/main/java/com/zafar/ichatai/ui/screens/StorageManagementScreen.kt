@@ -267,16 +267,35 @@ fun StorageUsageCard(state: StorageUsageState) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(80.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    .height(120.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
                 verticalAlignment = Alignment.Bottom
             ) {
-                val max = maxOf(state.conversationsSize, state.mediaSize, state.cacheSize, 1L).toFloat()
+                val total = state.totalSpace.coerceAtLeast(1L).toFloat()
                 
-                VerticalStorageBar(Color(0xFF60A5FA), 1.0f, Modifier.weight(1f)) // Largest
-                VerticalStorageBar(Color(0xFFC084FC), (state.mediaSize.toFloat() / max).coerceAtLeast(0.2f), Modifier.weight(1f))
-                VerticalStorageBar(Color(0xFF4ADE80), (state.cacheSize.toFloat() / max).coerceAtLeast(0.15f), Modifier.weight(1f))
-                VerticalStorageBar(Color(0xFF94A3B8).copy(alpha = 0.3f), 0.1f, Modifier.weight(1f))
+                // We use a non-linear scale (Math.pow(ratio, 0.4)) to make smaller categories visible 
+                // while still allowing them to grow in real-time.
+                val convHeight by animateFloatAsState(
+                    targetValue = if (state.conversationsSize > 0) Math.pow(state.conversationsSize / total.toDouble(), 0.4).toFloat().coerceIn(0.15f, 1f) else 0.05f,
+                    label = "convHeight"
+                )
+                val mediaHeight by animateFloatAsState(
+                    targetValue = if (state.mediaSize > 0) Math.pow(state.mediaSize / total.toDouble(), 0.4).toFloat().coerceIn(0.15f, 1f) else 0.05f,
+                    label = "mediaHeight"
+                )
+                val cacheHeight by animateFloatAsState(
+                    targetValue = if (state.cacheSize > 0) Math.pow(state.cacheSize / total.toDouble(), 0.4).toFloat().coerceIn(0.15f, 1f) else 0.05f,
+                    label = "cacheHeight"
+                )
+                val freeHeight by animateFloatAsState(
+                    targetValue = if (state.freeSpace > 0) Math.pow(state.freeSpace / total.toDouble(), 0.4).toFloat().coerceIn(0.15f, 1f) else 0.05f,
+                    label = "freeHeight"
+                )
+
+                VerticalStorageBar(Color(0xFF60A5FA), convHeight, Modifier.weight(1f))
+                VerticalStorageBar(Color(0xFFC084FC), mediaHeight, Modifier.weight(1f))
+                VerticalStorageBar(Color(0xFF4ADE80), cacheHeight, Modifier.weight(1f))
+                VerticalStorageBar(Color(0xFF94A3B8).copy(alpha = 0.3f), freeHeight, Modifier.weight(1f))
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -592,7 +611,7 @@ fun AutoCleanupDialog(
             Column {
                 Text(
                     "Delete messages older than ${days.toInt()} days.",
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Slider(

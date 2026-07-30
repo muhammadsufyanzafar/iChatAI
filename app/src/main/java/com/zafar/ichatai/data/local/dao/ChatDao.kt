@@ -74,4 +74,10 @@ interface ChatDao {
 
     @Query("SELECT * FROM chat_messages")
     suspend fun getAllMessages(): List<ChatMessageEntity>
+
+    @Query("SELECT * FROM chat_sessions")
+    suspend fun getAllSessionsList(): List<ChatSessionEntity>
+
+    @Query("SELECT * FROM chat_messages")
+    suspend fun getAllMessagesList(): List<ChatMessageEntity>
 }

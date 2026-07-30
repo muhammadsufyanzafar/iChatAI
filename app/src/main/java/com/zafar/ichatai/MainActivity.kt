@@ -22,6 +22,7 @@ import com.google.android.gms.ads.MobileAds
 import com.zafar.ichatai.ui.screens.AccountDetailsScreen
 import com.zafar.ichatai.ui.screens.ChatHistoryScreen
 import com.zafar.ichatai.ui.screens.CheckInScreen
+import com.zafar.ichatai.ui.screens.CloudSyncScreen
 import com.zafar.ichatai.ui.screens.CreditsScreen
 import com.zafar.ichatai.ui.screens.FavoriteChatScreen
 import com.zafar.ichatai.ui.screens.MainScreen
@@ -34,6 +35,7 @@ import com.zafar.ichatai.ui.screens.StorageManagementScreen
 import com.zafar.ichatai.ui.screens.SubscriptionScreen
 import com.zafar.ichatai.ui.theme.IChatAITheme
 import com.zafar.ichatai.viewmodel.ChatViewModel
+import com.zafar.ichatai.viewmodel.CloudSyncViewModel
 import com.zafar.ichatai.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -62,6 +64,7 @@ fun AppNavigation() {
     // Create ViewModels at this level so they're shared between screens
     val chatViewModel: ChatViewModel = hiltViewModel()
     val userViewModel: UserViewModel = hiltViewModel()
+    val cloudSyncViewModel: CloudSyncViewModel = hiltViewModel()
     val context = LocalContext.current
 
     val permissionLauncher = rememberLauncherForActivityResult(
@@ -175,7 +178,14 @@ fun AppNavigation() {
                 onNavigateToSubscription = { navController.navigate("subscription") },
                 onNavigateToAccount = { navController.navigate("account") },
                 onNavigateToNotifications = { navController.navigate("notification_settings") },
-                onNavigateToStorage = { navController.navigate("storage_management") }
+                onNavigateToStorage = { navController.navigate("storage_management") },
+                onNavigateToCloudSync = { navController.navigate("cloud_sync") }
+            )
+        }
+        composable("cloud_sync") {
+            CloudSyncScreen(
+                viewModel = cloudSyncViewModel,
+                onBackClick = { navController.popBackStack() }
             )
         }
         composable("storage_management") {
