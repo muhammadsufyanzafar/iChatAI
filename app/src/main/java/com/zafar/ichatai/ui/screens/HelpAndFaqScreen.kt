@@ -296,7 +296,14 @@ fun HelpAndFaqScreen(
                     textDecoration = TextDecoration.Underline,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { /* Link to service status */ }
+                        .clickable {
+                            try {
+                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://ichatai-website.is-cool.dev/service-status"))
+                                context.startActivity(intent)
+                            } catch (_: Exception) {
+                                Toast.makeText(context, "Could not open link", Toast.LENGTH_SHORT).show()
+                            }
+                        }
                         .padding(bottom = 32.dp),
                     textAlign = TextAlign.Center
                 )

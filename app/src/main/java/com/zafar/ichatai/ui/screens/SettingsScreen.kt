@@ -64,7 +64,8 @@ fun SettingsScreen(
     onNavigateToNotifications: () -> Unit = {},
     onNavigateToStorage: () -> Unit = {},
     onNavigateToCloudSync: () -> Unit = {},
-    onNavigateToHelp: () -> Unit = {}
+    onNavigateToHelp: () -> Unit = {},
+    onNavigateToTerms: () -> Unit = {}
 ) {
     val colorScheme = MaterialTheme.colorScheme
 
@@ -224,7 +225,7 @@ fun SettingsScreen(
                                 modifier = Modifier.weight(1f),
                                 icon = Icons.Outlined.Description,
                                 title = "Terms of Service",
-                                onClick = { /* TODO */ }
+                                onClick = onNavigateToTerms
                             )
                         }
                         Spacer(modifier = Modifier.height(16.dp))

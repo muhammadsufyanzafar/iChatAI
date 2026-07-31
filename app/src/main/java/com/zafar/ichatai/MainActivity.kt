@@ -34,6 +34,7 @@ import com.zafar.ichatai.ui.screens.SettingsScreen
 import com.zafar.ichatai.ui.screens.SplashScreen
 import com.zafar.ichatai.ui.screens.StorageManagementScreen
 import com.zafar.ichatai.ui.screens.SubscriptionScreen
+import com.zafar.ichatai.ui.screens.TermsOfServiceScreen
 import com.zafar.ichatai.ui.theme.IChatAITheme
 import com.zafar.ichatai.viewmodel.ChatViewModel
 import com.zafar.ichatai.viewmodel.CloudSyncViewModel
@@ -184,7 +185,13 @@ fun AppNavigation() {
                 onNavigateToNotifications = { navController.navigate("notification_settings") },
                 onNavigateToStorage = { navController.navigate("storage_management") },
                 onNavigateToCloudSync = { navController.navigate("cloud_sync") },
-                onNavigateToHelp = { navController.navigate("help_faq") }
+                onNavigateToHelp = { navController.navigate("help_faq") },
+                onNavigateToTerms = { navController.navigate("terms_privacy") }
+            )
+        }
+        composable("terms_privacy") {
+            TermsOfServiceScreen(
+                onBackClick = { navController.popBackStack() }
             )
         }
         composable("help_faq") {
