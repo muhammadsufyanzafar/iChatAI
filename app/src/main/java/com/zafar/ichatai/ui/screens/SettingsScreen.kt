@@ -63,7 +63,8 @@ fun SettingsScreen(
     onNavigateToAccount: () -> Unit = {},
     onNavigateToNotifications: () -> Unit = {},
     onNavigateToStorage: () -> Unit = {},
-    onNavigateToCloudSync: () -> Unit = {}
+    onNavigateToCloudSync: () -> Unit = {},
+    onNavigateToHelp: () -> Unit = {}
 ) {
     val colorScheme = MaterialTheme.colorScheme
 
@@ -216,7 +217,7 @@ fun SettingsScreen(
                                 modifier = Modifier.weight(1f),
                                 icon = Icons.Outlined.HelpOutline,
                                 title = "Help Center & FAQ",
-                                onClick = { /* TODO */ }
+                                onClick = onNavigateToHelp
                             )
                             Spacer(modifier = Modifier.width(16.dp))
                             SettingsItem(

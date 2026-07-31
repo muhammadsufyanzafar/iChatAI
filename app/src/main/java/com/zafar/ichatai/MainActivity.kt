@@ -25,6 +25,7 @@ import com.zafar.ichatai.ui.screens.CheckInScreen
 import com.zafar.ichatai.ui.screens.CloudSyncScreen
 import com.zafar.ichatai.ui.screens.CreditsScreen
 import com.zafar.ichatai.ui.screens.FavoriteChatScreen
+import com.zafar.ichatai.ui.screens.HelpAndFaqScreen
 import com.zafar.ichatai.ui.screens.MainScreen
 import com.zafar.ichatai.ui.screens.NotificationSettingsScreen
 import com.zafar.ichatai.ui.screens.QuietHoursScreen
@@ -122,6 +123,9 @@ fun AppNavigation() {
                 },
                 onNavigateToAccount = {
                     navController.navigate("account")
+                },
+                onNavigationToHelp = {
+                    navController.navigate("help_faq")
                 }
             )
         }
@@ -179,7 +183,13 @@ fun AppNavigation() {
                 onNavigateToAccount = { navController.navigate("account") },
                 onNavigateToNotifications = { navController.navigate("notification_settings") },
                 onNavigateToStorage = { navController.navigate("storage_management") },
-                onNavigateToCloudSync = { navController.navigate("cloud_sync") }
+                onNavigateToCloudSync = { navController.navigate("cloud_sync") },
+                onNavigateToHelp = { navController.navigate("help_faq") }
+            )
+        }
+        composable("help_faq") {
+            HelpAndFaqScreen(
+                onBackClick = { navController.popBackStack() }
             )
         }
         composable("cloud_sync") {
@@ -201,6 +211,11 @@ fun AppNavigation() {
         }
         composable("quiet_hours") {
             QuietHoursScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+        composable("help") {
+            HelpAndFaqScreen(
                 onBackClick = { navController.popBackStack() }
             )
         }

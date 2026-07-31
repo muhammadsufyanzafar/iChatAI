@@ -1,0 +1,77 @@
+[
+  {
+    "question": "How do I start a conversation?",
+    "answer": "Simply type your message in the text box on the Home screen and tap the send icon. iChatAI will respond instantly using the selected AI model.",
+    "category": "GETTING_STARTED"
+  },
+  {
+    "question": "What models does iChatAI use?",
+    "answer": "We leverage a variety of high-performance models through OpenRouter, including free and premium versions of Gemini, Mistral, and GPT-based models to ensure the best response quality.",
+    "category": "GETTING_STARTED"
+  },
+  {
+    "question": "Is iChatAI free to use?",
+    "answer": "Yes! You start with a set of free credits. You can earn more by watching ads, checking in daily, or performing specific tasks within the app.",
+    "category": "GETTING_STARTED"
+  },
+  {
+    "question": "How does the credit system work?",
+    "answer": "Each message sent to the AI consumes 1 credit. You can check your balance in the 'Credits' screen. Credits are automatically deducted upon successful response.",
+    "category": "ACCOUNT_BILLING"
+  },
+  {
+    "question": "How do I earn more credits?",
+    "answer": "You can earn credits by completing daily check-ins or by watching rewarded video ads. Tapping the '+' icon next to your credit balance will show all available options.",
+    "category": "ACCOUNT_BILLING"
+  },
+  {
+    "question": "Are there any subscription plans?",
+    "answer": "Paid subscriptions with unlimited messaging and priority access to faster models are coming soon! Keep an eye on the 'Subscription' screen for updates.",
+    "category": "ACCOUNT_BILLING"
+  },
+  {
+    "question": "How do I update my profile?",
+    "answer": "Navigate to Settings > User Profile. Here you can change your display name, email, and avatar icon to personalize your experience.",
+    "category": "ACCOUNT_BILLING"
+  },
+  {
+    "question": "Can the AI analyze images?",
+    "answer": "Yes! Tap the image icon (camera) in the chat input bar to upload or take a photo. You can then ask the AI questions about the image's content.",
+    "category": "USING_AI"
+  },
+  {
+    "question": "How do I save my favorite prompts?",
+    "answer": "You can save frequently used prompts in the 'Saved Prompts' section from the navigation drawer. This allows you to quickly re-use complex instructions.",
+    "category": "USING_AI"
+  },
+  {
+    "question": "How do I pin or delete chats?",
+    "answer": "In the 'Chat History' screen, long-press any chat session to see options for pinning it to the top or deleting it permanently.",
+    "category": "USING_AI"
+  },
+  {
+    "question": "Is my conversation history private?",
+    "answer": "Absolutely. Your chats are stored locally on your device using a Room database. We do not store your private conversations on our servers.",
+    "category": "USING_AI"
+  },
+  {
+    "question": "Why is the AI not responding?",
+    "answer": "Ensure you have a stable internet connection and remaining credits. If you see a timeout error, the AI model might be temporarily overloaded—please try again in a moment.",
+    "category": "TROUBLESHOOTING"
+  },
+  {
+    "question": "Cloud Sync is failing, what should I do?",
+    "answer": "Make sure you have granted the app permission to access Google Drive. Check your Google Account storage limits and ensure you have a valid network connection.",
+    "category": "TROUBLESHOOTING"
+  },
+  {
+    "question": "How do I clear the app cache?",
+    "answer": "You can clear the app's internal cache via Settings > Data & Storage Management. This can help resolve minor performance issues without deleting your chats.",
+    "category": "TROUBLESHOOTING"
+  },
+  {
+    "question": "I found a bug, how can I report it?",
+    "answer": "We'd love to hear from you! Report it via Feedback or Tap the 'Live Chat' button at the bottom of the Help Center to send us a message directly via WhatsApp.",
+    "category": "TROUBLESHOOTING"
+  }
+]

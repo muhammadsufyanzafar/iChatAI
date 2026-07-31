@@ -109,7 +109,8 @@ fun MainScreen(
     onNavigateToSubscription: () -> Unit = {},
     onNavigateToCredits: () -> Unit = {},
     onNavigateToSettings: () -> Unit = {},
-    onNavigateToAccount: () -> Unit = {}
+    onNavigateToAccount: () -> Unit = {},
+    onNavigationToHelp: () -> Unit = {},
 ) {
     val messages by viewModel.messages.collectAsState()
     val inputText by viewModel.inputText
@@ -311,9 +312,15 @@ fun MainScreen(
                                 drawerState.close()
                             }
                         }
+                        "help" -> {
+                            scope.launch {
+                                viewModel.saveCurrentSessionSuspend()
+                                onNavigationToHelp()
+                                drawerState.close()
+                            }
+                        }
                     }
                 },
-                onLogoutClick = { /* No logic implemented yet */ }
             )
         },
         gesturesEnabled = true
