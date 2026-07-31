@@ -25,6 +25,7 @@ play-services-auth = "21.2.0"
 google-api-client = "2.2.0"
 google-api-services-drive = "v3-rev20230822-2.0.0"
 google-http-client-gson = "1.43.3"
+kotlinx-coroutines-play-services = "1.8.1"
 work-runtime-ktx = "2.9.1"
 
 [libraries]
@@ -62,11 +63,13 @@ firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.r
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore" }
+firebase-config = { group = "com.google.firebase", name = "firebase-config" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging" }
 google-play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "play-services-auth" }
 google-api-client-android = { group = "com.google.api-client", name = "google-api-client-android", version.ref = "google-api-client" }
 google-api-services-drive = { group = "com.google.apis", name = "google-api-services-drive", version.ref = "google-api-services-drive" }
 google-http-client-gson = { group = "com.google.http-client", name = "google-http-client-gson", version.ref = "google-http-client-gson" }
+kotlinx-coroutines-play-services = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-play-services", version.ref = "kotlinx-coroutines-play-services" }
 androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "work-runtime-ktx" }
 androidx-hilt-work = { group = "androidx.hilt", name = "hilt-work", version = "1.2.0" }
 androidx-hilt-compiler = { group = "androidx.hilt", name = "hilt-compiler", version = "1.2.0" }

@@ -3,7 +3,9 @@ package com.zafar.ichatai.ui.screens
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -26,9 +28,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.zafar.ichatai.R
+import com.zafar.ichatai.model.UpdateInfo
 import com.zafar.ichatai.ui.components.GlassCard
 import com.zafar.ichatai.ui.components.GlowBackground
+import com.zafar.ichatai.viewmodel.UpdateUIState
+import com.zafar.ichatai.viewmodel.UpdateViewModel
 import dev.jeziellago.compose.markdowntext.MarkdownText
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -41,6 +47,23 @@ fun AboutScreen(
     val context = LocalContext.current
     val colorScheme = MaterialTheme.colorScheme
     var showReleaseNotes by remember { mutableStateOf(false) }
+    
+    val updateViewModel: UpdateViewModel = hiltViewModel()
+    val updateState by updateViewModel.uiState.collectAsState()
+
+    LaunchedEffect(updateState) {
+        when (updateState) {
+            is UpdateUIState.UpToDate -> {
+                Toast.makeText(context, "You are already on the latest version!", Toast.LENGTH_SHORT).show()
+                updateViewModel.resetState()
+            }
+            is UpdateUIState.Error -> {
+                Toast.makeText(context, (updateState as UpdateUIState.Error).message, Toast.LENGTH_SHORT).show()
+                updateViewModel.resetState()
+            }
+            else -> {}
+        }
+    }
 
     GlowBackground {
         Scaffold(
@@ -126,7 +149,8 @@ fun AboutScreen(
                                     )
                                 }
                                 Button(
-                                    onClick = { /* Placeholder */ },
+                                    onClick = { updateViewModel.checkForUpdates() },
+                                    enabled = updateState !is UpdateUIState.Checking,
                                     colors = ButtonDefaults.buttonColors(
                                         containerColor = colorScheme.primary.copy(alpha = 0.1f),
                                         contentColor = colorScheme.primary
@@ -135,7 +159,15 @@ fun AboutScreen(
                                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 0.dp),
                                     modifier = Modifier.height(32.dp)
                                 ) {
-                                    Text("Check for Updates", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                    if (updateState is UpdateUIState.Checking) {
+                                        CircularProgressIndicator(
+                                            modifier = Modifier.size(16.dp),
+                                            color = colorScheme.primary,
+                                            strokeWidth = 2.dp
+                                        )
+                                    } else {
+                                        Text("Check for Updates", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                    }
                                 }
                             }
                             
@@ -231,6 +263,140 @@ fun AboutScreen(
     if (showReleaseNotes) {
         ReleaseNotesDialog(onDismiss = { showReleaseNotes = false })
     }
+
+    if (updateState is UpdateUIState.UpdateAvailable) {
+        UpdateDialog(
+            updateInfo = (updateState as UpdateUIState.UpdateAvailable).updateInfo,
+            onDismiss = { updateViewModel.resetState() }
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun UpdateDialog(
+    updateInfo: UpdateInfo,
+    onDismiss: () -> Unit
+) {
+    val context = LocalContext.current
+    val colorScheme = MaterialTheme.colorScheme
+
+    AlertDialog(
+        onDismissRequest = { if (!updateInfo.isForceUpdate) onDismiss() },
+        properties = androidx.compose.ui.window.DialogProperties(
+            usePlatformDefaultWidth = false,
+            dismissOnBackPress = !updateInfo.isForceUpdate,
+            dismissOnClickOutside = !updateInfo.isForceUpdate
+        ),
+        modifier = Modifier.padding(24.dp),
+        content = {
+            GlassCard(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                shape = RoundedCornerShape(28.dp),
+                alpha = 0.95f
+            ) {
+                Column(
+                    modifier = Modifier.padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Update Available!",
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = colorScheme.onSurface
+                    )
+                    
+                    Spacer(modifier = Modifier.height(8.dp))
+                    
+                    Text(
+                        text = "Version ${updateInfo.latestVersionName} • ${updateInfo.releaseDate}",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = colorScheme.onSurface.copy(alpha = 0.7f)
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    if (updateInfo.platforms.isNotEmpty()) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "Available on: ",
+                                style = MaterialTheme.typography.bodySmall,
+                                fontWeight = FontWeight.Bold,
+                                color = colorScheme.onSurface.copy(alpha = 0.6f)
+                            )
+                            Text(
+                                text = updateInfo.platforms.joinToString(", "),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = colorScheme.primary
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
+
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(16.dp))
+                            .background(colorScheme.onSurface.copy(alpha = 0.05f))
+                            .padding(16.dp)
+                    ) {
+                        Text(
+                            text = "What's New:",
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = colorScheme.onSurface
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        updateInfo.changelog.forEach { item ->
+                            Row(modifier = Modifier.padding(vertical = 2.dp)) {
+                                Text("• ", color = colorScheme.primary)
+                                Text(
+                                    text = item,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = colorScheme.onSurface.copy(alpha = 0.8f)
+                                )
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    Button(
+                        onClick = { openUrl(context, updateInfo.seeMoreUrl) },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(16.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = colorScheme.primary,
+                            contentColor = colorScheme.onPrimary
+                        )
+                    ) {
+                        Text("Update Now", fontWeight = FontWeight.ExtraBold)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Icon(Icons.AutoMirrored.Filled.OpenInNew, null, modifier = Modifier.size(18.dp))
+                    }
+
+                    if (!updateInfo.isForceUpdate) {
+                        TextButton(
+                            onClick = onDismiss,
+                            modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
+                        ) {
+                            Text(
+                                "Later",
+                                color = colorScheme.onSurface.copy(alpha = 0.6f),
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    )
 }
 
 @Composable

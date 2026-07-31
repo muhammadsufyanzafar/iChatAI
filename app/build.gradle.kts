@@ -104,6 +104,7 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
+    implementation(libs.kotlinx.coroutines.play.services)
     implementation(libs.coil.compose)
     implementation(libs.compose.markdown)
     implementation(libs.google.play.services.ads)
@@ -117,6 +118,7 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.config)
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.messaging)
 
