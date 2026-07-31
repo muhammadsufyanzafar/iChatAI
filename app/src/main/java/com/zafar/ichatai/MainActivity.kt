@@ -1,6 +1,8 @@
 package com.zafar.ichatai
 
 import android.Manifest
+import android.content.Intent
+import android.net.Uri
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -31,6 +33,7 @@ import com.zafar.ichatai.ui.screens.NotificationSettingsScreen
 import com.zafar.ichatai.ui.screens.QuietHoursScreen
 import com.zafar.ichatai.ui.screens.SavedPromptsScreen
 import com.zafar.ichatai.ui.screens.SettingsScreen
+import com.zafar.ichatai.ui.screens.AboutScreen
 import com.zafar.ichatai.ui.screens.SplashScreen
 import com.zafar.ichatai.ui.screens.StorageManagementScreen
 import com.zafar.ichatai.ui.screens.SubscriptionScreen
@@ -178,6 +181,7 @@ fun AppNavigation() {
             )
         }
         composable("settings") {
+            val context = LocalContext.current
             SettingsScreen(
                 onBackClick = { navController.popBackStack() },
                 onNavigateToSubscription = { navController.navigate("subscription") },
@@ -186,7 +190,26 @@ fun AppNavigation() {
                 onNavigateToStorage = { navController.navigate("storage_management") },
                 onNavigateToCloudSync = { navController.navigate("cloud_sync") },
                 onNavigateToHelp = { navController.navigate("help_faq") },
-                onNavigateToTerms = { navController.navigate("terms_privacy") }
+                onNavigateToTerms = { navController.navigate("terms_privacy") },
+                onNavigateToAbout = { navController.navigate("about") },
+                onNavigateToContact = {
+                    val intent = Intent(Intent.ACTION_SENDTO).apply {
+                        data = Uri.parse("mailto:sufyan.pk444@gmail.com")
+                        putExtra(Intent.EXTRA_SUBJECT, "iChatAI Support Request")
+                    }
+                    context.startActivity(Intent.createChooser(intent, "Send Email"))
+                }
+            )
+        }
+        composable("about") {
+            val context = LocalContext.current
+            AboutScreen(
+                onBackClick = { navController.popBackStack() },
+                onNavigateToTerms = { navController.navigate("terms_privacy") },
+                onNavigateToPrivacy = {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://ichatai-website.vercel.app/privacy"))
+                    context.startActivity(intent)
+                }
             )
         }
         composable("terms_privacy") {

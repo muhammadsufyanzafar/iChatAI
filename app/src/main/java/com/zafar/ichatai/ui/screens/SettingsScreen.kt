@@ -65,7 +65,9 @@ fun SettingsScreen(
     onNavigateToStorage: () -> Unit = {},
     onNavigateToCloudSync: () -> Unit = {},
     onNavigateToHelp: () -> Unit = {},
-    onNavigateToTerms: () -> Unit = {}
+    onNavigateToTerms: () -> Unit = {},
+    onNavigateToAbout: () -> Unit = {},
+    onNavigateToContact: () -> Unit = {}
 ) {
     val colorScheme = MaterialTheme.colorScheme
 
@@ -235,14 +237,14 @@ fun SettingsScreen(
                                 icon = Icons.Outlined.Info,
                                 title = "About iChatAI",
                                 subtitle = "App Version 2.0, Developer info",
-                                onClick = { /* TODO */ }
+                                onClick = onNavigateToAbout
                             )
                             Spacer(modifier = Modifier.width(16.dp))
                             SettingsItem(
                                 modifier = Modifier.weight(1f),
                                 icon = Icons.Outlined.Email,
                                 title = "Contact Us",
-                                onClick = { /* TODO */ }
+                                onClick = onNavigateToContact
                             )
                         }
                     }
