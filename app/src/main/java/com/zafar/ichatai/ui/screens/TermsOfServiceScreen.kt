@@ -79,8 +79,8 @@ fun TermsOfServiceScreen(
         
         ## 9. Contact & Web Links
         For full details, visit our official portals:
-        - [Terms of Service](https://ichatai-website.vercel.app/terms)
-        - [Privacy Policy](https://ichatai-website.vercel.app/privacy)
+        - [Terms of Service](https://ichatai-website.is-cool.dev/terms)
+        - [Privacy Policy](https://ichatai-website.is-cool.dev/privacy)
         
         If you have any questions, contact us via the app's Support section.
     """.trimIndent()

@@ -7,5 +7,5 @@ data class UpdateInfo(
     val isForceUpdate: Boolean,
     val changelog: List<String>,
     val platforms: List<String>,
-    val seeMoreUrl: String
+    val seeMoreUrl: String,
 )

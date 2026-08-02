@@ -38,7 +38,7 @@ class UpdateViewModel @Inject constructor(
 
     private val remoteConfig = FirebaseRemoteConfig.getInstance().apply {
         val configSettings = FirebaseRemoteConfigSettings.Builder()
-            .setMinimumFetchIntervalInSeconds(if (isDebug) 0 else 3600)
+            .setMinimumFetchIntervalInSeconds(if (isDebug) 0L else 3600L)
             .build()
         setConfigSettingsAsync(configSettings)
     }
@@ -49,13 +49,14 @@ class UpdateViewModel @Inject constructor(
             try {
                 remoteConfig.fetchAndActivate().await()
                 val updateJson = remoteConfig.getString("android_update_info")
+
                 if (updateJson.isNotEmpty()) {
                     val jsonObject = JSONObject(updateJson)
                     val latestVersionCode = jsonObject.optInt("latest_version_code", 0)
                     val latestVersionName = jsonObject.optString("latest_version_name", "")
                     val releaseDate = jsonObject.optString("release_date", "")
                     val isForceUpdate = jsonObject.optBoolean("critical_force_update", false)
-                    
+
                     val changelogArray = jsonObject.optJSONArray("changelog")
                     val changelog = mutableListOf<String>()
                     if (changelogArray != null) {
@@ -63,7 +64,7 @@ class UpdateViewModel @Inject constructor(
                             changelog.add(changelogArray.getString(i))
                         }
                     }
-                    
+
                     val platformsArray = jsonObject.optJSONArray("platforms")
                     val platforms = mutableListOf<String>()
                     if (platformsArray != null) {
@@ -71,7 +72,7 @@ class UpdateViewModel @Inject constructor(
                             platforms.add(platformsArray.getString(i))
                         }
                     }
-                    
+
                     val seeMoreUrl = jsonObject.optString("see_more", "")
 
                     val updateInfo = UpdateInfo(
@@ -85,7 +86,13 @@ class UpdateViewModel @Inject constructor(
                     )
 
                     val (currentVersionCode, currentVersionName) = try {
-                        val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+                        val packageInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            context.packageManager.getPackageInfo(context.packageName, PackageManager.PackageInfoFlags.of(0))
+                        } else {
+                            @Suppress("DEPRECATION")
+                            context.packageManager.getPackageInfo(context.packageName, 0)
+                        }
+
                         val code = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                             packageInfo.longVersionCode.toInt()
                         } else {
@@ -117,11 +124,11 @@ class UpdateViewModel @Inject constructor(
     }
 
     private fun isNewerVersion(latest: String, current: String): Boolean {
-        if (latest == current) return false
+        if (latest == current || latest.isBlank() || current.isBlank()) return false
         val latestParts = latest.split(".").mapNotNull { it.toIntOrNull() }
         val currentParts = current.split(".").mapNotNull { it.toIntOrNull() }
         val maxLength = maxOf(latestParts.size, currentParts.size)
-        
+
         for (i in 0 until maxLength) {
             val l = latestParts.getOrElse(i) { 0 }
             val c = currentParts.getOrElse(i) { 0 }
@@ -131,4 +138,3 @@ class UpdateViewModel @Inject constructor(
         return false
     }
 }
-

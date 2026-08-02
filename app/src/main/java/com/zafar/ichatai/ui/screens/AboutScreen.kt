@@ -109,13 +109,25 @@ fun AboutScreen(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier.padding(vertical = 10.dp)
                     ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ichatai_icon),
-                            contentDescription = "App Logo",
-                            modifier = Modifier
-                                .size(100.dp)
-                                .clip(RoundedCornerShape(24.dp))
-                        )
+                        GlassCard(
+                            modifier = Modifier.size(120.dp),
+                            containerColor = Color.White.copy(alpha = 0.15f),
+                            shape = RoundedCornerShape(32.dp),
+                            borderAlpha = 0.2f
+                        ) {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.ichatai_icon),
+                                    contentDescription = "App Logo",
+                                    modifier = Modifier
+                                        .size(80.dp)
+                                        .clip(RoundedCornerShape(25.dp))
+                                )
+                            }
+                        }
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
                             text = "iChatAI",
@@ -510,7 +522,7 @@ fun ReleaseNotesDialog(onDismiss: () -> Unit) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
-                                openUrl(context, "https://ichatai-website.vercel.app/release-notes")
+                                openUrl(context, "https://ichatai-website.is-cool.dev/release-notes")
                             },
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
