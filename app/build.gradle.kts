@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     alias(libs.plugins.google.services)
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -35,7 +36,14 @@ android {
             localProperties.load(localPropertiesFile.inputStream())
         }
         val apiKey = localProperties.getProperty("OPENROUTER_API_KEY") ?: ""
+        val githubToken = localProperties.getProperty("GITHUB_TOKEN") ?: ""
+        val githubOwner = localProperties.getProperty("GITHUB_OWNER") ?: ""
+        val githubRepo = localProperties.getProperty("GITHUB_REPO") ?: ""
+
         buildConfigField("String", "OPENROUTER_API_KEY", "\"$apiKey\"")
+        buildConfigField("String", "GITHUB_TOKEN", "\"$githubToken\"")
+        buildConfigField("String", "GITHUB_OWNER", "\"$githubOwner\"")
+        buildConfigField("String", "GITHUB_REPO", "\"$githubRepo\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -121,6 +129,7 @@ dependencies {
     implementation(libs.firebase.config)
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.messaging)
+    implementation(libs.firebase.crashlytics)
 
     // Google Drive & Auth
     implementation(libs.google.play.services.auth)

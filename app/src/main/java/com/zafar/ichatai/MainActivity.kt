@@ -42,6 +42,7 @@ import com.zafar.ichatai.ui.screens.TermsOfServiceScreen
 import com.zafar.ichatai.ui.screens.ContactUsScreen
 import com.zafar.ichatai.ui.screens.FeedbackScreen
 import com.zafar.ichatai.ui.theme.IChatAITheme
+import com.zafar.ichatai.utils.NavigationTracker
 import com.zafar.ichatai.viewmodel.ChatViewModel
 import com.zafar.ichatai.viewmodel.CloudSyncViewModel
 import com.zafar.ichatai.viewmodel.UserViewModel
@@ -98,6 +99,14 @@ fun AppNavigation() {
         }
     }
     
+    LaunchedEffect(navController) {
+        navController.currentBackStackEntryFlow.collect { backStackEntry ->
+            backStackEntry.destination.route?.let { route ->
+                NavigationTracker.track(route)
+            }
+        }
+    }
+
     NavHost(navController = navController, startDestination = "splash") {
         composable("splash") {
             SplashScreen(onNavigateToMain = {
