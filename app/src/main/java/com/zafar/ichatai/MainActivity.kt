@@ -3,6 +3,7 @@ package com.zafar.ichatai
 import android.Manifest
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -38,6 +39,8 @@ import com.zafar.ichatai.ui.screens.SplashScreen
 import com.zafar.ichatai.ui.screens.StorageManagementScreen
 import com.zafar.ichatai.ui.screens.SubscriptionScreen
 import com.zafar.ichatai.ui.screens.TermsOfServiceScreen
+import com.zafar.ichatai.ui.screens.ContactUsScreen
+import com.zafar.ichatai.ui.screens.FeedbackScreen
 import com.zafar.ichatai.ui.theme.IChatAITheme
 import com.zafar.ichatai.viewmodel.ChatViewModel
 import com.zafar.ichatai.viewmodel.CloudSyncViewModel
@@ -128,9 +131,12 @@ fun AppNavigation() {
                 onNavigateToAccount = {
                     navController.navigate("account")
                 },
-                onNavigationToHelp = {
+                onNavigateToHelp = {
                     navController.navigate("help_faq")
-                }
+                },
+                onNavigateToFeedback = {
+                    navController.navigate("send_feedback")
+                },
             )
         }
         composable("history") {
@@ -192,13 +198,24 @@ fun AppNavigation() {
                 onNavigateToHelp = { navController.navigate("help_faq") },
                 onNavigateToTerms = { navController.navigate("terms_privacy") },
                 onNavigateToAbout = { navController.navigate("about") },
-                onNavigateToContact = {
-                    val intent = Intent(Intent.ACTION_SENDTO).apply {
-                        data = Uri.parse("mailto:sufyan.pk444@gmail.com")
-                        putExtra(Intent.EXTRA_SUBJECT, "iChatAI Support Request")
-                    }
-                    context.startActivity(Intent.createChooser(intent, "Send Email"))
+                onNavigateToContact = { navController.navigate("contact_us") },
+                onNavigateToFeedback = {navController.navigate("send_feedback")}
+            )
+        }
+        composable("contact_us") {
+            ContactUsScreen(
+                onBackClick = { navController.popBackStack() },
+                onNavigateToFAQ = {
+                    navController.navigate("help_faq")
+                },
+                onNavigateToFeedback = {
+                    navController.navigate("send_feedback")
                 }
+            )
+        }
+        composable("send_feedback") {
+            FeedbackScreen(
+                onBackClick = { navController.popBackStack() }
             )
         }
         composable("about") {

@@ -282,7 +282,7 @@ fun HelpAndFaqScreen(
                         ) {
                             Icon(Icons.AutoMirrored.Rounded.Chat, contentDescription = null, modifier = Modifier.size(18.dp))
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text("Live Chat")
+                            Text("Chat on WhatsApp")
                         }
                     }
                 }

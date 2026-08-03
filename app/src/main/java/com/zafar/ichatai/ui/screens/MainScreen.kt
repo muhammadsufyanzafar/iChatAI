@@ -110,7 +110,8 @@ fun MainScreen(
     onNavigateToCredits: () -> Unit = {},
     onNavigateToSettings: () -> Unit = {},
     onNavigateToAccount: () -> Unit = {},
-    onNavigationToHelp: () -> Unit = {},
+    onNavigateToHelp: () -> Unit = {},
+    onNavigateToFeedback: () -> Unit = {}
 ) {
     val messages by viewModel.messages.collectAsState()
     val inputText by viewModel.inputText
@@ -315,7 +316,14 @@ fun MainScreen(
                         "help" -> {
                             scope.launch {
                                 viewModel.saveCurrentSessionSuspend()
-                                onNavigationToHelp()
+                                onNavigateToHelp()
+                                drawerState.close()
+                            }
+                        }
+                        "feedback" -> {
+                            scope.launch {
+                                viewModel.saveCurrentSessionSuspend()
+                                onNavigateToFeedback()
                                 drawerState.close()
                             }
                         }

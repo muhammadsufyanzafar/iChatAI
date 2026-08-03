@@ -67,7 +67,8 @@ fun SettingsScreen(
     onNavigateToHelp: () -> Unit = {},
     onNavigateToTerms: () -> Unit = {},
     onNavigateToAbout: () -> Unit = {},
-    onNavigateToContact: () -> Unit = {}
+    onNavigateToContact: () -> Unit = {},
+    onNavigateToFeedback: () -> Unit = {},
 ) {
     val colorScheme = MaterialTheme.colorScheme
 
@@ -92,8 +93,9 @@ fun SettingsScreen(
                             )
                         }
                     },
+
                     actions = {
-                        IconButton(onClick = { /* Feedback action */ }) {
+                        IconButton(onClick = onNavigateToFeedback) {
                             Icon(
                                 imageVector = Icons.Default.HelpOutline,
                                 contentDescription = "Feedback",
