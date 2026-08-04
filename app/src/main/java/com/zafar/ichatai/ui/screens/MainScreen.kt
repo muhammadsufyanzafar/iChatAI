@@ -83,6 +83,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.zafar.ichatai.R
@@ -194,6 +195,13 @@ fun MainScreen(
             cameraLauncher.launch(null)
         } else {
             Toast.makeText(context, "Camera permission denied", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    val welcomeMsg = stringResource(R.string.welcome_message)
+    LaunchedEffect(messages) {
+        if (messages.isEmpty()) {
+            viewModel.createNewChat(welcomeMsg)
         }
     }
 
@@ -347,7 +355,7 @@ fun MainScreen(
                         credits = totalCredits,
                         userAvatarUri = userAvatarUri,
                         userGender = userGender,
-                        onNewChatClick = { viewModel.createNewChat() },
+                        onNewChatClick = { viewModel.createNewChat(welcomeMsg) },
                         onMenuClick = {
                             scope.launch { drawerState.open() }
                         },
@@ -482,7 +490,7 @@ fun TopBar(
             )
             Spacer(modifier = Modifier.width(6.dp))
             Text(
-                text = "$credits Credits",
+                text = stringResource(R.string.credits_text, credits),
                 color = MaterialTheme.colorScheme.onSurface,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Medium

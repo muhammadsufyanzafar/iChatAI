@@ -7,11 +7,13 @@ import androidx.compose.material.icons.rounded.CreditCard
 import androidx.compose.material.icons.rounded.RocketLaunch
 import androidx.compose.ui.graphics.vector.ImageVector
 
-enum class HelpCategory(val title: String) {
-    GETTING_STARTED("Getting Started"),
-    ACCOUNT_BILLING("Account & Billing"),
-    USING_AI("Using the AI"),
-    TROUBLESHOOTING("Troubleshooting");
+import com.zafar.ichatai.R
+
+enum class HelpCategory(val titleRes: Int) {
+    GETTING_STARTED(R.string.help_getting_started),
+    ACCOUNT_BILLING(R.string.help_account_billing),
+    USING_AI(R.string.help_using_ai),
+    TROUBLESHOOTING(R.string.help_troubleshooting);
 
     val icon: ImageVector
         get() = when (this) {

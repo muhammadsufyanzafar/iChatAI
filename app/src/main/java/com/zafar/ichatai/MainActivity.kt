@@ -7,11 +7,11 @@ import android.widget.Toast
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
@@ -29,6 +29,7 @@ import com.zafar.ichatai.ui.screens.CloudSyncScreen
 import com.zafar.ichatai.ui.screens.CreditsScreen
 import com.zafar.ichatai.ui.screens.FavoriteChatScreen
 import com.zafar.ichatai.ui.screens.HelpAndFaqScreen
+import com.zafar.ichatai.ui.screens.LanguageScreen
 import com.zafar.ichatai.ui.screens.MainScreen
 import com.zafar.ichatai.ui.screens.NotificationSettingsScreen
 import com.zafar.ichatai.ui.screens.QuietHoursScreen
@@ -50,7 +51,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
@@ -204,6 +205,7 @@ fun AppNavigation() {
                 onNavigateToNotifications = { navController.navigate("notification_settings") },
                 onNavigateToStorage = { navController.navigate("storage_management") },
                 onNavigateToCloudSync = { navController.navigate("cloud_sync") },
+                onNavigateToLanguage = { navController.navigate("language") },
                 onNavigateToHelp = { navController.navigate("help_faq") },
                 onNavigateToTerms = { navController.navigate("terms_privacy") },
                 onNavigateToAbout = { navController.navigate("about") },
@@ -251,6 +253,11 @@ fun AppNavigation() {
         composable("cloud_sync") {
             CloudSyncScreen(
                 viewModel = cloudSyncViewModel,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+        composable("language") {
+            LanguageScreen(
                 onBackClick = { navController.popBackStack() }
             )
         }

@@ -1,5 +1,6 @@
 [versions]
 agp = "8.5.0"
+appcompat = "1.7.0"
 kotlin = "2.0.0" # or your current Kotlin version supporting Compose compiler
 coreKtx = "1.13.1"
 junit = "4.13.2"
@@ -30,6 +31,7 @@ work-runtime-ktx = "2.9.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.espresso", name = "espresso-core", version.ref = "espressoCore" }

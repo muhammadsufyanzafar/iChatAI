@@ -44,13 +44,21 @@ object AiClient {
     /**
      * Requirement 3 (Implementation): Suspend function for network call
      */
-    suspend fun getResponse(query: String, imageBase64DataUrl: String? = null): String {
+    suspend fun getResponse(query: String, imageBase64DataUrl: String? = null, targetLanguage: String? = null): String {
         val contents = mutableListOf<ContentBlock>()
         
+        var finalQuery = if (query.isBlank() && imageBase64DataUrl != null) "Describe this image" else query
+
+        // Add translation instruction if targetLanguage is provided
+        if (targetLanguage != null && targetLanguage != "en") {
+            val languageName = getLanguageName(targetLanguage)
+            finalQuery = "$finalQuery\n\n(IMPORTANT: Please provide your entire response in $languageName language only.)"
+        }
+
         // Add text block
         contents.add(ContentBlock(
             type = "text", 
-            text = if (query.isBlank() && imageBase64DataUrl != null) "Describe this image" else query
+            text = finalQuery
         ))
         
         // Add image block if available (Requirement 2 structure)
@@ -70,6 +78,21 @@ object AiClient {
             request = request
         )
         return response.choices.firstOrNull()?.message?.content ?: "No response from AI."
+    }
+
+    private fun getLanguageName(code: String): String {
+        return when(code) {
+            "es" -> "Spanish"
+            "fr" -> "French"
+            "de" -> "German"
+            "zh" -> "Simplified Chinese"
+            "it" -> "Italian"
+            "ur" -> "Urdu"
+            "hi" -> "Hindi"
+            "ar" -> "Arabic"
+            "pt" -> "Portuguese"
+            else -> "English"
+        }
     }
 
     /**

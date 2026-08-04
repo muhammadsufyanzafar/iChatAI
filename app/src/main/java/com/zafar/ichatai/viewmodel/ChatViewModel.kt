@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zafar.ichatai.data.ChatMessage
+import com.zafar.ichatai.data.local.UserPreferences
 import com.zafar.ichatai.data.local.entity.ChatMessageEntity
 import com.zafar.ichatai.data.local.entity.ChatSessionWithCount
 import com.zafar.ichatai.data.repository.ChatRepository
@@ -32,6 +33,7 @@ enum class FilterCriteria {
 class ChatViewModel @Inject constructor(
     private val repository: ChatRepository,
     private val promptRepository: PromptRepository,
+    private val userPreferences: UserPreferences,
     private val networkObserver: NetworkObserver
 ) : ViewModel() {
     
@@ -50,9 +52,7 @@ class ChatViewModel @Inject constructor(
     private val _currentSessionId = MutableStateFlow<Long?>(null)
     val currentSessionId: StateFlow<Long?> = _currentSessionId.asStateFlow()
 
-    private val _messages = MutableStateFlow<List<ChatMessage>>(
-        listOf(ChatMessage("assistant", "New chat started. Ask me anything!"))
-    )
+    private val _messages = MutableStateFlow<List<ChatMessage>>(emptyList())
     val messages: StateFlow<List<ChatMessage>> = _messages.asStateFlow()
 
     private val _searchQuery = MutableStateFlow("")
@@ -239,12 +239,12 @@ class ChatViewModel @Inject constructor(
         }
     }
 
-    fun createNewChat() {
+    fun createNewChat(welcomeMessage: String) {
         viewModelScope.launch {
             saveCurrentSessionSuspend()
             // Reset UI immediately after save finishes
             _currentSessionId.value = null
-            _messages.value = listOf(ChatMessage("assistant", "New chat started. Ask me anything!"))
+            _messages.value = listOf(ChatMessage("assistant", welcomeMessage))
             inputText.value = ""
             selectedImageUri.value = null
         }
@@ -319,7 +319,12 @@ class ChatViewModel @Inject constructor(
             isTyping.value = true
             try {
                 val imageBase64 = imageUri?.let { AiClient.uriToBase64(context, it) }
-                val responseContent = AiClient.getResponse(query, imageBase64)
+                
+                // Get translation settings
+                val translateEnabled = userPreferences.isTranslateEnabled()
+                val targetLang = if (translateEnabled) userPreferences.getSelectedLanguage() else null
+
+                val responseContent = AiClient.getResponse(query, imageBase64, targetLang)
                 val assistantMsg = ChatMessage("assistant", responseContent)
                 _messages.value = _messages.value + assistantMsg
                 

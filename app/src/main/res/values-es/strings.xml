@@ -1,0 +1,57 @@
+<resources>
+    <string name="language_title">Idioma</string>
+    <string name="app_language">Idioma de la aplicación</string>
+    <string name="translate_incoming_messages">Traducir mensajes entrantes</string>
+    <string name="translate_description">Traduce automáticamente las respuestas de la IA al idioma seleccionado.</string>
+    <string name="reset_to_defaults">Restablecer valores predeterminados</string>
+    <string name="credits_text">%1$d Créditos</string>
+    <string name="welcome_message">Nuevo chat iniciado. ¡Pregúntame cualquier cosa!</string>
+    <string name="user_profile">Perfil de usuario</string>
+    <string name="settings">Ajustes</string>
+    <string name="back">Atrás</string>
+    <string name="feedback">Comentarios</string>
+    <string name="account">Cuenta</string>
+    <string name="application">Aplicación</string>
+    <string name="data">Datos</string>
+    <string name="support_about">Soporte y Acerca de</string>
+    <string name="log_out">Cerrar sesión</string>
+    <string name="appearance">Apariencia</string>
+    <string name="notifications">Notificaciones</string>
+    <string name="ai_model_preferences">Preferencias del modelo de IA</string>
+    <string name="storage_management">Gestión de datos y almacenamiento</string>
+    <string name="cloud_sync">Sincronización en la nube</string>
+    <string name="help_faq">Centro de ayuda y preguntas frecuentes</string>
+    <string name="terms_of_service">Términos de servicio</string>
+    <string name="about_app">Acerca de iChatAI</string>
+    <string name="contact_us">Contáctenos</string>
+    <string name="user_profile_subtitle">Al tocar esto se abre el perfil Nombre, Correo, Cambiar Avatar</string>
+    <string name="subscription">Suscripción</string>
+    <string name="subscription_subtitle">Muestra el plan actual, por ejemplo, Pro Anual - Activo</string>
+    <string name="security_privacy">Seguridad y privacidad</string>
+    <string name="security_privacy_subtitle">Contraseña, autenticación de dos factores</string>
+    <string name="appearance_subtitle">Claro, Oscuro, Sistema</string>
+    <string name="language_subtitle">Inglés, Español, Francés, etc.</string>
+    <string name="notifications_subtitle">Push, Sonido, Vibración</string>
+    <string name="ai_model_subtitle">Modelo predeterminado, ajustes de creatividad</string>
+    <string name="storage_subtitle">Limpiar caché, exportar historial</string>
+    <string name="cloud_sync_subtitle">Activado/Desactivado, Sincronizar ahora</string>
+    <string name="about_subtitle">Versión 2.0, información del desarrollador</string>
+
+    <string name="help_getting_started">Primeros pasos</string>
+    <string name="help_account_billing">Cuenta y facturación</string>
+    <string name="help_using_ai">Uso de la IA</string>
+    <string name="help_troubleshooting">Solución de problemas</string>
+
+    <string name="search_help">Buscar ayuda...</string>
+    <string name="browse_categories">Explorar categorías</string>
+    <string name="show_all">Mostrar todo</string>
+    <string name="faq_title">Preguntas frecuentes</string>
+    <string name="category_faq_title">Preguntas frecuentes sobre %1$s</string>
+    <string name="loading">Cargando...</string>
+    <string name="no_results">No se encontraron resultados para \"%1$s\"</string>
+    <string name="still_need_help">¿Aún necesitas ayuda?</string>
+    <string name="whatsapp_assist">Nuestro equipo está aquí para ayudarte vía WhatsApp.</string>
+    <string name="chat_whatsapp">Chatear en WhatsApp</string>
+    <string name="view_service_status">Ver estado del servicio</string>
+    <string name="whatsapp_not_installed">WhatsApp no está instalado</string>
+</resources>

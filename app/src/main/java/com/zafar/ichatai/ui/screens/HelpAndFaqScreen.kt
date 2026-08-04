@@ -22,12 +22,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.zafar.ichatai.R
 import com.zafar.ichatai.data.FaqData
 import com.zafar.ichatai.data.HelpCategory
 import com.zafar.ichatai.ui.components.GlassCard
@@ -67,7 +69,7 @@ fun HelpAndFaqScreen(
                 CenterAlignedTopAppBar(
                     title = {
                         Text(
-                            text = "Help Center & FAQ",
+                            text = stringResource(R.string.help_faq),
                             style = MaterialTheme.typography.titleLarge,
                             color = colorScheme.onSurface,
                             fontWeight = FontWeight.Bold
@@ -77,7 +79,7 @@ fun HelpAndFaqScreen(
                         IconButton(onClick = onBackClick) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                                contentDescription = "Back",
+                                contentDescription = stringResource(R.string.back),
                                 tint = colorScheme.onSurface
                             )
                         }
@@ -106,7 +108,7 @@ fun HelpAndFaqScreen(
                         onValueChange = { searchQuery = it },
                         placeholder = {
                             Text(
-                                "Search for help...",
+                                stringResource(R.string.search_help),
                                 color = colorScheme.onSurface.copy(alpha = 0.5f)
                             )
                         },
@@ -145,7 +147,7 @@ fun HelpAndFaqScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Browse Categories",
+                        text = stringResource(R.string.browse_categories),
                         style = MaterialTheme.typography.titleMedium,
                         color = colorScheme.onSurface,
                         fontWeight = FontWeight.Bold
@@ -153,7 +155,7 @@ fun HelpAndFaqScreen(
                     
                     if (selectedCategory != null) {
                         TextButton(onClick = { selectedCategory = null }) {
-                            Text("Show All", color = colorScheme.primary, fontSize = 13.sp)
+                            Text(stringResource(R.string.show_all), color = colorScheme.primary, fontSize = 13.sp)
                         }
                     }
                 }
@@ -208,7 +210,9 @@ fun HelpAndFaqScreen(
                 ) {
                     Column(modifier = Modifier.padding(20.dp)) {
                         Text(
-                            text = if (selectedCategory != null) "${selectedCategory?.title} FAQs" else "Frequently Asked Questions",
+                            text = if (selectedCategory != null) 
+                                stringResource(R.string.category_faq_title, stringResource(selectedCategory!!.titleRes)) 
+                                else stringResource(R.string.faq_title),
                             style = MaterialTheme.typography.titleMedium,
                             color = colorScheme.onSurface,
                             fontWeight = FontWeight.Bold,
@@ -223,7 +227,7 @@ fun HelpAndFaqScreen(
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
-                                    text = if (faqs.isEmpty()) "Loading..." else "No results found for \"$searchQuery\"",
+                                    text = if (faqs.isEmpty()) stringResource(R.string.loading) else stringResource(R.string.no_results, searchQuery),
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = colorScheme.onSurface.copy(alpha = 0.5f),
                                     textAlign = TextAlign.Center
@@ -251,13 +255,13 @@ fun HelpAndFaqScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = "Still Need Help?",
+                            text = stringResource(R.string.still_need_help),
                             style = MaterialTheme.typography.titleMedium,
                             color = colorScheme.onSurface,
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = "Our team is here to assist you via WhatsApp.",
+                            text = stringResource(R.string.whatsapp_assist),
                             style = MaterialTheme.typography.bodyMedium,
                             color = colorScheme.onSurface.copy(alpha = 0.7f),
                             modifier = Modifier.padding(top = 4.dp, bottom = 20.dp)
@@ -271,7 +275,7 @@ fun HelpAndFaqScreen(
                                     }
                                     context.startActivity(intent)
                                 } catch (_: Exception) {
-                                    Toast.makeText(context, "WhatsApp not installed", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(context, context.getString(R.string.whatsapp_not_installed), Toast.LENGTH_SHORT).show()
                                 }
                             },
                             modifier = Modifier.fillMaxWidth(),
@@ -282,7 +286,7 @@ fun HelpAndFaqScreen(
                         ) {
                             Icon(Icons.AutoMirrored.Rounded.Chat, contentDescription = null, modifier = Modifier.size(18.dp))
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text("Chat on WhatsApp")
+                            Text(stringResource(R.string.chat_whatsapp))
                         }
                     }
                 }
@@ -290,7 +294,7 @@ fun HelpAndFaqScreen(
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Text(
-                    text = "View Service Status",
+                    text = stringResource(R.string.view_service_status),
                     style = MaterialTheme.typography.bodyMedium,
                     color = colorScheme.primary,
                     textDecoration = TextDecoration.Underline,
@@ -350,7 +354,7 @@ fun CategoryItem(
             )
             Spacer(modifier = Modifier.width(10.dp))
             Text(
-                text = category.title,
+                text = stringResource(category.titleRes),
                 style = MaterialTheme.typography.bodyMedium,
                 color = if (isSelected) colorScheme.primary else colorScheme.onSurface,
                 fontSize = 13.sp,

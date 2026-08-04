@@ -108,6 +108,23 @@ class UserPreferences @Inject constructor(
     }
     fun clearSyncErrorLog() = sharedPreferences.edit().remove("sync_error_log").apply()
 
+    // Language Settings
+    fun getSelectedLanguage(): String {
+        return sharedPreferences.getString("selected_language", "en") ?: "en"
+    }
+
+    fun saveSelectedLanguage(languageCode: String) {
+        sharedPreferences.edit().putString("selected_language", languageCode).apply()
+    }
+
+    fun isTranslateEnabled(): Boolean {
+        return sharedPreferences.getBoolean("translate_enabled", false)
+    }
+
+    fun setTranslateEnabled(enabled: Boolean) {
+        sharedPreferences.edit().putBoolean("translate_enabled", enabled).apply()
+    }
+
     fun clearAllData() {
         sharedPreferences.edit().clear().apply()
     }

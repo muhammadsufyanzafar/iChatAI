@@ -52,6 +52,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.zafar.ichatai.R
 import com.zafar.ichatai.ui.components.GlassCard
 import com.zafar.ichatai.ui.components.GlowBackground
 
@@ -64,6 +66,7 @@ fun SettingsScreen(
     onNavigateToNotifications: () -> Unit = {},
     onNavigateToStorage: () -> Unit = {},
     onNavigateToCloudSync: () -> Unit = {},
+    onNavigateToLanguage: () -> Unit = {},
     onNavigateToHelp: () -> Unit = {},
     onNavigateToTerms: () -> Unit = {},
     onNavigateToAbout: () -> Unit = {},
@@ -78,7 +81,7 @@ fun SettingsScreen(
                 TopAppBar(
                     title = {
                         Text(
-                            "Settings",
+                            stringResource(R.string.settings),
                             style = MaterialTheme.typography.headlineLarge,
                             fontWeight = FontWeight.ExtraBold,
                             color = colorScheme.onBackground
@@ -88,7 +91,7 @@ fun SettingsScreen(
                         IconButton(onClick = onBackClick) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back",
+                                contentDescription = stringResource(R.string.back),
                                 tint = colorScheme.onBackground
                             )
                         }
@@ -98,7 +101,7 @@ fun SettingsScreen(
                         IconButton(onClick = onNavigateToFeedback) {
                             Icon(
                                 imageVector = Icons.Default.HelpOutline,
-                                contentDescription = "Feedback",
+                                contentDescription = stringResource(R.string.feedback),
                                 tint = colorScheme.onBackground.copy(alpha = 0.7f)
                             )
                         }
@@ -121,21 +124,21 @@ fun SettingsScreen(
             ) {
                 // Account Section
                 item {
-                    SettingsSection(title = "Account") {
+                    SettingsSection(title = stringResource(R.string.account)) {
                         Row(modifier = Modifier.fillMaxWidth()) {
                             SettingsItem(
                                 modifier = Modifier.weight(1f),
                                 icon = Icons.Outlined.Person,
-                                title = "User Profile",
-                                subtitle = "Tapping this opens profile Name, Email, Change Avatar",
+                                title = stringResource(R.string.user_profile),
+                                subtitle = stringResource(R.string.user_profile_subtitle),
                                 onClick = onNavigateToAccount
                             )
                             Spacer(modifier = Modifier.width(16.dp))
                             SettingsItem(
                                 modifier = Modifier.weight(1f),
                                 icon = Icons.Outlined.Shield,
-                                title = "Subscription",
-                                subtitle = "Displays current plan, e.g., Pro Annual - Active",
+                                title = stringResource(R.string.subscription),
+                                subtitle = stringResource(R.string.subscription_subtitle),
                                 onClick = onNavigateToSubscription
                             )
                         }
@@ -143,8 +146,8 @@ fun SettingsScreen(
                         SettingsItem(
                             modifier = Modifier.fillMaxWidth(0.475f),
                             icon = Icons.Outlined.Lock,
-                            title = "Security & Privacy",
-                            subtitle = "Passcode, Two-Factor Auth",
+                            title = stringResource(R.string.security_privacy),
+                            subtitle = stringResource(R.string.security_privacy_subtitle),
                             onClick = { /* TODO */ }
                         )
                     }
@@ -152,22 +155,22 @@ fun SettingsScreen(
 
                 // Application Section
                 item {
-                    SettingsSection(title = "Application") {
+                    SettingsSection(title = stringResource(R.string.application)) {
                         Row(modifier = Modifier.fillMaxWidth()) {
                             SettingsItem(
                                 modifier = Modifier.weight(1f),
                                 icon = Icons.Outlined.Palette,
-                                title = "Appearance",
-                                subtitle = "Light, Dark, System Default",
+                                title = stringResource(R.string.appearance),
+                                subtitle = stringResource(R.string.appearance_subtitle),
                                 onClick = { /* TODO */ }
                             )
                             Spacer(modifier = Modifier.width(16.dp))
                             SettingsItem(
                                 modifier = Modifier.weight(1f),
                                 icon = Icons.Outlined.Translate,
-                                title = "Language",
-                                subtitle = "English, Spanish, French, etc.",
-                                onClick = { /* TODO */ }
+                                title = stringResource(R.string.language_title),
+                                subtitle = stringResource(R.string.language_subtitle),
+                                onClick = onNavigateToLanguage
                             )
                         }
                         Spacer(modifier = Modifier.height(16.dp))
@@ -175,16 +178,16 @@ fun SettingsScreen(
                             SettingsItem(
                                 modifier = Modifier.weight(1f),
                                 icon = Icons.Outlined.Notifications,
-                                title = "Notifications",
-                                subtitle = "Push, Sound, Vibration",
+                                title = stringResource(R.string.notifications),
+                                subtitle = stringResource(R.string.notifications_subtitle),
                                 onClick = onNavigateToNotifications
                             )
                             Spacer(modifier = Modifier.width(16.dp))
                             SettingsItem(
                                 modifier = Modifier.weight(1f),
                                 icon = Icons.Outlined.AutoAwesome,
-                                title = "AI Model Preferences",
-                                subtitle = "Default model, creativity settings",
+                                title = stringResource(R.string.ai_model_preferences),
+                                subtitle = stringResource(R.string.ai_model_subtitle),
                                 onClick = { /* TODO */ }
                             )
                         }
@@ -193,21 +196,21 @@ fun SettingsScreen(
 
                 // Data Section
                 item {
-                    SettingsSection(title = "Data") {
+                    SettingsSection(title = stringResource(R.string.data)) {
                         Row(modifier = Modifier.fillMaxWidth()) {
                             SettingsItem(
                                 modifier = Modifier.weight(1f),
                                 icon = Icons.Outlined.Storage,
-                                title = "Data & Storage Management",
-                                subtitle = "Clear cache, export history",
+                                title = stringResource(R.string.storage_management),
+                                subtitle = stringResource(R.string.storage_subtitle),
                                 onClick = onNavigateToStorage
                             )
                             Spacer(modifier = Modifier.width(16.dp))
                             SettingsItem(
                                 modifier = Modifier.weight(1f),
                                 icon = Icons.Outlined.CloudQueue,
-                                title = "Cloud Sync",
-                                subtitle = "On/Off, Sync Now",
+                                title = stringResource(R.string.cloud_sync),
+                                subtitle = stringResource(R.string.cloud_sync_subtitle),
                                 onClick = onNavigateToCloudSync
                             )
                         }
@@ -216,19 +219,19 @@ fun SettingsScreen(
 
                 // Support & About Section
                 item {
-                    SettingsSection(title = "Support & About") {
+                    SettingsSection(title = stringResource(R.string.support_about)) {
                         Row(modifier = Modifier.fillMaxWidth()) {
                             SettingsItem(
                                 modifier = Modifier.weight(1f),
                                 icon = Icons.Outlined.HelpOutline,
-                                title = "Help Center & FAQ",
+                                title = stringResource(R.string.help_faq),
                                 onClick = onNavigateToHelp
                             )
                             Spacer(modifier = Modifier.width(16.dp))
                             SettingsItem(
                                 modifier = Modifier.weight(1f),
                                 icon = Icons.Outlined.Description,
-                                title = "Terms of Service",
+                                title = stringResource(R.string.terms_of_service),
                                 onClick = onNavigateToTerms
                             )
                         }
@@ -237,15 +240,15 @@ fun SettingsScreen(
                             SettingsItem(
                                 modifier = Modifier.weight(1f),
                                 icon = Icons.Outlined.Info,
-                                title = "About iChatAI",
-                                subtitle = "App Version 2.0, Developer info",
+                                title = stringResource(R.string.about_app),
+                                subtitle = stringResource(R.string.about_subtitle),
                                 onClick = onNavigateToAbout
                             )
                             Spacer(modifier = Modifier.width(16.dp))
                             SettingsItem(
                                 modifier = Modifier.weight(1f),
                                 icon = Icons.Outlined.Email,
-                                title = "Contact Us",
+                                title = stringResource(R.string.contact_us),
                                 onClick = onNavigateToContact
                             )
                         }
@@ -269,7 +272,7 @@ fun SettingsScreen(
                     ) {
                         Box(modifier = Modifier.fillMaxSize()) {
                             Text(
-                                text = "Log Out",
+                                text = stringResource(R.string.log_out),
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold,
                                 modifier = Modifier.align(Alignment.Center)
