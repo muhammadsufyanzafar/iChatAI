@@ -37,6 +37,17 @@
     <string name="storage_subtitle">Clear cache, export history</string>
     <string name="cloud_sync_subtitle">On/Off, Sync Now</string>
     <string name="about_subtitle">App Version 2.0, Developer info</string>
+    <string name="theme_mode">Theme Mode</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="system_default">System Default</string>
+    <string name="accent_color">Accent Color</string>
+    <string name="purple">Purple</string>
+    <string name="blue">Blue</string>
+    <string name="green">Green</string>
+    <string name="yellow">Yellow</string>
+    <string name="red">Red</string>
+    <string name="pink">Pink</string>
     <string name="help_getting_started">Getting Started</string>
     <string name="help_account_billing">Account &amp; Billing</string>
     <string name="help_using_ai">Using the AI</string>

@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import android.util.Log
 import com.zafar.ichatai.data.ChatMessage
 import com.zafar.ichatai.data.local.UserPreferences
 import com.zafar.ichatai.data.local.entity.ChatMessageEntity
@@ -12,10 +13,13 @@ import com.zafar.ichatai.data.local.entity.ChatSessionWithCount
 import com.zafar.ichatai.data.repository.ChatRepository
 import com.zafar.ichatai.data.repository.PromptRepository
 import com.zafar.ichatai.network.AiClient
+import com.zafar.ichatai.network.RemoteConfigManager
 import com.zafar.ichatai.utils.NetworkObserver
+import com.zafar.ichatai.BuildConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
+import retrofit2.HttpException
 import java.io.IOException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
@@ -34,7 +38,8 @@ class ChatViewModel @Inject constructor(
     private val repository: ChatRepository,
     private val promptRepository: PromptRepository,
     private val userPreferences: UserPreferences,
-    private val networkObserver: NetworkObserver
+    private val networkObserver: NetworkObserver,
+    private val remoteConfigManager: RemoteConfigManager
 ) : ViewModel() {
     
     // A separate scope for persistence to ensure it survives viewModelScope cancellation
@@ -142,6 +147,9 @@ class ChatViewModel @Inject constructor(
 
     init {
         observeNetwork()
+        viewModelScope.launch {
+            remoteConfigManager.fetchAndActivate()
+        }
     }
 
     private fun observeNetwork() {
@@ -324,7 +332,26 @@ class ChatViewModel @Inject constructor(
                 val translateEnabled = userPreferences.isTranslateEnabled()
                 val targetLang = if (translateEnabled) userPreferences.getSelectedLanguage() else null
 
-                val responseContent = AiClient.getResponse(query, imageBase64, targetLang)
+                // Get AI model preferences
+                val selectedModelId = userPreferences.getSelectedModelId()
+                val temperature = userPreferences.getTemperature()
+                
+                // Find model info from Remote Config to get its specific API Key if it exists
+                val remoteModel = remoteConfigManager.getAIModels().find { it.id == selectedModelId }
+                
+                // Use the remote API key if available, otherwise fallback to the hardcoded local key
+                val apiKey = remoteModel?.apiKey ?: BuildConfig.OPENROUTER_API_KEY
+                
+                Log.d("ChatViewModel", "Using model: $selectedModelId with key starting with: ${apiKey.take(8)}...")
+
+                val responseContent = AiClient.getResponse(
+                    query = query, 
+                    imageBase64DataUrl = imageBase64, 
+                    targetLanguage = targetLang,
+                    modelId = selectedModelId,
+                    apiKey = apiKey,
+                    temperature = temperature
+                )
                 val assistantMsg = ChatMessage("assistant", responseContent)
                 _messages.value = _messages.value + assistantMsg
                 
@@ -334,6 +361,14 @@ class ChatViewModel @Inject constructor(
                 val errorMessage = when (e) {
                     is SocketTimeoutException -> "The connection timed out. Please try again."
                     is UnknownHostException, is IOException -> "It looks like you're offline."
+                    is HttpException -> {
+                        when (e.code()) {
+                            429 -> "Rate limit exceeded (429). Please wait a moment before trying again or check your API key credits."
+                            401 -> "Unauthorized (401). Please check if your API key is correct."
+                            500, 503 -> "Server error. OpenRouter might be experiencing issues."
+                            else -> "Network error (${e.code()}). Please try again."
+                        }
+                    }
                     else -> "Something went wrong. (Error: ${e.localizedMessage ?: "Unknown"})"
                 }
                 val assistantMsg = ChatMessage("assistant", errorMessage)

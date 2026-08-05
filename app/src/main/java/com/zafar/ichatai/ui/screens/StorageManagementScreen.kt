@@ -242,7 +242,7 @@ fun StorageManagementScreen(
                         val fileName = "ichatai_backup_${System.currentTimeMillis()}.${exportFormat.lowercase()}"
                         createDocumentLauncher.launch(fileName)
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8B5CF6))
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
                     Text("Export")
                 }
@@ -292,9 +292,9 @@ fun StorageUsageCard(state: StorageUsageState) {
                     label = "freeHeight"
                 )
 
-                VerticalStorageBar(Color(0xFF60A5FA), convHeight, Modifier.weight(1f))
-                VerticalStorageBar(Color(0xFFC084FC), mediaHeight, Modifier.weight(1f))
-                VerticalStorageBar(Color(0xFF4ADE80), cacheHeight, Modifier.weight(1f))
+                VerticalStorageBar(MaterialTheme.colorScheme.primary, convHeight, Modifier.weight(1f))
+                VerticalStorageBar(MaterialTheme.colorScheme.secondary, mediaHeight, Modifier.weight(1f))
+                VerticalStorageBar(MaterialTheme.colorScheme.tertiary, cacheHeight, Modifier.weight(1f))
                 VerticalStorageBar(Color(0xFF94A3B8).copy(alpha = 0.3f), freeHeight, Modifier.weight(1f))
             }
 
@@ -305,10 +305,10 @@ fun StorageUsageCard(state: StorageUsageState) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                StorageLegendItem(Color(0xFF60A5FA), "Conversations", state.conversationsSizeStr)
-                StorageLegendItem(Color(0xFFC084FC), "Media", state.mediaSizeStr)
-                StorageLegendItem(Color(0xFF4ADE80), "Cache", state.cacheSizeStr)
-                StorageLegendItem(Color(0xFF94A3B8).copy(alpha = 0.5f), "Free Space", "(rest)")
+                StorageLegendItem(MaterialTheme.colorScheme.primary, "Conversations", state.conversationsSizeStr)
+                StorageLegendItem(MaterialTheme.colorScheme.secondary, "Media", state.mediaSizeStr)
+                StorageLegendItem(MaterialTheme.colorScheme.tertiary, "Cache", state.cacheSizeStr)
+                StorageLegendItem(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f), "Free Space", "(rest)")
             }
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -361,9 +361,9 @@ fun StorageProgressBar(state: StorageUsageState) {
             .clip(RoundedCornerShape(4.dp))
             .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f))
     ) {
-        if (convRatio > 0f) Box(Modifier.fillMaxHeight().weight(convRatio, fill = false).background(Color(0xFF60A5FA)))
-        if (mediaRatio > 0f) Box(Modifier.fillMaxHeight().weight(mediaRatio, fill = false).background(Color(0xFFC084FC)))
-        if (cacheRatio > 0f) Box(Modifier.fillMaxHeight().weight(cacheRatio, fill = false).background(Color(0xFF4ADE80)))
+        if (convRatio > 0f) Box(Modifier.fillMaxHeight().weight(convRatio, fill = false).background(MaterialTheme.colorScheme.primary))
+        if (mediaRatio > 0f) Box(Modifier.fillMaxHeight().weight(mediaRatio, fill = false).background(MaterialTheme.colorScheme.secondary))
+        if (cacheRatio > 0f) Box(Modifier.fillMaxHeight().weight(cacheRatio, fill = false).background(MaterialTheme.colorScheme.tertiary))
     }
 }
 
@@ -453,12 +453,12 @@ fun CleanupItem(
         Button(
             onClick = onButtonClick,
             shape = RoundedCornerShape(12.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8B5CF6).copy(alpha = 0.1f)),
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)),
             contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
             modifier = Modifier.height(36.dp),
-            border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF8B5CF6).copy(alpha = 0.5f))
+            border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.5f))
         ) {
-            Text(buttonText, fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Color(0xFF8B5CF6))
+            Text(buttonText, fontSize = 12.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
         }
     }
 }
@@ -503,12 +503,12 @@ fun DataExportCard(onConfigureExport: () -> Unit) {
                 Button(
                     onClick = onConfigureExport,
                     shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8B5CF6).copy(alpha = 0.1f)),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)),
                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
                     modifier = Modifier.height(36.dp),
-                    border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF8B5CF6).copy(alpha = 0.5f))
+                    border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.5f))
                 ) {
-                    Text("Configure Export", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Color(0xFF8B5CF6))
+                    Text("Configure Export", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
                 }
             }
         }
@@ -538,8 +538,8 @@ fun AutoCleanupCard(
                     checked = isEnabled,
                     onCheckedChange = onToggle,
                     colors = SwitchDefaults.colors(
-                        checkedThumbColor = Color(0xFF8B5CF6),
-                        checkedTrackColor = Color(0xFF8B5CF6).copy(alpha = 0.3f)
+                        checkedThumbColor = MaterialTheme.colorScheme.primary,
+                        checkedTrackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
                     )
                 )
             }
@@ -581,7 +581,7 @@ fun AutoCleanupCard(
                 }
                 Text(
                     text = "Configure",
-                    color = Color(0xFF8B5CF6),
+                    color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Bold,
                     fontSize = 13.sp,
                     modifier = Modifier.clickable { onConfigure() }
@@ -620,8 +620,8 @@ fun AutoCleanupDialog(
                     valueRange = 7f..90f,
                     steps = 11, // 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91 approx
                     colors = SliderDefaults.colors(
-                        thumbColor = Color(0xFF8B5CF6),
-                        activeTrackColor = Color(0xFF8B5CF6)
+                        thumbColor = MaterialTheme.colorScheme.primary,
+                        activeTrackColor = MaterialTheme.colorScheme.primary
                     )
                 )
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
@@ -641,7 +641,7 @@ fun AutoCleanupDialog(
         confirmButton = {
             Button(
                 onClick = { onConfirm(days.toInt()) },
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8B5CF6))
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
             ) {
                 Text("Save")
             }

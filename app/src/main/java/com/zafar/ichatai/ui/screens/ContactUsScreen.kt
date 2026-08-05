@@ -245,7 +245,7 @@ fun ContactMethodItem(
                 Icon(
                     imageVector = icon,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
+                    tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(24.dp)
                 )
             }
@@ -269,8 +269,8 @@ fun ContactMethodItem(
             Button(
                 onClick = onActionClick,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF8B5CF6), // Purple color from screenshot
-                    contentColor = Color.White
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
                 ),
                 shape = RoundedCornerShape(16.dp),
                 contentPadding = PaddingValues(horizontal = 16.dp),

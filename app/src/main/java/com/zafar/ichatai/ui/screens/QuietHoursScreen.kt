@@ -130,7 +130,7 @@ fun QuietHoursScreen(
                                     showStartTimePicker = false
                                     showEndTimePicker = false
                                 },
-                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB39DDB))
+                                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                             ) {
                                 Text("OK")
                             }
@@ -174,7 +174,7 @@ fun TimeSelectionItem(
             Icon(
                 imageVector = Icons.Outlined.Schedule,
                 contentDescription = null,
-                tint = Color(0xFFB39DDB)
+                tint = MaterialTheme.colorScheme.primary
             )
         }
     }

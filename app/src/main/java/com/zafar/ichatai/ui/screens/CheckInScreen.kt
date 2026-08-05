@@ -196,7 +196,7 @@ fun StreakInfoCard(streak: Int, fireColor: Color, streakActive: Boolean) {
                     CircularProgressIndicator(
                         progress = { streak / 7f },
                         modifier = Modifier.size(80.dp),
-                        color = Color(0xFF8B5CF6),
+                        color = MaterialTheme.colorScheme.primary,
                         trackColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.1f),
                         strokeWidth = 8.dp,
                         strokeCap = androidx.compose.ui.graphics.StrokeCap.Round
@@ -278,7 +278,7 @@ fun DayCard(
                         .height(32.dp),
                     contentPadding = PaddingValues(0.dp),
                     shape = RoundedCornerShape(8.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8B5CF6))
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
                     Text("Check In", fontSize = 11.sp, fontWeight = FontWeight.Bold)
                 }
@@ -349,7 +349,7 @@ fun JackpotCard(
                     Button(
                         onClick = onCheckIn,
                         shape = RoundedCornerShape(12.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8B5CF6))
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                     ) {
                         Text("Claim", fontWeight = FontWeight.Bold)
                     }

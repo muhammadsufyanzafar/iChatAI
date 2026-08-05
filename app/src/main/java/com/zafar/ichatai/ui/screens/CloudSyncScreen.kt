@@ -112,7 +112,7 @@ fun CloudSyncScreen(
                             if (uiState.googleAccount == null) {
                                 Button(
                                     onClick = { signInLauncher.launch(viewModel.getSignInIntent()) },
-                                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8B5CF6))
+                                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                                 ) {
                                     Text("Sign In", color = Color.White)
                                 }
@@ -146,7 +146,7 @@ fun CloudSyncScreen(
                                 onCheckedChange = { viewModel.toggleAutoSync(it) },
                                 colors = SwitchDefaults.colors(
                                     checkedThumbColor = Color.White,
-                                    checkedTrackColor = Color(0xFFBB86FC)
+                                    checkedTrackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
                                 )
                             )
                         }
@@ -175,7 +175,7 @@ fun CloudSyncScreen(
                                 onCheckedChange = { viewModel.toggleSyncOverWifi(!it) },
                                 colors = SwitchDefaults.colors(
                                     checkedThumbColor = Color.White,
-                                    checkedTrackColor = Color(0xFFBB86FC)
+                                    checkedTrackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
                                 )
                             )
                         }
@@ -212,9 +212,9 @@ fun CloudSyncScreen(
                             enabled = uiState.googleAccount != null && !uiState.isSyncing,
                             shape = RoundedCornerShape(16.dp),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFF8B5CF6),
+                                containerColor = MaterialTheme.colorScheme.primary,
                                 contentColor = Color.White,
-                                disabledContainerColor = Color(0xFF8B5CF6).copy(alpha = 0.3f),
+                                disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
                                 disabledContentColor = Color.White.copy(alpha = 0.5f)
                             )
                         ) {
@@ -398,7 +398,7 @@ fun SyncOptionItem(
             checked = checked,
             onCheckedChange = onCheckedChange,
             colors = CheckboxDefaults.colors(
-                checkedColor = Color(0xFF10B981),
+                checkedColor = MaterialTheme.colorScheme.primary,
                 uncheckedColor = colorScheme.onSurface.copy(alpha = 0.3f),
                 checkmarkColor = Color.White
             )

@@ -67,6 +67,8 @@ fun SettingsScreen(
     onNavigateToStorage: () -> Unit = {},
     onNavigateToCloudSync: () -> Unit = {},
     onNavigateToLanguage: () -> Unit = {},
+    onNavigateToAppearance: () -> Unit = {},
+    onNavigateToAIModelPreferences: () -> Unit = {},
     onNavigateToHelp: () -> Unit = {},
     onNavigateToTerms: () -> Unit = {},
     onNavigateToAbout: () -> Unit = {},
@@ -142,14 +144,6 @@ fun SettingsScreen(
                                 onClick = onNavigateToSubscription
                             )
                         }
-                        Spacer(modifier = Modifier.height(16.dp))
-                        SettingsItem(
-                            modifier = Modifier.fillMaxWidth(0.475f),
-                            icon = Icons.Outlined.Lock,
-                            title = stringResource(R.string.security_privacy),
-                            subtitle = stringResource(R.string.security_privacy_subtitle),
-                            onClick = { /* TODO */ }
-                        )
                     }
                 }
 
@@ -162,7 +156,7 @@ fun SettingsScreen(
                                 icon = Icons.Outlined.Palette,
                                 title = stringResource(R.string.appearance),
                                 subtitle = stringResource(R.string.appearance_subtitle),
-                                onClick = { /* TODO */ }
+                                onClick = onNavigateToAppearance
                             )
                             Spacer(modifier = Modifier.width(16.dp))
                             SettingsItem(
@@ -188,7 +182,7 @@ fun SettingsScreen(
                                 icon = Icons.Outlined.AutoAwesome,
                                 title = stringResource(R.string.ai_model_preferences),
                                 subtitle = stringResource(R.string.ai_model_subtitle),
-                                onClick = { /* TODO */ }
+                                onClick = onNavigateToAIModelPreferences
                             )
                         }
                     }
@@ -330,7 +324,7 @@ fun SettingsItem(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.9f),
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(28.dp)
             )
             Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {

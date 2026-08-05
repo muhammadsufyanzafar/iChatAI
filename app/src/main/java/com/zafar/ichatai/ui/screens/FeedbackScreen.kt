@@ -221,8 +221,8 @@ fun FeedbackBottomBar(
                 .fillMaxWidth()
                 .height(56.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF8B5CF6),
-                contentColor = Color.White
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary
             ),
             shape = RoundedCornerShape(16.dp),
             enabled = enabled && !isSubmitting
@@ -234,7 +234,7 @@ fun FeedbackBottomBar(
                 if (isSubmitting) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(20.dp),
-                        color = Color.White,
+                        color = MaterialTheme.colorScheme.onPrimary,
                         strokeWidth = 2.dp
                     )
                 } else {
@@ -260,7 +260,7 @@ fun FeedbackHeader() {
     val colorScheme = MaterialTheme.colorScheme
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
-        alpha = 0.1f
+        alpha = 0.4f
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -278,7 +278,7 @@ fun FeedbackHeader() {
                 Icon(
                     imageVector = Icons.Outlined.ChatBubbleOutline,
                     contentDescription = null,
-                    tint = Color(0xFF4ADE80),
+                    tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(20.dp)
                 )
             }
@@ -347,9 +347,9 @@ fun CategorySection(
                             )
                         },
                         colors = FilterChipDefaults.filterChipColors(
-                            selectedContainerColor = Color(0xFF4ADE80).copy(alpha = 0.2f),
-                            selectedLabelColor = Color(0xFF4ADE80),
-                            selectedLeadingIconColor = Color(0xFF4ADE80),
+                            selectedContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
+                            selectedLabelColor = MaterialTheme.colorScheme.primary,
+                            selectedLeadingIconColor = MaterialTheme.colorScheme.primary,
                             containerColor = colorScheme.surfaceVariant.copy(alpha = 0.3f),
                             labelColor = colorScheme.onSurface.copy(alpha = 0.7f),
                             iconColor = colorScheme.onSurface.copy(alpha = 0.7f)
@@ -358,7 +358,7 @@ fun CategorySection(
                             enabled = true,
                             selected = isSelected,
                             borderColor = colorScheme.onSurface.copy(alpha = 0.1f),
-                            selectedBorderColor = Color(0xFF4ADE80).copy(alpha = 0.5f),
+                            selectedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
                             borderWidth = 1.dp,
                             selectedBorderWidth = 1.dp
                         ),
@@ -410,8 +410,8 @@ fun DescriptionSection(
                 )
             },
             colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = colorScheme.surfaceVariant.copy(alpha = 0.2f),
-                unfocusedContainerColor = colorScheme.surfaceVariant.copy(alpha = 0.2f),
+                focusedContainerColor = colorScheme.surfaceVariant.copy(alpha = 0.4f),
+                unfocusedContainerColor = colorScheme.surfaceVariant.copy(alpha = 0.3f),
                 unfocusedBorderColor = colorScheme.onSurface.copy(alpha = 0.1f),
                 focusedBorderColor = colorScheme.primary.copy(alpha = 0.5f)
             ),
@@ -529,7 +529,7 @@ fun DashedAttachmentBox(onClick: () -> Unit) {
                 shape = RoundedCornerShape(16.dp)
             )
             .clip(RoundedCornerShape(16.dp))
-            .background(color = colorScheme.surfaceVariant.copy(alpha = 0.1f))
+            .background(color = colorScheme.surfaceVariant.copy(alpha = 0.3f))
             .clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
@@ -546,7 +546,7 @@ fun DashedAttachmentBox(onClick: () -> Unit) {
                 Icon(
                     imageVector = Icons.Default.AddAPhoto,
                     contentDescription = null,
-                    tint = Color(0xFF4ADE80),
+                    tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(20.dp)
                 )
             }

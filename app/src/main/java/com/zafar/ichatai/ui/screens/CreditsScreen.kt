@@ -141,7 +141,7 @@ fun AvailableCreditsCard(credits: Int) {
                     .clip(RoundedCornerShape(12.dp))
                     .background(
                         Brush.linearGradient(
-                            colors = listOf(Color(0xFF8B5CF6), Color(0xFF38BDF8))
+                            colors = listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.secondary)
                         )
                     ),
                 contentAlignment = Alignment.Center
@@ -177,7 +177,7 @@ fun AvailableCreditsCard(credits: Int) {
                     .fillMaxWidth()
                     .height(8.dp)
                     .clip(CircleShape),
-                color = Color(0xFF8B5CF6),
+                color = MaterialTheme.colorScheme.primary,
                 trackColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f),
             )
         }
@@ -219,7 +219,7 @@ fun BoostCreditsCard(onCheckInClick: () -> Unit, onWatchAdClick: () -> Unit) {
                 subtitle = "+20 Credits",
                 buttonText = "Watch Ad",
                 onClick = onWatchAdClick,
-                buttonColor = Color(0xFF8B5CF6)
+                buttonColor = MaterialTheme.colorScheme.primary
             )
         }
     }

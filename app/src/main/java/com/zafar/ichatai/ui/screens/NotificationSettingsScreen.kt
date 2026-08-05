@@ -144,7 +144,7 @@ fun NotificationSettingsScreen(
                         TextButton(onClick = onNavigateToQuietHours) {
                             Text(
                                 "Quiet Hours Configuration",
-                                color = Color(0xFF9575CD),
+                                color = MaterialTheme.colorScheme.primary,
                                 fontWeight = FontWeight.Medium,
                                 textDecoration = androidx.compose.ui.text.style.TextDecoration.Underline
                             )
@@ -196,7 +196,7 @@ fun NotificationToggleItem(
                     imageVector = icon,
                     contentDescription = null,
                     modifier = Modifier.size(24.dp),
-                    tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                    tint = MaterialTheme.colorScheme.primary
                 )
                 Spacer(modifier = Modifier.padding(horizontal = 8.dp))
             }
@@ -211,7 +211,7 @@ fun NotificationToggleItem(
             onCheckedChange = onCheckedChange,
             colors = SwitchDefaults.colors(
                 checkedThumbColor = Color.White,
-                checkedTrackColor = Color(0xFFB39DDB),
+                checkedTrackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
                 uncheckedThumbColor = Color.LightGray,
                 uncheckedTrackColor = Color.DarkGray.copy(alpha = 0.5f)
             )

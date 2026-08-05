@@ -12,8 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
-private val DarkColorScheme = darkColorScheme(
-    primary = DarkPrimaryAccent,
+private fun getDarkColorScheme(accentColor: AccentColor) = darkColorScheme(
+    primary = accentColor.darkColor,
     onPrimary = DarkPrimaryText,
     secondary = DarkSecondaryAccent,
     onSecondary = DarkBaseBackground,
@@ -24,11 +24,12 @@ private val DarkColorScheme = darkColorScheme(
     surfaceVariant = DarkElevatedSurface,
     onSurfaceVariant = DarkSecondaryText,
     outline = DarkBorder,
+    tertiary = DarkSuccess,
     error = DarkError
 )
 
-private val LightColorScheme = lightColorScheme(
-    primary = LightPrimaryAccent,
+private fun getLightColorScheme(accentColor: AccentColor) = lightColorScheme(
+    primary = accentColor.color,
     onPrimary = Color.White,
     secondary = LightSecondaryAccent,
     onSecondary = Color.White,
@@ -39,12 +40,19 @@ private val LightColorScheme = lightColorScheme(
     surfaceVariant = LightElevatedSurface,
     onSurfaceVariant = LightSecondaryText,
     outline = LightBorder,
+    tertiary = LightSuccess,
     error = LightError
 )
 
 @Composable
 fun IChatAITheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    themeMode: ThemeMode = ThemeMode.SYSTEM,
+    accentColor: AccentColor = AccentColor.PURPLE,
+    darkTheme: Boolean = when (themeMode) {
+        ThemeMode.LIGHT -> false
+        ThemeMode.DARK -> true
+        ThemeMode.SYSTEM -> isSystemInDarkTheme()
+    },
     // Dynamic color is available on Android 12+, but we disable it to prioritize user's colors
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
@@ -55,8 +63,8 @@ fun IChatAITheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+        darkTheme -> getDarkColorScheme(accentColor)
+        else -> getLightColorScheme(accentColor)
     }
 
     MaterialTheme(

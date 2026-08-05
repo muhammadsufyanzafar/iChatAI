@@ -50,3 +50,11 @@ data class ApiMessageResponse(
     val role: String,
     val content: String?
 )
+
+data class AIModel(
+    @SerializedName("id") val id: String,
+    @SerializedName("name") val name: String,
+    @SerializedName("description") val description: String,
+    @SerializedName("apiKey") val apiKey: String? = null,
+    @SerializedName("isRecommended") val isRecommended: Boolean = false
+)

@@ -125,6 +125,40 @@ class UserPreferences @Inject constructor(
         sharedPreferences.edit().putBoolean("translate_enabled", enabled).apply()
     }
 
+    // Appearance Settings
+    fun getThemeMode(): String {
+        return sharedPreferences.getString("theme_mode", "SYSTEM") ?: "SYSTEM"
+    }
+
+    fun setThemeMode(mode: String) {
+        sharedPreferences.edit().putString("theme_mode", mode).apply()
+    }
+
+    fun getAccentColor(): String {
+        return sharedPreferences.getString("accent_color", "PURPLE") ?: "PURPLE"
+    }
+
+    fun setAccentColor(color: String) {
+        sharedPreferences.edit().putString("accent_color", color).apply()
+    }
+
+    // AI Model Preferences
+    fun getSelectedModelId(): String {
+        return sharedPreferences.getString("selected_model_id", "openrouter/free") ?: "openrouter/free"
+    }
+
+    fun setSelectedModelId(modelId: String) {
+        sharedPreferences.edit().putString("selected_model_id", modelId).apply()
+    }
+
+    fun getTemperature(): Float {
+        return sharedPreferences.getFloat("ai_temperature", 0.7f)
+    }
+
+    fun setTemperature(temperature: Float) {
+        sharedPreferences.edit().putFloat("ai_temperature", temperature).apply()
+    }
+
     fun clearAllData() {
         sharedPreferences.edit().clear().apply()
     }

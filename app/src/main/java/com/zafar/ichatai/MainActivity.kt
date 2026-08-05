@@ -12,8 +12,14 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -42,11 +48,16 @@ import com.zafar.ichatai.ui.screens.SubscriptionScreen
 import com.zafar.ichatai.ui.screens.TermsOfServiceScreen
 import com.zafar.ichatai.ui.screens.ContactUsScreen
 import com.zafar.ichatai.ui.screens.FeedbackScreen
+import com.zafar.ichatai.ui.screens.AppearanceScreen
+import com.zafar.ichatai.ui.screens.AIModelPreferencesScreen
 import com.zafar.ichatai.ui.theme.IChatAITheme
+import com.zafar.ichatai.ui.theme.ThemeMode
+import com.zafar.ichatai.ui.theme.AccentColor
 import com.zafar.ichatai.utils.NavigationTracker
 import com.zafar.ichatai.viewmodel.ChatViewModel
 import com.zafar.ichatai.viewmodel.CloudSyncViewModel
 import com.zafar.ichatai.viewmodel.UserViewModel
+import com.zafar.ichatai.viewmodel.AppearanceViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 
@@ -61,15 +72,22 @@ class MainActivity : AppCompatActivity() {
 
         enableEdgeToEdge()
         setContent {
-            IChatAITheme {
-                AppNavigation()
+            val appearanceViewModel: AppearanceViewModel = hiltViewModel()
+            val themeMode by appearanceViewModel.themeMode.collectAsState(ThemeMode.SYSTEM)
+            val accentColor by appearanceViewModel.accentColor.collectAsState(AccentColor.PURPLE)
+
+            IChatAITheme(
+                themeMode = themeMode,
+                accentColor = accentColor
+            ) {
+                AppNavigation(appearanceViewModel)
             }
         }
     }
 }
 
 @Composable
-fun AppNavigation() {
+fun AppNavigation(appearanceViewModel: AppearanceViewModel) {
     val navController = rememberNavController()
     // Create ViewModels at this level so they're shared between screens
     val chatViewModel: ChatViewModel = hiltViewModel()
@@ -108,7 +126,34 @@ fun AppNavigation() {
         }
     }
 
-    NavHost(navController = navController, startDestination = "splash") {
+    NavHost(
+        navController = navController,
+        startDestination = "splash",
+        enterTransition = {
+            slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                animationSpec = tween(400)
+            ) + fadeIn(animationSpec = tween(400))
+        },
+        exitTransition = {
+            slideOutOfContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                animationSpec = tween(400)
+            ) + fadeOut(animationSpec = tween(400))
+        },
+        popEnterTransition = {
+            slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.End,
+                animationSpec = tween(400)
+            ) + fadeIn(animationSpec = tween(400))
+        },
+        popExitTransition = {
+            slideOutOfContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.End,
+                animationSpec = tween(400)
+            ) + fadeOut(animationSpec = tween(400))
+        }
+    ) {
         composable("splash") {
             SplashScreen(onNavigateToMain = {
                 navController.navigate("main") {
@@ -206,6 +251,8 @@ fun AppNavigation() {
                 onNavigateToStorage = { navController.navigate("storage_management") },
                 onNavigateToCloudSync = { navController.navigate("cloud_sync") },
                 onNavigateToLanguage = { navController.navigate("language") },
+                onNavigateToAppearance = { navController.navigate("appearance_settings") },
+                onNavigateToAIModelPreferences = { navController.navigate("ai_model_preferences") },
                 onNavigateToHelp = { navController.navigate("help_faq") },
                 onNavigateToTerms = { navController.navigate("terms_privacy") },
                 onNavigateToAbout = { navController.navigate("about") },
@@ -258,6 +305,17 @@ fun AppNavigation() {
         }
         composable("language") {
             LanguageScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+        composable("appearance_settings") {
+            AppearanceScreen(
+                viewModel = appearanceViewModel,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+        composable("ai_model_preferences") {
+            AIModelPreferencesScreen(
                 onBackClick = { navController.popBackStack() }
             )
         }

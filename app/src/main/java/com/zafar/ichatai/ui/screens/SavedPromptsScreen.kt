@@ -405,7 +405,7 @@ fun PromptItem(
             Icon(
                 Icons.Rounded.Description,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(24.dp)
             )
             Spacer(modifier = Modifier.width(12.dp))
@@ -445,13 +445,13 @@ fun PromptActionIcon(icon: ImageVector, label: String, onClick: () -> Unit, isDe
         Icon(
             imageVector = icon,
             contentDescription = label,
-            tint = if (isDelete) MaterialTheme.colorScheme.error.copy(alpha = 0.8f) else MaterialTheme.colorScheme.onSurfaceVariant,
+            tint = if (isDelete) MaterialTheme.colorScheme.error.copy(alpha = 0.8f) else MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
             modifier = Modifier.size(18.dp)
         )
         Text(
             text = label,
             fontSize = 9.sp,
-            color = if (isDelete) MaterialTheme.colorScheme.error.copy(alpha = 0.8f) else MaterialTheme.colorScheme.onSurfaceVariant
+            color = if (isDelete) MaterialTheme.colorScheme.error.copy(alpha = 0.8f) else MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
         )
     }
 }

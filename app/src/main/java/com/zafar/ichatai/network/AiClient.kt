@@ -5,9 +5,11 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Base64
+import android.util.Log
 import com.zafar.ichatai.BuildConfig
 import com.zafar.ichatai.data.*
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
@@ -31,7 +33,11 @@ interface OpenRouterService {
 object AiClient {
     private const val BASE_URL = "https://openrouter.ai/api/v1/"
 
-    private val okHttpClient = OkHttpClient.Builder().build()
+    private val okHttpClient = OkHttpClient.Builder()
+        .addInterceptor(HttpLoggingInterceptor().apply {
+            level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+        })
+        .build()
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
@@ -44,7 +50,14 @@ object AiClient {
     /**
      * Requirement 3 (Implementation): Suspend function for network call
      */
-    suspend fun getResponse(query: String, imageBase64DataUrl: String? = null, targetLanguage: String? = null): String {
+    suspend fun getResponse(
+        query: String, 
+        imageBase64DataUrl: String? = null, 
+        targetLanguage: String? = null,
+        modelId: String = "google/gemini-pro-1.5-exp-0827",
+        apiKey: String = BuildConfig.OPENROUTER_API_KEY,
+        temperature: Float = 0.7f
+    ): String {
         val contents = mutableListOf<ContentBlock>()
         
         var finalQuery = if (query.isBlank() && imageBase64DataUrl != null) "Describe this image" else query
@@ -70,13 +83,20 @@ object AiClient {
         }
 
         val request = OpenRouterRequest(
-            messages = listOf(ApiMessage(role = "user", content = contents))
+            model = modelId,
+            messages = listOf(ApiMessage(role = "user", content = contents)),
+            temperature = temperature
         )
 
+        val cleanApiKey = apiKey.trim().removePrefix("Bearer ").removePrefix("bearer ")
+
         val response = service.getChatCompletion(
-            token = "Bearer ${BuildConfig.OPENROUTER_API_KEY}",
+            token = "Bearer $cleanApiKey",
+            referer = "com.zafar.ichatai",
+            title = "iChatAI",
             request = request
         )
+        Log.d("AiClient", "Response received for model $modelId")
         return response.choices.firstOrNull()?.message?.content ?: "No response from AI."
     }
 

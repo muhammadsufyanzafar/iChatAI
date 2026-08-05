@@ -1,6 +1,7 @@
 package com.zafar.ichatai
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -26,6 +27,19 @@ class IChatAIApplication : Application(), Configuration.Provider {
 
         // Setup Crashlytics with initial telemetry
         setupCrashlytics()
+
+        // Apply theme mode
+        applyThemeMode()
+    }
+
+    private fun applyThemeMode() {
+        val modeName = userPreferences.getThemeMode()
+        val nightMode = when (modeName) {
+            "LIGHT" -> AppCompatDelegate.MODE_NIGHT_NO
+            "DARK" -> AppCompatDelegate.MODE_NIGHT_YES
+            else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        }
+        AppCompatDelegate.setDefaultNightMode(nightMode)
     }
 
     private fun setupCrashlytics() {

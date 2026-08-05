@@ -149,8 +149,8 @@ fun PulseAnimation(isDarkTheme: Boolean) {
         label = "pulseScale"
     )
 
-    val primaryPulseColor = if (isDarkTheme) Color(0xFF8B5CF6) else Color(0xFF7C3AED)
-    val secondaryPulseColor = if (isDarkTheme) Color(0xFF38BDF8) else Color(0xFF0284C7)
+    val primaryPulseColor = MaterialTheme.colorScheme.primary
+    val secondaryPulseColor = MaterialTheme.colorScheme.secondary
 
     Box(
         modifier = Modifier

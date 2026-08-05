@@ -485,7 +485,7 @@ fun TopBar(
             Icon(
                 imageVector = Icons.Default.AutoAwesome,
                 contentDescription = null,
-                tint = Color(0xFF64B5F6),
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(18.dp)
             )
             Spacer(modifier = Modifier.width(6.dp))
