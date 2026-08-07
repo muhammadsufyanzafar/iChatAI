@@ -75,6 +75,9 @@ class ChatViewModel @Inject constructor(
     private val _favoriteSortOrder = MutableStateFlow(SortOrder.NEWEST_FIRST)
     val favoriteSortOrder: StateFlow<SortOrder> = _favoriteSortOrder.asStateFlow()
 
+    private val _currentLanguage = MutableStateFlow(userPreferences.getSelectedLanguage())
+    val currentLanguage: StateFlow<String> = _currentLanguage.asStateFlow()
+
     @OptIn(ExperimentalCoroutinesApi::class)
     val chatHistory: StateFlow<List<ChatSessionWithCount>> = combine(
         _searchQuery, _historySortOrder, _historyFilter
@@ -170,6 +173,10 @@ class ChatViewModel @Inject constructor(
 
     fun onFavoriteSearchQueryChange(query: String) {
         _favoriteSearchQuery.value = query
+    }
+
+    fun updateLanguage(languageCode: String) {
+        _currentLanguage.value = languageCode
     }
 
     fun onImageSelected(uri: Uri?) {

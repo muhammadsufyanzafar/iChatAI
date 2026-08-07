@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -83,7 +84,7 @@ fun AccountDetailsScreen(
         if (isGranted) {
             galleryLauncher.launch("image/*")
         } else {
-            Toast.makeText(context, "Gallery permission is required to select a photo", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.gallery_permission_required), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -106,7 +107,7 @@ fun AccountDetailsScreen(
         if (isGranted) {
             cameraLauncher.launch()
         } else {
-            Toast.makeText(context, "Camera permission is required to take a photo", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.camera_permission_required), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -164,7 +165,7 @@ fun AccountDetailsScreen(
                         .padding(16.dp)
                         .statusBarsPadding()
                 ) {
-                    Icon(Icons.Default.Close, contentDescription = "Close", tint = Color.White)
+                    Icon(Icons.Default.Close, contentDescription = stringResource(R.string.cancel), tint = Color.White)
                 }
             }
         }
@@ -198,9 +199,9 @@ fun AccountDetailsScreen(
                             onClick = { showAvatarSheet = false },
                             modifier = Modifier.background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f), CircleShape)
                         ) {
-                            Icon(Icons.Default.Close, contentDescription = "Close", modifier = Modifier.size(20.dp))
+                            Icon(Icons.Default.Close, contentDescription = stringResource(R.string.cancel), modifier = Modifier.size(20.dp))
                         }
-                        Text("Profile Photo", fontWeight = FontWeight.ExtraBold, fontSize = 20.sp, color = MaterialTheme.colorScheme.onSurface)
+                        Text(stringResource(R.string.profile_photo), fontWeight = FontWeight.ExtraBold, fontSize = 20.sp, color = MaterialTheme.colorScheme.onSurface)
                         IconButton(
                             onClick = {
                                 viewModel.updateAvatarUri(null)
@@ -208,13 +209,13 @@ fun AccountDetailsScreen(
                             },
                             modifier = Modifier.background(MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.2f), CircleShape)
                         ) {
-                            Icon(Icons.Default.Delete, contentDescription = "Remove", tint = MaterialTheme.colorScheme.error, modifier = Modifier.size(20.dp))
+                            Icon(Icons.Default.Delete, contentDescription = stringResource(R.string.delete), tint = MaterialTheme.colorScheme.error, modifier = Modifier.size(20.dp))
                         }
                     }
                     
                     Spacer(modifier = Modifier.height(24.dp))
 
-                    Text("Built-in Avatars", fontWeight = FontWeight.Bold, fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(stringResource(R.string.built_in_avatars), fontWeight = FontWeight.Bold, fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Spacer(modifier = Modifier.height(12.dp))
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -248,13 +249,13 @@ fun AccountDetailsScreen(
 
                     Spacer(modifier = Modifier.height(32.dp))
                     
-                    Text("Actions", fontWeight = FontWeight.Bold, fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(stringResource(R.string.actions), fontWeight = FontWeight.Bold, fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Spacer(modifier = Modifier.height(12.dp))
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
-                        AvatarOption(Icons.Default.PhotoLibrary, "Gallery") {
+                        AvatarOption(Icons.Default.PhotoLibrary, stringResource(R.string.gallery)) {
                             val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                                 Manifest.permission.READ_MEDIA_IMAGES
                             } else {
@@ -268,7 +269,7 @@ fun AccountDetailsScreen(
                                 galleryPermissionLauncher.launch(permission)
                             }
                         }
-                        AvatarOption(Icons.Default.CameraAlt, "Camera") {
+                        AvatarOption(Icons.Default.CameraAlt, stringResource(R.string.camera)) {
                             val permissionCheckResult = ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
                             if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
                                 cameraLauncher.launch()
@@ -286,7 +287,7 @@ fun AccountDetailsScreen(
     // Professional Dialogs
     if (showEditNameDialog) {
         ProfessionalEditDialog(
-            title = "Edit Name",
+            title = stringResource(R.string.edit_name),
             initialValue = userName,
             onDismiss = { showEditNameDialog = false },
             onSave = { viewModel.updateUserName(it) },
@@ -297,7 +298,7 @@ fun AccountDetailsScreen(
 
     if (showEditEmailDialog) {
         ProfessionalEditDialog(
-            title = "Edit Email",
+            title = stringResource(R.string.edit_email),
             initialValue = userEmail,
             onDismiss = { showEditEmailDialog = false },
             onSave = { viewModel.updateUserEmail(it) },
@@ -318,16 +319,16 @@ fun AccountDetailsScreen(
     if (showDeleteDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteDialog = false },
-            title = { Text("Delete Account", fontWeight = FontWeight.Bold) },
-            text = { Text("Are you sure you want to delete your account? This will erase all your chat history and settings forever.") },
+            title = { Text(stringResource(R.string.delete_account), fontWeight = FontWeight.Bold) },
+            text = { Text(stringResource(R.string.delete_account_msg)) },
             confirmButton = {
                 Button(
                     onClick = { viewModel.deleteAccount(onAccountDeleted) },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
-                ) { Text("Delete All Data") }
+                ) { Text(stringResource(R.string.delete_all_data)) }
             },
             dismissButton = {
-                TextButton(onClick = { showDeleteDialog = false }) { Text("Cancel") }
+                TextButton(onClick = { showDeleteDialog = false }) { Text(stringResource(R.string.cancel)) }
             },
             shape = RoundedCornerShape(24.dp)
         )
@@ -337,10 +338,10 @@ fun AccountDetailsScreen(
         Scaffold(
             topBar = {
                 CenterAlignedTopAppBar(
-                    title = { Text("Account Details", fontWeight = FontWeight.ExtraBold) },
+                    title = { Text(stringResource(R.string.account_details_title), fontWeight = FontWeight.ExtraBold) },
                     navigationIcon = {
                         IconButton(onClick = onBackClick) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
                         }
                     },
                     colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Color.Transparent)
@@ -425,8 +426,13 @@ fun AccountDetailsScreen(
                     shape = RoundedCornerShape(28.dp)
                 ) {
                     Column(modifier = Modifier.padding(20.dp)) {
+                        val translatedGender = when (gender) {
+                            "Male" -> stringResource(R.string.male)
+                            "Female" -> stringResource(R.string.female)
+                            else -> stringResource(R.string.prefer_not_to_say)
+                        }
                         ProfileInfoItem(
-                            label = "Display Name",
+                            label = stringResource(R.string.display_name),
                             value = userName,
                             onEdit = { showEditNameDialog = true }
                         )
@@ -435,8 +441,8 @@ fun AccountDetailsScreen(
                             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f)
                         )
                         ProfileInfoItem(
-                            label = "Email Address",
-                            value = if (userEmail.isEmpty()) "Not set" else userEmail,
+                            label = stringResource(R.string.email_address),
+                            value = if (userEmail.isEmpty()) stringResource(R.string.not_set) else userEmail,
                             onEdit = { showEditEmailDialog = true }
                         )
                         HorizontalDivider(
@@ -444,8 +450,8 @@ fun AccountDetailsScreen(
                             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f)
                         )
                         ProfileInfoItem(
-                            label = "Gender",
-                            value = gender,
+                            label = stringResource(R.string.gender),
+                            value = translatedGender,
                             onEdit = { showGenderDialog = true }
                         )
                     }
@@ -461,7 +467,7 @@ fun AccountDetailsScreen(
                 ) {
                     Icon(Icons.Default.Delete, contentDescription = null, modifier = Modifier.size(18.dp))
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Delete Account", fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.delete_account), fontWeight = FontWeight.Bold)
                 }
             }
         }
@@ -547,7 +553,7 @@ fun ProfessionalEditDialog(
                     ),
                     supportingText = {
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                            if (!isValid) Text("Invalid email format", color = MaterialTheme.colorScheme.error) else Spacer(Modifier.width(1.dp))
+                            if (!isValid) Text(stringResource(R.string.invalid_email), color = MaterialTheme.colorScheme.error) else Spacer(Modifier.width(1.dp))
                             Text("${text.length}/$maxLength", color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     }
@@ -559,14 +565,14 @@ fun ProfessionalEditDialog(
                     TextButton(
                         onClick = onDismiss,
                         shape = RoundedCornerShape(12.dp)
-                    ) { Text("Cancel", color = MaterialTheme.colorScheme.onSurfaceVariant) }
+                    ) { Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant) }
                     Spacer(modifier = Modifier.width(12.dp))
                     Button(
                         onClick = { if (isValid) { onSave(text); onDismiss() } },
                         shape = RoundedCornerShape(12.dp),
                         enabled = isValid,
                         contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp)
-                    ) { Text("Save Changes", fontWeight = FontWeight.Bold) }
+                    ) { Text(stringResource(R.string.save_changes), fontWeight = FontWeight.Bold) }
                 }
             }
         }
@@ -579,7 +585,11 @@ fun ProfessionalGenderDialog(
     onDismiss: () -> Unit,
     onSave: (String) -> Unit
 ) {
-    val genders = listOf("Male", "Female", "Prefer not to say")
+    val genders = listOf(
+        stringResource(R.string.male) to "Male",
+        stringResource(R.string.female) to "Female",
+        stringResource(R.string.prefer_not_to_say) to "Prefer not to say"
+    )
     Dialog(
         onDismissRequest = onDismiss
     ) {
@@ -593,7 +603,7 @@ fun ProfessionalGenderDialog(
         ) {
             Column(modifier = Modifier.padding(28.dp)) {
                 Text(
-                    text = "Select Gender",
+                    text = stringResource(R.string.select_gender),
                     fontWeight = FontWeight.ExtraBold,
                     fontSize = 22.sp,
                     modifier = Modifier.fillMaxWidth(),
@@ -602,10 +612,10 @@ fun ProfessionalGenderDialog(
                 )
                 Spacer(modifier = Modifier.height(28.dp))
                 
-                genders.forEach { option ->
-                    val selected = currentGender == option
+                genders.forEach { (label, value) ->
+                    val selected = currentGender == value
                     Surface(
-                        onClick = { onSave(option); onDismiss() },
+                        onClick = { onSave(value); onDismiss() },
                         shape = RoundedCornerShape(16.dp),
                         color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
                         border = if (selected) null else androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)),
@@ -622,7 +632,7 @@ fun ProfessionalGenderDialog(
                             )
                             Spacer(modifier = Modifier.width(12.dp))
                             Text(
-                                text = option,
+                                text = label,
                                 color = if (selected) Color.White else MaterialTheme.colorScheme.onSurface,
                                 fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
                                 fontSize = 16.sp
@@ -635,7 +645,7 @@ fun ProfessionalGenderDialog(
                     onClick = onDismiss,
                     modifier = Modifier.align(Alignment.End),
                     shape = RoundedCornerShape(12.dp)
-                ) { Text("Cancel", color = MaterialTheme.colorScheme.onSurfaceVariant) }
+                ) { Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant) }
             }
         }
     }

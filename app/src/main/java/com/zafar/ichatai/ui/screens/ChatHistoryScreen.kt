@@ -19,9 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.zafar.ichatai.R
 import com.zafar.ichatai.ui.components.GlowBackground
 import com.zafar.ichatai.ui.components.GlassCard
 import com.zafar.ichatai.data.local.entity.ChatSessionEntity
@@ -54,8 +56,8 @@ fun ChatHistoryScreen(
                 showDeleteDialog = false
                 sessionToDelete = null
             },
-            title = { Text("Delete Chat") },
-            text = { Text("Are you sure you want to delete this chat? This action cannot be undone.") },
+            title = { Text(stringResource(R.string.delete_chat_title)) },
+            text = { Text(stringResource(R.string.delete_chat_msg)) },
             confirmButton = {
                 Button(
                     onClick = {
@@ -65,7 +67,7 @@ fun ChatHistoryScreen(
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
                 ) {
-                    Text("Delete")
+                    Text(stringResource(R.string.delete))
                 }
             },
             dismissButton = {
@@ -73,7 +75,7 @@ fun ChatHistoryScreen(
                     showDeleteDialog = false
                     sessionToDelete = null
                 }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.cancel))
                 }
             }
         )
@@ -83,16 +85,16 @@ fun ChatHistoryScreen(
         Scaffold(
             topBar = {
                 CenterAlignedTopAppBar(
-                    title = { Text("Chat History", fontWeight = FontWeight.Bold) },
+                    title = { Text(stringResource(R.string.chat_history), fontWeight = FontWeight.Bold) },
                     navigationIcon = {
                         IconButton(onClick = onBackClick) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
                         }
                     },
                     actions = {
                         Box {
                             IconButton(onClick = { showSortMenu = true }) {
-                                Icon(Icons.AutoMirrored.Filled.Sort, contentDescription = "Sort")
+                                Icon(Icons.AutoMirrored.Filled.Sort, contentDescription = null)
                             }
                             DropdownMenu(
                                 expanded = showSortMenu,
@@ -114,7 +116,7 @@ fun ChatHistoryScreen(
                         }
                         Box {
                             IconButton(onClick = { showFilterMenu = true }) {
-                                Icon(Icons.Default.FilterList, contentDescription = "Filter")
+                                Icon(Icons.Default.FilterList, contentDescription = null)
                             }
                             DropdownMenu(
                                 expanded = showFilterMenu,
@@ -155,7 +157,7 @@ fun ChatHistoryScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 12.dp),
-                    placeholder = { Text("Search history...", color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)) },
+                    placeholder = { Text(stringResource(R.string.search_history), color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)) },
                     leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = MaterialTheme.colorScheme.primary) },
                     shape = RoundedCornerShape(28.dp),
                     singleLine = true,
@@ -168,7 +170,8 @@ fun ChatHistoryScreen(
                 )
 
                 // History List
-                val groupedHistory = groupHistoryByDate(chatHistory)
+                val context = androidx.compose.ui.platform.LocalContext.current
+                val groupedHistory = groupHistoryByDate(chatHistory, context)
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(vertical = 8.dp),
@@ -177,7 +180,7 @@ fun ChatHistoryScreen(
                     if (chatHistory.isEmpty()) {
                         item {
                             Box(modifier = Modifier.fillParentMaxSize(), contentAlignment = Alignment.Center) {
-                                Text("No history found", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                Text(stringResource(R.string.no_history_found), color = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
                         }
                     } else {
@@ -218,6 +221,7 @@ fun HistoryItemCard(
     onFavorite: () -> Unit
 ) {
     val isFavorite = item.session.isPinned
+    val context = androidx.compose.ui.platform.LocalContext.current
     
     GlassCard(
         onClick = onClick,
@@ -266,7 +270,11 @@ fun HistoryItemCard(
                 Spacer(modifier = Modifier.height(4.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = "Last accessed: ${TimeUtils.formatRelativeTime(item.session.timestamp)} | ${item.messageCount} messages",
+                        text = stringResource(
+                            R.string.last_accessed_format, 
+                            TimeUtils.formatRelativeTime(item.session.timestamp, context), 
+                            item.messageCount
+                        ),
                         fontSize = 12.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -276,7 +284,7 @@ fun HistoryItemCard(
             IconButton(onClick = onFavorite) {
                 Icon(
                     imageVector = if (isFavorite) Icons.Default.Star else Icons.Default.StarBorder,
-                    contentDescription = "Favorite",
+                    contentDescription = null,
                     tint = if (isFavorite) Color(0xFFFFC107) else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                     modifier = Modifier.size(20.dp)
                 )
@@ -285,7 +293,7 @@ fun HistoryItemCard(
             IconButton(onClick = onDelete) {
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = "Delete",
+                    contentDescription = stringResource(R.string.delete),
                     tint = MaterialTheme.colorScheme.error.copy(alpha = 0.7f),
                     modifier = Modifier.size(20.dp)
                 )
@@ -294,7 +302,7 @@ fun HistoryItemCard(
     }
 }
 
-fun groupHistoryByDate(sessions: List<ChatSessionWithCount>): Map<String, List<ChatSessionWithCount>> {
+fun groupHistoryByDate(sessions: List<ChatSessionWithCount>, context: android.content.Context): Map<String, List<ChatSessionWithCount>> {
     val grouped = linkedMapOf<String, MutableList<ChatSessionWithCount>>()
     val today = Calendar.getInstance().apply { set(Calendar.HOUR_OF_DAY, 0); set(Calendar.MINUTE, 0); set(Calendar.SECOND, 0); set(Calendar.MILLISECOND, 0) }
     val yesterday = (today.clone() as Calendar).apply { add(Calendar.DATE, -1) }
@@ -303,10 +311,10 @@ fun groupHistoryByDate(sessions: List<ChatSessionWithCount>): Map<String, List<C
     sessions.forEach { item ->
         val sessionDate = Calendar.getInstance().apply { timeInMillis = item.session.timestamp }
         val header = when {
-            sessionDate.after(today) -> "Today"
-            sessionDate.after(yesterday) -> "Yesterday"
-            sessionDate.after(lastWeek) -> "Last Week"
-            else -> "Older"
+            sessionDate.after(today) -> context.getString(R.string.today)
+            sessionDate.after(yesterday) -> context.getString(R.string.yesterday)
+            sessionDate.after(lastWeek) -> context.getString(R.string.this_week)
+            else -> context.getString(R.string.older)
         }
         grouped.getOrPut(header) { mutableListOf() }.add(item)
     }

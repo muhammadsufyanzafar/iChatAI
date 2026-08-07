@@ -23,11 +23,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.gson.GsonBuilder
+import com.zafar.ichatai.R
 import com.zafar.ichatai.ui.components.GlassCard
 import com.zafar.ichatai.ui.components.GlowBackground
 import com.zafar.ichatai.viewmodel.StorageUsageState
@@ -72,9 +74,9 @@ fun StorageManagementScreen(
                                 writer.write(content)
                             }
                         }
-                        Toast.makeText(context, "Export successful", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, context.getString(R.string.export_successful), Toast.LENGTH_SHORT).show()
                     } catch (e: Exception) {
-                        Toast.makeText(context, "Export failed: ${e.message}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, context.getString(R.string.export_failed, e.message), Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -87,14 +89,14 @@ fun StorageManagementScreen(
                 TopAppBar(
                     title = {
                         Text(
-                            "Data & Storage Management",
+                            stringResource(R.string.storage_management_title),
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface
                         )
                     },
                     navigationIcon = {
                         IconButton(onClick = onBackClick) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
@@ -121,7 +123,7 @@ fun StorageManagementScreen(
                         cacheSize = storageState.cacheSizeStr,
                         onClearCache = {
                             viewModel.clearCache {
-                                Toast.makeText(context, "Cache cleared successfully", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, context.getString(R.string.cache_cleared), Toast.LENGTH_SHORT).show()
                             }
                         },
                         onClearHistory = { showDeleteConfirm = true }
@@ -163,13 +165,13 @@ fun StorageManagementScreen(
             onDismissRequest = { showDeleteConfirm = false },
             title = {
                 Text(
-                    "Clear Chat History?",
+                    stringResource(R.string.clear_chat_history_title),
                     color = MaterialTheme.colorScheme.onSurface
                 )
             },
             text = {
                 Text(
-                    "This will permanently delete all your conversation logs. This action cannot be undone.",
+                    stringResource(R.string.clear_chat_history_msg),
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
                 )
             },
@@ -177,18 +179,18 @@ fun StorageManagementScreen(
                 TextButton(
                     onClick = {
                         viewModel.clearChatHistory {
-                            Toast.makeText(context, "Chat history cleared", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, context.getString(R.string.chat_history_cleared), Toast.LENGTH_SHORT).show()
                         }
                         showDeleteConfirm = false
                     },
                     colors = ButtonDefaults.textButtonColors(contentColor = Color.Red)
                 ) {
-                    Text("Delete All")
+                    Text(stringResource(R.string.delete_all))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDeleteConfirm = false }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.cancel))
                 }
             }
         )
@@ -199,7 +201,7 @@ fun StorageManagementScreen(
             onDismissRequest = { showExportFormatDialog = false },
             title = {
                 Text(
-                    "Select Export Format",
+                    stringResource(R.string.select_export_format),
                     color = MaterialTheme.colorScheme.onSurface
                 )
             },
@@ -214,7 +216,7 @@ fun StorageManagementScreen(
                     ) {
                         RadioButton(selected = exportFormat == "JSON", onClick = { exportFormat = "JSON" })
                         Text(
-                            "JSON (.json)",
+                            stringResource(R.string.json_format),
                             modifier = Modifier.padding(start = 8.dp),
                             color = MaterialTheme.colorScheme.onSurface
                         )
@@ -228,7 +230,7 @@ fun StorageManagementScreen(
                     ) {
                         RadioButton(selected = exportFormat == "CSV", onClick = { exportFormat = "CSV" })
                         Text(
-                            "CSV (.csv)",
+                            stringResource(R.string.csv_format),
                             modifier = Modifier.padding(start = 8.dp),
                             color = MaterialTheme.colorScheme.onSurface
                         )
@@ -244,7 +246,7 @@ fun StorageManagementScreen(
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
-                    Text("Export")
+                    Text(stringResource(R.string.export))
                 }
             }
         )
@@ -256,7 +258,7 @@ fun StorageUsageCard(state: StorageUsageState) {
     GlassCard(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
-                "Storage Usage",
+                stringResource(R.string.storage_usage),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface
@@ -305,10 +307,10 @@ fun StorageUsageCard(state: StorageUsageState) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                StorageLegendItem(MaterialTheme.colorScheme.primary, "Conversations", state.conversationsSizeStr)
-                StorageLegendItem(MaterialTheme.colorScheme.secondary, "Media", state.mediaSizeStr)
-                StorageLegendItem(MaterialTheme.colorScheme.tertiary, "Cache", state.cacheSizeStr)
-                StorageLegendItem(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f), "Free Space", "(rest)")
+                StorageLegendItem(MaterialTheme.colorScheme.primary, stringResource(R.string.conversations), state.conversationsSizeStr)
+                StorageLegendItem(MaterialTheme.colorScheme.secondary, stringResource(R.string.media), state.mediaSizeStr)
+                StorageLegendItem(MaterialTheme.colorScheme.tertiary, stringResource(R.string.cache), state.cacheSizeStr)
+                StorageLegendItem(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f), stringResource(R.string.free_space), "(rest)")
             }
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -320,13 +322,13 @@ fun StorageUsageCard(state: StorageUsageState) {
 
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 Text(
-                    "${state.usedSpaceStr} Used",
+                    stringResource(R.string.used_format, state.usedSpaceStr),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
-                    "${state.totalSpaceStr} Total",
+                    stringResource(R.string.total_format, state.totalSpaceStr),
                     fontSize = 14.sp,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                 )
@@ -393,7 +395,7 @@ fun CleanupToolsCard(
     GlassCard(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
-                "Cleanup Tools",
+                stringResource(R.string.cleanup_tools),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface
@@ -402,9 +404,9 @@ fun CleanupToolsCard(
 
             CleanupItem(
                 icon = Icons.Default.DeleteOutline,
-                title = "Clear App Cache",
-                subtitle = "Temp files and images. Frees up ~$cacheSize.",
-                buttonText = "Clear Cache",
+                title = stringResource(R.string.clear_app_cache),
+                subtitle = stringResource(R.string.clear_cache_desc, cacheSize),
+                buttonText = stringResource(R.string.clear_cache),
                 onButtonClick = onClearCache
             )
 
@@ -412,9 +414,9 @@ fun CleanupToolsCard(
 
             CleanupItem(
                 icon = Icons.Default.ChatBubbleOutline,
-                title = "Clear Chat History",
-                subtitle = "Permanently delete all conversation logs.",
-                buttonText = "Clear History",
+                title = stringResource(R.string.clear_chat_history),
+                subtitle = stringResource(R.string.clear_history_desc),
+                buttonText = stringResource(R.string.clear_history),
                 onButtonClick = onClearHistory
             )
         }
@@ -468,7 +470,7 @@ fun DataExportCard(onConfigureExport: () -> Unit) {
     GlassCard(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
-                "Data Export",
+                stringResource(R.string.data_export),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface
@@ -488,13 +490,13 @@ fun DataExportCard(onConfigureExport: () -> Unit) {
                 Spacer(modifier = Modifier.width(16.dp))
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        "Export Chat History",
+                        stringResource(R.string.export_chat_history),
                         fontWeight = FontWeight.Bold,
                         fontSize = 15.sp,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                        "Download all messages as JSON or CSV.",
+                        stringResource(R.string.export_desc),
                         fontSize = 12.sp,
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                     )
@@ -508,7 +510,7 @@ fun DataExportCard(onConfigureExport: () -> Unit) {
                     modifier = Modifier.height(36.dp),
                     border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.5f))
                 ) {
-                    Text("Configure Export", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                    Text(stringResource(R.string.configure_export), fontSize = 12.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
                 }
             }
         }
@@ -529,7 +531,7 @@ fun AutoCleanupCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    "Auto-Cleanup Settings",
+                    stringResource(R.string.auto_cleanup_settings),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
@@ -547,7 +549,7 @@ fun AutoCleanupCard(
             Spacer(modifier = Modifier.height(8.dp))
             
             Text(
-                text = if (isEnabled) "Status: Active & Working" else "Status: Inactive",
+                text = if (isEnabled) stringResource(R.string.status_active) else stringResource(R.string.status_inactive),
                 color = if (isEnabled) Color(0xFF4ADE80) else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold
@@ -568,19 +570,19 @@ fun AutoCleanupCard(
                 Spacer(modifier = Modifier.width(16.dp))
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        "Maintenance Policy",
+                        stringResource(R.string.maintenance_policy),
                         fontWeight = FontWeight.Bold,
                         fontSize = 15.sp,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                        "Automatically delete messages older than selected days.",
+                        stringResource(R.string.maintenance_policy_desc),
                         fontSize = 12.sp,
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                     )
                 }
                 Text(
-                    text = "Configure",
+                    text = stringResource(R.string.configure),
                     color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Bold,
                     fontSize = 13.sp,
@@ -603,14 +605,14 @@ fun AutoCleanupDialog(
         onDismissRequest = onDismiss,
         title = {
             Text(
-                "Auto-Cleanup Policy",
+                stringResource(R.string.auto_cleanup_policy),
                 color = MaterialTheme.colorScheme.onSurface
             )
         },
         text = {
             Column {
                 Text(
-                    "Delete messages older than ${days.toInt()} days.",
+                    stringResource(R.string.delete_older_than, days.toInt()),
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -626,12 +628,12 @@ fun AutoCleanupDialog(
                 )
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                     Text(
-                        "7 Days",
+                        stringResource(R.string.days_7),
                         fontSize = 10.sp,
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                     )
                     Text(
-                        "90 Days",
+                        stringResource(R.string.days_90),
                         fontSize = 10.sp,
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                     )
@@ -643,12 +645,12 @@ fun AutoCleanupDialog(
                 onClick = { onConfirm(days.toInt()) },
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
             ) {
-                Text("Save")
+                Text(stringResource(R.string.save))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.cancel))
             }
         }
     )

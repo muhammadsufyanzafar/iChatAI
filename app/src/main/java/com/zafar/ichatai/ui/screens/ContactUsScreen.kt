@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -45,7 +46,7 @@ fun ContactUsScreen(
                 TopAppBar(
                     title = {
                         Text(
-                            "Contact Us",
+                            stringResource(R.string.contact_us),
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.ExtraBold,
                             color = colorScheme.onBackground
@@ -55,7 +56,7 @@ fun ContactUsScreen(
                         IconButton(onClick = onBackClick) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back",
+                                contentDescription = stringResource(R.string.back),
                                 tint = colorScheme.onBackground
                             )
                         }
@@ -78,15 +79,15 @@ fun ContactUsScreen(
             ) {
                 // Get in Touch Section
                 item {
-                    ContactSection(title = "Get in Touch") {
+                    ContactSection(title = stringResource(R.string.get_in_touch)) {
                         GlassCard(modifier = Modifier.fillMaxWidth()) {
                             Column(modifier = Modifier.padding(16.dp)) {
                                 // Live Chat
                                 ContactMethodItem(
                                     icon = Icons.Outlined.ChatBubbleOutline,
-                                    title = "Chat on WhatsApp",
-                                    subtitle = "Chat with us through WhatsApp for quick solutions.",
-                                    actionLabel = "Start Chat",
+                                    title = stringResource(R.string.chat_whatsapp),
+                                    subtitle = stringResource(R.string.chat_whatsapp_desc),
+                                    actionLabel = stringResource(R.string.start_chat),
                                     isButton = true,
                                     onActionClick = {
                                         startWhatsAppChat(context)
@@ -101,9 +102,9 @@ fun ContactUsScreen(
                                 // Email Support
                                 ContactMethodItem(
                                     icon = Icons.Outlined.Email,
-                                    title = "Email Support",
-                                    subtitle = "Send us a detailed inquiry.",
-                                    actionLabel = "Compose Email",
+                                    title = stringResource(R.string.email_support),
+                                    subtitle = stringResource(R.string.email_support_desc),
+                                    actionLabel = stringResource(R.string.compose_email),
                                     onActionClick = {
                                         sendEmail(context)
                                     }
@@ -117,9 +118,9 @@ fun ContactUsScreen(
                                 // Send Feedback
                                 ContactMethodItem(
                                     icon = Icons.Outlined.Feedback,
-                                    title = "Send Feedback",
-                                    subtitle = "Help us improve by sharing your thoughts.",
-                                    actionLabel = "Send Feedback",
+                                    title = stringResource(R.string.feedback),
+                                    subtitle = stringResource(R.string.send_feedback_desc),
+                                    actionLabel = stringResource(R.string.feedback),
                                     onActionClick = onNavigateToFeedback
                                 )
 
@@ -131,9 +132,9 @@ fun ContactUsScreen(
                                 // Official Website
                                 ContactMethodItem(
                                     icon = Icons.Outlined.Language,
-                                    title = "Official Website",
-                                    subtitle = "Visit our website for more information.",
-                                    actionLabel = "Visit Site",
+                                    title = stringResource(R.string.official_website),
+                                    subtitle = stringResource(R.string.visit_site_desc),
+                                    actionLabel = stringResource(R.string.visit_site),
                                     onActionClick = {
                                         openUrl(context, "https://ichatai-website.is-cool.dev/")
                                     }
@@ -145,7 +146,7 @@ fun ContactUsScreen(
 
                 // Follow Us Section
                 item {
-                    ContactSection(title = "Follow Us") {
+                    ContactSection(title = stringResource(R.string.follow_us)) {
                         GlassCard(modifier = Modifier.fillMaxWidth()) {
                             Row(
                                 modifier = Modifier
@@ -187,7 +188,7 @@ fun ContactUsScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "Frequently Asked Questions (FAQ)",
+                            text = stringResource(R.string.faq_full),
                             style = MaterialTheme.typography.bodyMedium,
                             color = colorScheme.primary,
                             fontWeight = FontWeight.Bold,
@@ -336,7 +337,7 @@ private fun startWhatsAppChat(context: Context) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         context.startActivity(intent)
     } catch (_: Exception) {
-        Toast.makeText(context, "WhatsApp is not installed on this device", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, context.getString(R.string.whatsapp_not_installed), Toast.LENGTH_SHORT).show()
     }
 }
 
@@ -347,9 +348,9 @@ private fun sendEmail(context: Context) {
             putExtra(Intent.EXTRA_SUBJECT, "iChatAI Support Request")
             putExtra(Intent.EXTRA_TEXT, "Hello iChatAI Support Team,\n\n")
         }
-        context.startActivity(Intent.createChooser(intent, "Compose Email"))
+        context.startActivity(Intent.createChooser(intent, context.getString(R.string.compose_email)))
     } catch (_: Exception) {
-        Toast.makeText(context, "No email app found", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, context.getString(R.string.no_email_app), Toast.LENGTH_SHORT).show()
     }
 }
 
@@ -359,6 +360,6 @@ private fun openUrl(context: Context, url: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         context.startActivity(intent)
     } catch (_: Exception) {
-        Toast.makeText(context, "Unable to open link", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, context.getString(R.string.unable_open_link), Toast.LENGTH_SHORT).show()
     }
 }

@@ -46,10 +46,12 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.zafar.ichatai.R
 import com.zafar.ichatai.data.local.entity.CreditTransactionEntity
 import com.zafar.ichatai.ui.components.GlassCard
 import com.zafar.ichatai.ui.components.GlowBackground
@@ -74,10 +76,10 @@ fun CreditsScreen(
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Credits", fontWeight = FontWeight.Bold) },
+                    title = { Text(stringResource(R.string.credits_title), fontWeight = FontWeight.Bold) },
                     navigationIcon = {
                         IconButton(onClick = onBackClick) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
@@ -112,7 +114,7 @@ fun CreditsScreen(
 
                 item {
                     Text(
-                        text = "Credit History",
+                        text = stringResource(R.string.credit_history),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onBackground
@@ -164,7 +166,7 @@ fun AvailableCreditsCard(credits: Int) {
             )
 
             Text(
-                text = "Available Credits",
+                text = stringResource(R.string.available_credits),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -193,7 +195,7 @@ fun BoostCreditsCard(onCheckInClick: () -> Unit, onWatchAdClick: () -> Unit) {
             modifier = Modifier.padding(24.dp)
         ) {
             Text(
-                text = "Boost Your Credits",
+                text = stringResource(R.string.boost_your_credits),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface
@@ -203,8 +205,8 @@ fun BoostCreditsCard(onCheckInClick: () -> Unit, onWatchAdClick: () -> Unit) {
 
             BoostItem(
                 icon = Icons.Default.CalendarMonth,
-                title = "Daily Check In",
-                buttonText = "Check In",
+                title = stringResource(R.string.daily_checkin),
+                buttonText = stringResource(R.string.check_in),
                 onClick = onCheckInClick
             )
 
@@ -215,9 +217,9 @@ fun BoostCreditsCard(onCheckInClick: () -> Unit, onWatchAdClick: () -> Unit) {
 
             BoostItem(
                 icon = Icons.Default.PlayCircle,
-                title = "Watch Short Ad",
-                subtitle = "+20 Credits",
-                buttonText = "Watch Ad",
+                title = stringResource(R.string.watch_short_ad),
+                subtitle = stringResource(R.string.watch_ad_reward),
+                buttonText = stringResource(R.string.watch_short_ad),
                 onClick = onWatchAdClick,
                 buttonColor = MaterialTheme.colorScheme.primary
             )

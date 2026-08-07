@@ -10,10 +10,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.zafar.ichatai.R
 import com.zafar.ichatai.data.AIModel
 import com.zafar.ichatai.ui.components.GlassCard
 import com.zafar.ichatai.ui.components.GlowBackground
@@ -36,7 +38,7 @@ fun AIModelPreferencesScreen(
                 TopAppBar(
                     title = {
                         Text(
-                            "AI Model Preferences",
+                            stringResource(R.string.ai_model_preferences_title),
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface
@@ -46,7 +48,7 @@ fun AIModelPreferencesScreen(
                         IconButton(onClick = onBackClick) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back",
+                                contentDescription = stringResource(R.string.back),
                                 tint = MaterialTheme.colorScheme.onSurface
                             )
                         }
@@ -69,7 +71,7 @@ fun AIModelPreferencesScreen(
                 // Primary AI Model Section
                 item {
                     Text(
-                        text = "Primary AI Model",
+                        text = stringResource(R.string.primary_ai_model),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface,
@@ -108,7 +110,7 @@ fun AIModelPreferencesScreen(
                 // Response Creativity Section
                 item {
                     Text(
-                        text = "Response Creativity",
+                        text = stringResource(R.string.response_creativity),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface,
@@ -137,15 +139,15 @@ fun AIModelPreferencesScreen(
                                     .padding(horizontal = 4.dp),
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                CreativityLabel("Precise", isActive = temperature < 0.3f)
-                                CreativityLabel("Balanced", isActive = temperature in 0.3f..0.7f)
-                                CreativityLabel("Imaginative", isActive = temperature > 0.7f)
+                                CreativityLabel(stringResource(R.string.precise), isActive = temperature < 0.3f)
+                                CreativityLabel(stringResource(R.string.balanced), isActive = temperature in 0.3f..0.7f)
+                                CreativityLabel(stringResource(R.string.imaginative), isActive = temperature > 0.7f)
                             }
                             
                             Spacer(modifier = Modifier.height(24.dp))
                             
                             Text(
-                                text = "Adjust the model's tendency to generate novel or conservative responses.",
+                                text = stringResource(R.string.creativity_description),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
                                 lineHeight = 16.sp

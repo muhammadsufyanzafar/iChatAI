@@ -34,10 +34,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.zafar.ichatai.R
 import com.zafar.ichatai.ui.components.GlassCard
 import com.zafar.ichatai.ui.components.GlowBackground
 import com.zafar.ichatai.ui.theme.DarkSuccess
@@ -57,7 +59,7 @@ fun SubscriptionScreen(
                 CenterAlignedTopAppBar(
                     title = {
                         Text(
-                            text = "Subscription",
+                            text = stringResource(R.string.subscription),
                             style = MaterialTheme.typography.titleLarge,
                             color = colorScheme.onSurface,
                             fontWeight = FontWeight.Bold
@@ -67,7 +69,7 @@ fun SubscriptionScreen(
                         IconButton(onClick = onBackClick) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                                contentDescription = "Back",
+                                contentDescription = stringResource(R.string.back),
                                 tint = colorScheme.onSurface
                             )
                         }
@@ -75,7 +77,7 @@ fun SubscriptionScreen(
                     actions = {
                         TextButton(onClick = { /* Restore Purchases Logic */ }) {
                             Text(
-                                text = "Restore",
+                                text = stringResource(R.string.restore),
                                 color = colorScheme.onSurface.copy(alpha = 0.7f),
                                 fontSize = 14.sp,
                                 textDecoration = TextDecoration.Underline
@@ -101,7 +103,7 @@ fun SubscriptionScreen(
                 Spacer(modifier = Modifier.height(32.dp))
 
                 Text(
-                    text = "Available Plans",
+                    text = stringResource(R.string.available_plans),
                     style = MaterialTheme.typography.titleMedium,
                     color = colorScheme.onSurface,
                     fontWeight = FontWeight.Bold,
@@ -114,30 +116,30 @@ fun SubscriptionScreen(
                 ) {
                     PlanCard(
                         modifier = Modifier.weight(1f),
-                        title = "Pro Monthly",
+                        title = stringResource(R.string.pro_monthly),
                         price = "$19.99",
-                        duration = "month",
+                        duration = stringResource(R.string.month),
                         features = listOf(
-                            "Unlimited Messages",
-                            "Faster AI Responses",
-                            "Priority Support"
+                            stringResource(R.string.unlimited_messages),
+                            stringResource(R.string.faster_ai_responses),
+                            stringResource(R.string.priority_support)
                         ),
-                        buttonText = "Coming Soon",
+                        buttonText = stringResource(R.string.coming_soon),
                         isPopular = false
                     )
                     PlanCard(
                         modifier = Modifier.weight(1f),
-                        title = "Pro Annual",
+                        title = stringResource(R.string.pro_annual),
                         price = "$159.99",
-                        duration = "year",
+                        duration = stringResource(R.string.year),
                         features = listOf(
-                            "All Pro Monthly Benefits",
-                            "Access to Beta Features",
-                            "Early Access to New Models"
+                            stringResource(R.string.all_pro_monthly_benefits),
+                            stringResource(R.string.access_beta_features),
+                            stringResource(R.string.early_access_new_models)
                         ),
-                        buttonText = "Coming Soon",
+                        buttonText = stringResource(R.string.coming_soon),
                         isPopular = true,
-                        savingsText = "(Save 20%)"
+                        savingsText = stringResource(R.string.save_percent, 20)
                     )
                 }
                 
@@ -157,20 +159,20 @@ fun CurrentPlanCard() {
             modifier = Modifier.padding(24.dp)
         ) {
             Text(
-                text = "Current Plan: Free Plan",
+                text = stringResource(R.string.current_plan_format, stringResource(R.string.free_plan)),
                 style = MaterialTheme.typography.headlineSmall,
                 color = colorScheme.onSurface,
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(6.dp))
             Text(
-                text = "Renews: N/A",
+                text = stringResource(R.string.renews_format, stringResource(R.string.na)),
                 style = MaterialTheme.typography.bodyMedium,
                 color = colorScheme.onSurface.copy(alpha = 0.6f)
             )
             Spacer(modifier = Modifier.height(12.dp))
             Text(
-                text = "Benefits Active",
+                text = stringResource(R.string.benefits_active),
                 style = MaterialTheme.typography.bodyLarge,
                 color = DarkSuccess,
                 fontWeight = FontWeight.SemiBold
@@ -189,7 +191,7 @@ fun CurrentPlanCard() {
                     shape = RoundedCornerShape(12.dp),
                     contentPadding = PaddingValues(vertical = 12.dp)
                 ) {
-                    Text("Manage Billing", color = colorScheme.onSurface, fontSize = 14.sp)
+                    Text(stringResource(R.string.manage_billing), color = colorScheme.onSurface, fontSize = 14.sp)
                 }
                 Button(
                     onClick = { /* Switch Plan */ },
@@ -200,7 +202,7 @@ fun CurrentPlanCard() {
                     shape = RoundedCornerShape(12.dp),
                     contentPadding = PaddingValues(vertical = 12.dp)
                 ) {
-                    Text("Switch Plan", color = colorScheme.onSurface, fontSize = 14.sp)
+                    Text(stringResource(R.string.switch_plan), color = colorScheme.onSurface, fontSize = 14.sp)
                 }
             }
         }
@@ -233,7 +235,7 @@ fun PlanCard(
                     modifier = Modifier.align(Alignment.End)
                 ) {
                     Text(
-                        text = "Best Value",
+                        text = stringResource(R.string.best_value),
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                         color = colorScheme.secondary,
                         fontSize = 10.sp,

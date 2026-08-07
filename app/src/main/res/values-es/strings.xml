@@ -54,4 +54,37 @@
     <string name="chat_whatsapp">Chatear en WhatsApp</string>
     <string name="view_service_status">Ver estado del servicio</string>
     <string name="whatsapp_not_installed">WhatsApp no está instalado</string>
+
+    <!-- Main Screen -->
+    <string name="ask_anything">Pregunta cualquier cosa...</string>
+    <string name="quick_prompt_chips">Sugerencias rápidas</string>
+    <string name="exit_app_title">Salir de la aplicación</string>
+    <string name="exit_app_message">¿Estás seguro de que quieres salir de iChatAI? Tu sesión actual se guarda automáticamente.</string>
+    <string name="exit">Salir</string>
+    <string name="cancel">Cancelar</string>
+    <string name="thinking">Pensando...</string>
+
+    <!-- Credits & Rewards -->
+    <string name="credits_title">Créditos</string>
+    <string name="available_credits">Créditos disponibles</string>
+    <string name="boost_your_credits">Aumenta tus créditos</string>
+    <string name="daily_checkin">Registro diario</string>
+    <string name="check_in">Registrarse</string>
+    <string name="claimed">Reclamado</string>
+    <string name="claim">Reclamar</string>
+    <string name="collected">Recolectado</string>
+
+    <!-- Saved Prompts -->
+    <string name="saved_prompts">Prompts guardados</string>
+    <string name="search_prompts">Buscar prompts...</string>
+    <string name="my_folders">Mis carpetas</string>
+    <string name="new_folder">Nueva carpeta</string>
+    <string name="new_prompt">Nuevo prompt</string>
+    <string name="save">Guardar</string>
+    <string name="delete">Eliminar</string>
+
+    <!-- General -->
+    <string name="close">Cerrar</string>
+    <string name="app_version">Versión de la aplicación</string>
+    <string name="latest_version_msg">¡Ya tienes la última versión!</string>
 </resources>

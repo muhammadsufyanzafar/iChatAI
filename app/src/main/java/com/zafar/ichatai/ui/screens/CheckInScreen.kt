@@ -30,6 +30,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -37,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.zafar.ichatai.R
 import com.zafar.ichatai.viewmodel.CheckInViewModel
 import com.zafar.ichatai.ui.components.GlowBackground
 import com.zafar.ichatai.ui.components.GlassCard
@@ -87,10 +89,10 @@ fun CheckInScreen(
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Daily Check-in", fontWeight = FontWeight.Bold) },
+                    title = { Text(stringResource(R.string.daily_checkin), fontWeight = FontWeight.Bold) },
                     navigationIcon = {
                         IconButton(onClick = onBackClick) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
@@ -179,7 +181,7 @@ fun StreakInfoCard(streak: Int, fireColor: Color, streakActive: Boolean) {
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "Your 7-Day Check-in Streak",
+                text = stringResource(R.string.streak_title),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface
@@ -202,7 +204,7 @@ fun StreakInfoCard(streak: Int, fireColor: Color, streakActive: Boolean) {
                         strokeCap = androidx.compose.ui.graphics.StrokeCap.Round
                     )
                     Text(
-                        text = "$streak/7",
+                        text = stringResource(R.string.streak_format, streak),
                         fontWeight = FontWeight.Bold,
                         fontSize = 18.sp,
                         color = MaterialTheme.colorScheme.onSurface
@@ -212,7 +214,7 @@ fun StreakInfoCard(streak: Int, fireColor: Color, streakActive: Boolean) {
                 Spacer(modifier = Modifier.width(24.dp))
 
                 Text(
-                    text = "Check in daily to claim rewards and win a jackpot on Day 7!",
+                    text = stringResource(R.string.streak_description),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.weight(1f)
@@ -252,7 +254,7 @@ fun DayCard(
                 horizontalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "Day $day",
+                    text = stringResource(R.string.day_format, day),
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Bold,
                     color = if (isClaimed) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f) else MaterialTheme.colorScheme.onSurface
@@ -280,11 +282,11 @@ fun DayCard(
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
-                    Text("Check In", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.check_in), fontSize = 11.sp, fontWeight = FontWeight.Bold)
                 }
             } else {
                 Text(
-                    text = if (isClaimed) "Claimed" else "Locked",
+                    text = if (isClaimed) stringResource(R.string.claimed) else stringResource(R.string.locked),
                     fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
                     modifier = Modifier.padding(bottom = 4.dp)
@@ -317,20 +319,20 @@ fun JackpotCard(
         ) {
             Column {
                 Text(
-                    text = "Day 7",
+                    text = stringResource(R.string.day_format, 7),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     color = if (isClaimed) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f) else Color(0xFFFFD700)
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "JACKPOT!",
+                    text = stringResource(R.string.jackpot),
                     fontSize = 24.sp,
                     fontWeight = FontWeight.ExtraBold,
                     color = if (isClaimed) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f) else Color.White
                 )
                 Text(
-                    text = "+100 Credits",
+                    text = stringResource(R.string.credits_reward, 100),
                     fontSize = 14.sp,
                     color = if (isClaimed) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f) else Color(0xFFFFD700)
                 )
@@ -351,10 +353,10 @@ fun JackpotCard(
                         shape = RoundedCornerShape(12.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                     ) {
-                        Text("Claim", fontWeight = FontWeight.Bold)
+                        Text(stringResource(R.string.claim), fontWeight = FontWeight.Bold)
                     }
                 } else if (isClaimed) {
-                    Text("Collected", color = Color(0xFF10B981), fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                    Text(stringResource(R.string.collected), color = Color(0xFF10B981), fontWeight = FontWeight.Bold, fontSize = 12.sp)
                 }
             }
         }

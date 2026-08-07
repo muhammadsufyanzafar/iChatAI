@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">iChatAI</string>
     <string name="language_title">Language</string>
     <string name="app_language">App Language</string>
@@ -76,4 +76,289 @@
     <string name="lang_hi">Hindi (Indian)</string>
     <string name="lang_ar">Arabic</string>
     <string name="lang_pt">Português</string>
+
+    <!-- Main Screen -->
+    <string name="ask_anything">Ask anything...</string>
+    <string name="quick_prompt_chips">Quick Prompt Chips</string>
+    <string name="exit_app_title">Exit Application</string>
+    <string name="exit_app_message">Are you sure you want to leave iChatAI? Your current session is automatically saved.</string>
+    <string name="exit">Exit</string>
+    <string name="cancel">Cancel</string>
+    <string name="thinking">Thinking...</string>
+
+    <string name="prompt_draft_title">Write a first draft</string>
+    <string name="prompt_draft_content">Write a short blog post introduction about the benefits of time blocking for remote workers.</string>
+    <string name="prompt_brainstorm_title">Brainstorm ideas</string>
+    <string name="prompt_brainstorm_content">Give me 5 unique gift ideas for a coffee enthusiast who already owns standard brewing gear.</string>
+    <string name="prompt_icebreaker_title">Break the ice</string>
+    <string name="prompt_icebreaker_content">Give me three fun, low-pressure conversation starters to use during a virtual team-building meeting.</string>
+    <string name="prompt_fix_sentence_title">Fix a clunky sentence</string>
+    <string name="prompt_fix_sentence_content">Rewrite the sentence which i will provide to you to make it sound more professional and engaging</string>
+    <string name="prompt_code_title">Write code</string>
+    <string name="prompt_code_content">Write a simple Python script to read a CSV file and print out the top 5 rows.</string>
+    <string name="prompt_playlist_title">Build a playlist</string>
+    <string name="prompt_playlist_content">Create a 10-song upbeat indie-pop playlist designed to keep energy high while coding or studying.</string>
+    <string name="prompt_quiz_title">Take a quiz</string>
+    <string name="prompt_quiz_content">Quiz me on basic geography with 5 multiple-choice questions, and give me my score at the end.</string>
+    <string name="prompt_plan_title">Plan a project</string>
+    <string name="prompt_plan_content">Outline a 4-week study plan for learning the basics of data analysis from scratch.</string>
+
+    <!-- Attachment Menu -->
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="files">Files</string>
+    <string name="camera_permission_denied">Camera permission denied</string>
+    <string name="file_selected">File selected: %1$s</string>
+
+    <!-- Check-in Screen -->
+    <string name="daily_checkin">Daily Check-in</string>
+    <string name="streak_title">Your 7-Day Check-in Streak</string>
+    <string name="streak_format">%1$d/7</string>
+    <string name="streak_description">Check in daily to claim rewards and win a jackpot on Day 7!</string>
+    <string name="day_format">Day %1$d</string>
+    <string name="check_in">Check In</string>
+    <string name="claimed">Claimed</string>
+    <string name="locked">Locked</string>
+    <string name="jackpot">JACKPOT!</string>
+    <string name="credits_reward">+%1$d Credits</string>
+    <string name="claim">Claim</string>
+    <string name="collected">Collected</string>
+
+    <!-- Saved Prompts Screen -->
+    <string name="saved_prompts">Saved Prompts</string>
+    <string name="search_prompts">Search prompts...</string>
+    <string name="my_folders">My Folders</string>
+    <string name="recent_individual_prompts">Recent &amp; Individual Prompts</string>
+    <string name="prompts_in_folder">Prompts in %1$s</string>
+    <string name="no_prompts_in_folder">No prompts in this folder</string>
+    <string name="new_folder">New Folder</string>
+    <string name="edit_folder">Edit Folder</string>
+    <string name="folder_name">Folder Name</string>
+    <string name="select_color">Select Color</string>
+    <string name="create">Create</string>
+    <string name="save">Save</string>
+    <string name="new_prompt">New Prompt</string>
+    <string name="edit_prompt">Edit Prompt</string>
+    <string name="prompt_title">Title</string>
+    <string name="prompt_content">Prompt Content</string>
+    <string name="prompt_tag">Tag (e.g. Business)</string>
+    <string name="assign_to_folder">Assign to Folder</string>
+    <string name="none">None</string>
+    <string name="delete_item_title">Delete %1$s?</string>
+    <string name="delete_folder_msg">Are you sure you want to delete \'%1$s\'? This will also delete all prompts inside this folder.</string>
+    <string name="delete_prompt_msg">Are you sure you want to delete \'%1$s\'?</string>
+    <string name="delete">Delete</string>
+    <string name="prompts_count">%1$d prompts</string>
+    <string name="last_used_format">Last used: %1$s | [Tag: %2$s]</string>
+    <string name="general">General</string>
+
+    <string name="just_now">Just now</string>
+    <string name="mins_ago">%1$d mins ago</string>
+    <string name="hours_ago">%1$d hours ago</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="days_ago">%1$d days ago</string>
+
+    <!-- AI Model Preferences -->
+    <string name="ai_model_preferences_title">AI Model Preferences</string>
+    <string name="primary_ai_model">Primary AI Model</string>
+    <string name="recommended">Recommended</string>
+    <string name="response_creativity">Response Creativity</string>
+    <string name="precise">Precise</string>
+    <string name="balanced">Balanced</string>
+    <string name="imaginative">Imaginative</string>
+    <string name="creativity_description">Adjust the model\'s tendency to generate novel or conservative responses.</string>
+
+    <!-- Account Details Screen -->
+    <string name="account_details_title">Account Details</string>
+    <string name="profile_photo">Profile Photo</string>
+    <string name="built_in_avatars">Built-in Avatars</string>
+    <string name="actions">Actions</string>
+    <string name="edit_name">Edit Name</string>
+    <string name="edit_email">Edit Email</string>
+    <string name="select_gender">Select Gender</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="delete_account_msg">Are you sure you want to delete your account? This will erase all your chat history and settings forever.</string>
+    <string name="delete_all_data">Delete All Data</string>
+    <string name="display_name">Display Name</string>
+    <string name="email_address">Email Address</string>
+    <string name="gender">Gender</string>
+    <string name="not_set">Not set</string>
+    <string name="gallery_permission_required">Gallery permission is required to select a photo</string>
+    <string name="camera_permission_required">Camera permission is required to take a photo</string>
+    <string name="invalid_email">Invalid email format</string>
+    <string name="save_changes">Save Changes</string>
+
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="prefer_not_to_say">Prefer not to say</string>
+
+    <!-- Chat History Screen -->
+    <string name="chat_history">Chat History</string>
+    <string name="search_history">Search history...</string>
+    <string name="no_history_found">No history found</string>
+    <string name="delete_chat_title">Delete Chat</string>
+    <string name="delete_chat_msg">Are you sure you want to delete this chat? This action cannot be undone.</string>
+    <string name="last_accessed_format">Last accessed: %1$s | %2$d messages</string>
+    <string name="today">Today</string>
+    <string name="this_week">This Week</string>
+    <string name="older">Older</string>
+
+    <!-- Credits Screen -->
+    <string name="credits_title">Credits</string>
+    <string name="credit_history">Credit History</string>
+    <string name="available_credits">Available Credits</string>
+    <string name="boost_your_credits">Boost Your Credits</string>
+    <string name="watch_short_ad">Watch Short Ad</string>
+    <string name="watch_ad_reward">+20 Credits</string>
+    <string name="check_in_daily_reward">+10-100 Credits</string>
+
+    <!-- Cloud Sync Screen -->
+    <string name="cloud_sync_status">Cloud Sync Status</string>
+    <string name="connected_as">Connected as</string>
+    <string name="google_drive_sync">Google Drive Sync</string>
+    <string name="sign_in_backup_msg">Sign in to backup your data</string>
+    <string name="sign_in">Sign In</string>
+    <string name="automatic_backup">Automatic Backup</string>
+    <string name="automatic_backup_desc">Periodically backup data to cloud.</string>
+    <string name="sync_wifi_cellular">Sync Over Wi-Fi &amp; Cellular</string>
+    <string name="sync_wifi_cellular_desc">Sync data across devices. Data usage may apply.</string>
+    <string name="last_synced_format">Last synced: %1$s</string>
+    <string name="never_synced">Never synced</string>
+    <string name="manual_sync">Manual Sync</string>
+    <string name="manual_sync_desc">Force an immediate sync of all conversation logs, settings, and history.</string>
+    <string name="sync_now">Sync Now</string>
+    <string name="import_from_cloud">Import from Cloud</string>
+    <string name="sync_options">Sync Options</string>
+    <string name="sync_conversations">Conversations &amp; History</string>
+    <string name="sync_images">Images &amp; files</string>
+    <string name="sync_settings">Settings &amp; Preferences</string>
+    <string name="sync_prompts">Saved Prompts &amp; Templates</string>
+    <string name="delete_cloud_data">Delete all data from cloud</string>
+    <string name="sync_error_log">Sync Error Log</string>
+    <string name="delete_cloud_data_title">Delete Cloud Data?</string>
+    <string name="delete_cloud_data_msg">This will permanently remove all your backup data from Google Drive. This cannot be undone.</string>
+    <string name="no_errors_reported">No errors reported.</string>
+    <string name="clear_log">Clear Log</string>
+
+    <!-- Contact Us Screen -->
+    <string name="get_in_touch">Get in Touch</string>
+    <string name="chat_whatsapp_desc">Chat with us through WhatsApp for quick solutions.</string>
+    <string name="start_chat">Start Chat</string>
+    <string name="email_support">Email Support</string>
+    <string name="email_support_desc">Send us a detailed inquiry.</string>
+    <string name="compose_email">Compose Email</string>
+    <string name="send_feedback_desc">Help us improve by sharing your thoughts.</string>
+    <string name="official_website">Official Website</string>
+    <string name="visit_site_desc">Visit our website for more information.</string>
+    <string name="visit_site">Visit Site</string>
+    <string name="follow_us">Follow Us</string>
+    <string name="faq_full">Frequently Asked Questions (FAQ)</string>
+    <string name="no_email_app">No email app found</string>
+    <string name="unable_open_link">Unable to open link</string>
+
+    <!-- About Screen -->
+    <string name="about_ichatai">About iChatAI</string>
+    <string name="app_version">App Version</string>
+    <string name="check_updates">Check for Updates</string>
+    <string name="release_notes">Release Notes</string>
+    <string name="developer">Developer</string>
+    <string name="website">Website</string>
+    <string name="support_email">Support Email</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="copyright_format">© 2026 %1$s. All rights reserved.</string>
+    <string name="update_available">Update Available!</string>
+    <string name="version_format">Version %1$s • %2$s</string>
+    <string name="available_on">Available on: </string>
+    <string name="whats_new">What\'s New:</string>
+    <string name="update_now">Update Now</string>
+    <string name="later">Later</string>
+    <string name="close">Close</string>
+    <string name="latest_version_msg">You are already on the latest version!</string>
+
+    <!-- Favorites Screen -->
+    <string name="favorites_title">Favourites</string>
+    <string name="search_favorites">Search favourites...</string>
+    <string name="no_favorites_found">No favorites found</string>
+    <string name="top_pinned_favorites">Top Pinned Favourites</string>
+    <string name="regular_favorites">Regular Favourites</string>
+    <string name="unstar">Unstar</string>
+    <string name="delete_favorite_msg">Are you sure you want to delete this favorite chat? This action cannot be undone.</string>
+
+    <!-- Notification Settings Screen -->
+    <string name="general_notifications">General Notifications</string>
+    <string name="allow_notifications">Allow Notifications</string>
+    <string name="notification_types">Notification Types</string>
+    <string name="push_notifications">Push Notifications</string>
+    <string name="sound_vibration">Sound &amp; Vibration</string>
+    <string name="specific_alerts">Specific Alerts</string>
+    <string name="new_feature_announcements">New Feature Announcements</string>
+    <string name="daily_streak_reminder">Daily Streak Reminder</string>
+    <string name="quiet_hours_config">Quiet Hours Configuration</string>
+
+    <!-- Subscription Screen -->
+    <string name="restore">Restore</string>
+    <string name="available_plans">Available Plans</string>
+    <string name="pro_monthly">Pro Monthly</string>
+    <string name="pro_annual">Pro Annual</string>
+    <string name="unlimited_messages">Unlimited Messages</string>
+    <string name="faster_ai_responses">Faster AI Responses</string>
+    <string name="priority_support">Priority Support</string>
+    <string name="all_pro_monthly_benefits">All Pro Monthly Benefits</string>
+    <string name="access_beta_features">Access to Beta Features</string>
+    <string name="early_access_new_models">Early Access to New Models</string>
+    <string name="coming_soon">Coming Soon</string>
+    <string name="save_percent">(Save %1$d%%)</string>
+    <string name="best_value">Best Value</string>
+    <string name="month">month</string>
+    <string name="year">year</string>
+    <string name="current_plan_format">Current Plan: %1$s</string>
+    <string name="free_plan">Free Plan</string>
+    <string name="renews_format">Renews: %1$s</string>
+    <string name="na">N/A</string>
+    <string name="benefits_active">Benefits Active</string>
+    <string name="manage_billing">Manage Billing</string>
+    <string name="switch_plan">Switch Plan</string>
+
+    <!-- Storage Management Screen -->
+    <string name="storage_management_title">Data &amp; Storage Management</string>
+    <string name="storage_usage">Storage Usage</string>
+    <string name="conversations">Conversations</string>
+    <string name="media">Media</string>
+    <string name="cache">Cache</string>
+    <string name="free_space">Free Space</string>
+    <string name="used_format">%1$s Used</string>
+    <string name="total_format">%1$s Total</string>
+    <string name="cleanup_tools">Cleanup Tools</string>
+    <string name="clear_app_cache">Clear App Cache</string>
+    <string name="clear_cache_desc">Temp files and images. Frees up ~%1$s.</string>
+    <string name="clear_cache">Clear Cache</string>
+    <string name="clear_chat_history">Clear Chat History</string>
+    <string name="clear_history_desc">Permanently delete all conversation logs.</string>
+    <string name="clear_history">Clear History</string>
+    <string name="data_export">Data Export</string>
+    <string name="export_chat_history">Export Chat History</string>
+    <string name="export_desc">Download all messages as JSON or CSV.</string>
+    <string name="configure_export">Configure Export</string>
+    <string name="auto_cleanup_settings">Auto-Cleanup Settings</string>
+    <string name="status_active">Status: Active &amp; Working</string>
+    <string name="status_inactive">Status: Inactive</string>
+    <string name="maintenance_policy">Maintenance Policy</string>
+    <string name="maintenance_policy_desc">Automatically delete messages older than selected days.</string>
+    <string name="configure">Configure</string>
+    <string name="auto_cleanup_policy">Auto-Cleanup Policy</string>
+    <string name="delete_older_than">Delete messages older than %1$d days.</string>
+    <string name="days_7">7 Days</string>
+    <string name="days_90">90 Days</string>
+    <string name="clear_chat_history_title">Clear Chat History?</string>
+    <string name="clear_chat_history_msg">This will permanently delete all your conversation logs. This action cannot be undone.</string>
+    <string name="delete_all">Delete All</string>
+    <string name="select_export_format">Select Export Format</string>
+    <string name="export_successful">Export successful</string>
+    <string name="export_failed">Export failed: %1$s</string>
+    <string name="cache_cleared">Cache cleared successfully</string>
+    <string name="chat_history_cleared">Chat history cleared</string>
+    <string name="json_format">JSON (.json)</string>
+    <string name="csv_format">CSV (.csv)</string>
+    <string name="export">Export</string>
 </resources>
+

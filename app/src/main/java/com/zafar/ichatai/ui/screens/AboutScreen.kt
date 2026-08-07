@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -54,7 +55,7 @@ fun AboutScreen(
     LaunchedEffect(updateState) {
         when (updateState) {
             is UpdateUIState.UpToDate -> {
-                Toast.makeText(context, "You are already on the latest version!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.latest_version_msg), Toast.LENGTH_SHORT).show()
                 updateViewModel.resetState()
             }
             is UpdateUIState.Error -> {
@@ -71,7 +72,7 @@ fun AboutScreen(
                 TopAppBar(
                     title = {
                         Text(
-                            "About iChatAI",
+                            stringResource(R.string.about_ichatai),
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.ExtraBold,
                             color = colorScheme.onBackground
@@ -81,7 +82,7 @@ fun AboutScreen(
                         IconButton(onClick = onBackClick) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back",
+                                contentDescription = stringResource(R.string.back),
                                 tint = colorScheme.onBackground
                             )
                         }
@@ -149,7 +150,7 @@ fun AboutScreen(
                             ) {
                                 Column {
                                     Text(
-                                        text = "App Version",
+                                        text = stringResource(R.string.app_version),
                                         style = MaterialTheme.typography.titleMedium,
                                         fontWeight = FontWeight.Bold,
                                         color = colorScheme.onSurface
@@ -178,7 +179,7 @@ fun AboutScreen(
                                             strokeWidth = 2.dp
                                         )
                                     } else {
-                                        Text("Check for Updates", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                        Text(stringResource(R.string.check_updates), fontSize = 12.sp, fontWeight = FontWeight.Bold)
                                     }
                                 }
                             }
@@ -189,7 +190,7 @@ fun AboutScreen(
                             )
 
                             AboutLinkItem(
-                                title = "Release Notes",
+                                title = stringResource(R.string.release_notes),
                                 icon = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                                 onClick = { showReleaseNotes = true }
                             )
@@ -201,7 +202,7 @@ fun AboutScreen(
                 item {
                     GlassCard(modifier = Modifier.fillMaxWidth()) {
                         Column(modifier = Modifier.padding(16.dp)) {
-                            AboutInfoRow(label = "Developer", value = "Muhammad Sufyan Zafar")
+                            AboutInfoRow(label = stringResource(R.string.developer), value = "Muhammad Sufyan Zafar")
                             
                             HorizontalDivider(
                                 modifier = Modifier.padding(vertical = 12.dp),
@@ -209,7 +210,7 @@ fun AboutScreen(
                             )
 
                             AboutLinkItem(
-                                title = "Website",
+                                title = stringResource(R.string.website),
                                 subtitle = "muhammadsufyanzafar.github.io",
                                 icon = Icons.AutoMirrored.Filled.OpenInNew,
                                 onClick = {
@@ -223,7 +224,7 @@ fun AboutScreen(
                             )
 
                             AboutLinkItem(
-                                title = "Support Email",
+                                title = stringResource(R.string.support_email),
                                 subtitle = "sufyan.pk444@gmail.com",
                                 icon = Icons.Default.Email,
                                 onClick = {
@@ -237,7 +238,7 @@ fun AboutScreen(
                             )
 
                             AboutLinkItem(
-                                title = "Privacy Policy",
+                                title = stringResource(R.string.privacy_policy),
                                 icon = Icons.AutoMirrored.Filled.OpenInNew,
                                 onClick = onNavigateToPrivacy
                             )
@@ -248,7 +249,7 @@ fun AboutScreen(
                             )
 
                             AboutLinkItem(
-                                title = "Terms of Service",
+                                title = stringResource(R.string.terms_of_service),
                                 icon = Icons.AutoMirrored.Filled.OpenInNew,
                                 onClick = onNavigateToTerms
                             )
@@ -259,7 +260,7 @@ fun AboutScreen(
                 // Footer
                 item {
                     Text(
-                        text = "© 2026 Muhammad Sufyan Zafar. All rights reserved.",
+                        text = stringResource(R.string.copyright_format, "Muhammad Sufyan Zafar"),
                         style = MaterialTheme.typography.bodySmall,
                         color = colorScheme.onBackground.copy(alpha = 0.5f),
                         textAlign = TextAlign.Center,
@@ -314,7 +315,7 @@ fun UpdateDialog(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "Update Available!",
+                        text = stringResource(R.string.update_available),
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.ExtraBold,
                         color = colorScheme.onSurface
@@ -323,7 +324,7 @@ fun UpdateDialog(
                     Spacer(modifier = Modifier.height(8.dp))
                     
                     Text(
-                        text = "Version ${updateInfo.latestVersionName} • ${updateInfo.releaseDate}",
+                        text = stringResource(R.string.version_format, updateInfo.latestVersionName, updateInfo.releaseDate),
                         style = MaterialTheme.typography.bodyMedium,
                         color = colorScheme.onSurface.copy(alpha = 0.7f)
                     )
@@ -337,7 +338,7 @@ fun UpdateDialog(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = "Available on: ",
+                                text = stringResource(R.string.available_on),
                                 style = MaterialTheme.typography.bodySmall,
                                 fontWeight = FontWeight.Bold,
                                 color = colorScheme.onSurface.copy(alpha = 0.6f)
@@ -359,7 +360,7 @@ fun UpdateDialog(
                             .padding(16.dp)
                     ) {
                         Text(
-                            text = "What's New:",
+                            text = stringResource(R.string.whats_new),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.Bold,
                             color = colorScheme.onSurface
@@ -388,7 +389,7 @@ fun UpdateDialog(
                             contentColor = colorScheme.onPrimary
                         )
                     ) {
-                        Text("Update Now", fontWeight = FontWeight.ExtraBold)
+                        Text(stringResource(R.string.update_now), fontWeight = FontWeight.ExtraBold)
                         Spacer(modifier = Modifier.width(8.dp))
                         Icon(Icons.AutoMirrored.Filled.OpenInNew, null, modifier = Modifier.size(18.dp))
                     }
@@ -399,7 +400,7 @@ fun UpdateDialog(
                             modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
                         ) {
                             Text(
-                                "Later",
+                                stringResource(R.string.later),
                                 color = colorScheme.onSurface.copy(alpha = 0.6f),
                                 fontWeight = FontWeight.Bold
                             )
@@ -493,7 +494,7 @@ fun ReleaseNotesDialog(onDismiss: () -> Unit) {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "Release Notes",
+                        text = stringResource(R.string.release_notes),
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.ExtraBold,
                         color = colorScheme.onSurface
@@ -549,7 +550,7 @@ fun ReleaseNotesDialog(onDismiss: () -> Unit) {
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(16.dp)
                     ) {
-                        Text("Close", fontWeight = FontWeight.Bold)
+                        Text(stringResource(R.string.close), fontWeight = FontWeight.Bold)
                     }
                 }
             }

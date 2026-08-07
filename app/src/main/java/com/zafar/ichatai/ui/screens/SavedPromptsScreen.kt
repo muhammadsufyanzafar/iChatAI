@@ -61,6 +61,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -69,6 +71,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.zafar.ichatai.data.local.entity.PromptFolderEntity
 import com.zafar.ichatai.data.local.entity.PromptFolderWithCount
 import com.zafar.ichatai.data.local.entity.SavedPromptEntity
+import com.zafar.ichatai.R
 import com.zafar.ichatai.ui.components.GlassCard
 import com.zafar.ichatai.ui.components.GlowBackground
 import com.zafar.ichatai.viewmodel.PromptSortOrder
@@ -104,7 +107,7 @@ fun SavedPromptsScreen(
                 TopAppBar(
                     title = { 
                         Text(
-                            selectedFolder?.name ?: "Saved Prompts", 
+                            selectedFolder?.name ?: stringResource(R.string.saved_prompts), 
                             fontWeight = FontWeight.Bold, 
                             fontSize = 24.sp,
                             maxLines = 1,
@@ -119,13 +122,13 @@ fun SavedPromptsScreen(
                                 onBackClick()
                             }
                         }) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
                         }
                     },
                     actions = {
                         Box {
                             IconButton(onClick = { showSortMenu = true }) {
-                                Icon(Icons.Rounded.FilterList, contentDescription = "Filter")
+                                Icon(Icons.Rounded.FilterList, contentDescription = stringResource(R.string.browse_categories))
                             }
                             DropdownMenu(expanded = showSortMenu, onDismissRequest = { showSortMenu = false }) {
                                 PromptSortOrder.entries.forEach { order ->
@@ -142,7 +145,7 @@ fun SavedPromptsScreen(
                         }
                         if (selectedFolderId == null) {
                             IconButton(onClick = { showAddFolderDialog = true }) {
-                                Icon(Icons.Rounded.CreateNewFolder, contentDescription = "New Folder")
+                                Icon(Icons.Rounded.CreateNewFolder, contentDescription = stringResource(R.string.new_folder))
                             }
                         }
                     },
@@ -159,7 +162,7 @@ fun SavedPromptsScreen(
                     contentColor = MaterialTheme.colorScheme.onPrimary,
                     shape = CircleShape
                 ) {
-                    Icon(Icons.Default.Add, contentDescription = "Add Prompt")
+                    Icon(Icons.Default.Add, contentDescription = stringResource(R.string.new_prompt))
                 }
             },
             containerColor = Color.Transparent
@@ -173,7 +176,7 @@ fun SavedPromptsScreen(
                 OutlinedTextField(
                     value = searchQuery,
                     onValueChange = { promptViewModel.onSearchQueryChange(it) },
-                    placeholder = { Text("Search prompts...", color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)) },
+                    placeholder = { Text(stringResource(R.string.search_prompts), color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)) },
                     leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -197,7 +200,7 @@ fun SavedPromptsScreen(
                         if (folders.isNotEmpty()) {
                             item {
                                 Text(
-                                    "My Folders",
+                                    stringResource(R.string.my_folders),
                                     style = MaterialTheme.typography.titleMedium,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onBackground,
@@ -216,7 +219,7 @@ fun SavedPromptsScreen(
 
                         item {
                             Text(
-                                "Recent & Individual Prompts",
+                                stringResource(R.string.recent_individual_prompts),
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onBackground,
@@ -226,7 +229,7 @@ fun SavedPromptsScreen(
                     } else {
                         item {
                             Text(
-                                "Prompts in ${selectedFolder?.name}",
+                                stringResource(R.string.prompts_in_folder, selectedFolder?.name ?: ""),
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onBackground,
@@ -250,7 +253,7 @@ fun SavedPromptsScreen(
                     if (individualPrompts.isEmpty() && selectedFolderId != null) {
                         item {
                             Box(modifier = Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) {
-                                Text("No prompts in this folder", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                Text(stringResource(R.string.no_prompts_in_folder), color = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
                         }
                     }
@@ -306,13 +309,13 @@ fun SavedPromptsScreen(
         
         AlertDialog(
             onDismissRequest = { itemToDelete = null },
-            title = { Text("Delete ${if (isFolder) "Folder" else "Prompt"}?") },
+            title = { Text(stringResource(R.string.delete_item_title, if (isFolder) "Folder" else "Prompt")) },
             text = { 
                 Text(
                     if (isFolder) 
-                        "Are you sure you want to delete '$itemName'? This will also delete all prompts inside this folder."
+                        stringResource(R.string.delete_folder_msg, itemName)
                     else 
-                        "Are you sure you want to delete '$itemName'?"
+                        stringResource(R.string.delete_prompt_msg, itemName)
                 ) 
             },
             confirmButton = {
@@ -327,12 +330,12 @@ fun SavedPromptsScreen(
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
                 ) {
-                    Text("Delete", color = Color.White)
+                    Text(stringResource(R.string.delete), color = Color.White)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { itemToDelete = null }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.cancel))
                 }
             }
         )
@@ -373,7 +376,7 @@ fun FolderItem(
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
-                    text = "${folderWithCount.promptCount} prompts",
+                    text = stringResource(R.string.prompts_count, folderWithCount.promptCount),
                     fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -393,6 +396,7 @@ fun PromptItem(
     onDelete: () -> Unit,
     onClick: () -> Unit
 ) {
+    val context = LocalContext.current
     GlassCard(
         onClick = onClick,
         shape = RoundedCornerShape(16.dp),
@@ -419,7 +423,11 @@ fun PromptItem(
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = "Last used: ${formatTime(prompt.lastUsed)} | [Tag: ${prompt.tag ?: "General"}]",
+                    text = stringResource(
+                        R.string.last_used_format, 
+                        formatTime(prompt.lastUsed, context), 
+                        prompt.tag ?: stringResource(R.string.general)
+                    ),
                     fontSize = 11.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -469,17 +477,17 @@ fun FolderDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(if (folder == null) "New Folder" else "Edit Folder") },
+        title = { Text(if (folder == null) stringResource(R.string.new_folder) else stringResource(R.string.edit_folder)) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 OutlinedTextField(
                     value = name,
                     onValueChange = { name = it },
-                    label = { Text("Folder Name") },
+                    label = { Text(stringResource(R.string.folder_name)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
-                Text("Select Color", style = MaterialTheme.typography.labelMedium)
+                Text(stringResource(R.string.select_color), style = MaterialTheme.typography.labelMedium)
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     colors.forEach { color ->
                         Box(
@@ -500,11 +508,11 @@ fun FolderDialog(
         },
         confirmButton = {
             Button(onClick = { if (name.isNotBlank()) onConfirm(name, selectedColor) }) {
-                Text(if (folder == null) "Create" else "Save")
+                Text(if (folder == null) stringResource(R.string.create) else stringResource(R.string.save))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text("Cancel") }
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
         }
     )
 }
@@ -524,16 +532,16 @@ fun PromptDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(if (prompt == null) "New Prompt" else "Edit Prompt") },
+        title = { Text(if (prompt == null) stringResource(R.string.new_prompt) else stringResource(R.string.edit_prompt)) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp), modifier = Modifier.verticalScroll(rememberScrollState())) {
-                OutlinedTextField(value = title, onValueChange = { title = it }, label = { Text("Title") }, singleLine = true, modifier = Modifier.fillMaxWidth())
-                OutlinedTextField(value = content, onValueChange = { content = it }, label = { Text("Prompt Content") }, modifier = Modifier.fillMaxWidth().height(120.dp))
-                OutlinedTextField(value = tag, onValueChange = { tag = it }, label = { Text("Tag (e.g. Business)") }, singleLine = true, modifier = Modifier.fillMaxWidth())
+                OutlinedTextField(value = title, onValueChange = { title = it }, label = { Text(stringResource(R.string.prompt_title)) }, singleLine = true, modifier = Modifier.fillMaxWidth())
+                OutlinedTextField(value = content, onValueChange = { content = it }, label = { Text(stringResource(R.string.prompt_content)) }, modifier = Modifier.fillMaxWidth().height(120.dp))
+                OutlinedTextField(value = tag, onValueChange = { tag = it }, label = { Text(stringResource(R.string.prompt_tag)) }, singleLine = true, modifier = Modifier.fillMaxWidth())
                 
-                Text("Assign to Folder", style = MaterialTheme.typography.labelMedium)
+                Text(stringResource(R.string.assign_to_folder), style = MaterialTheme.typography.labelMedium)
                 Column {
-                    FolderSelectRow("None", selectedFolderId == null) { selectedFolderId = null }
+                    FolderSelectRow(stringResource(R.string.none), selectedFolderId == null) { selectedFolderId = null }
                     folders.forEach { folder ->
                         FolderSelectRow(folder.name, selectedFolderId == folder.id) { selectedFolderId = folder.id }
                     }
@@ -542,11 +550,11 @@ fun PromptDialog(
         },
         confirmButton = {
             Button(onClick = { if (title.isNotBlank() && content.isNotBlank()) onConfirm(title, content, selectedFolderId, tag.ifBlank { null }) }) {
-                Text("Save")
+                Text(stringResource(R.string.save))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text("Cancel") }
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
         }
     )
 }
@@ -565,14 +573,14 @@ fun FolderSelectRow(name: String, isSelected: Boolean, onClick: () -> Unit) {
     }
 }
 
-fun formatTime(timestamp: Long): String {
+fun formatTime(timestamp: Long, context: android.content.Context): String {
     val diff = System.currentTimeMillis() - timestamp
     return when {
-        diff < 60000 -> "Just now"
-        diff < 3600000 -> "${diff / 60000} mins ago"
-        diff < 86400000 -> "${diff / 3600000} hours ago"
-        diff < 172800000 -> "Yesterday"
-        else -> "${diff / 86400000} days ago"
+        diff < 60000 -> context.getString(R.string.just_now)
+        diff < 3600000 -> context.getString(R.string.mins_ago, diff / 60000)
+        diff < 86400000 -> context.getString(R.string.hours_ago, diff / 3600000)
+        diff < 172800000 -> context.getString(R.string.yesterday)
+        else -> context.getString(R.string.days_ago, diff / 86400000)
     }
 }
 

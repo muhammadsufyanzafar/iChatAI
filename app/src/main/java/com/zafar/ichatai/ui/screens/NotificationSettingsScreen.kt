@@ -36,10 +36,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.zafar.ichatai.R
 import com.zafar.ichatai.ui.components.GlassCard
 import com.zafar.ichatai.ui.components.GlowBackground
 import com.zafar.ichatai.ui.viewmodel.NotificationViewModel
@@ -60,14 +62,14 @@ fun NotificationSettingsScreen(
                 TopAppBar(
                     title = {
                         Text(
-                            "Notifications",
+                            stringResource(R.string.notifications),
                             style = MaterialTheme.typography.headlineSmall,
                             fontWeight = FontWeight.Bold
                         )
                     },
                     navigationIcon = {
                         IconButton(onClick = onBackClick) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
@@ -85,9 +87,9 @@ fun NotificationSettingsScreen(
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
                 item {
-                    NotificationSection(title = "General Notifications") {
+                    NotificationSection(title = stringResource(R.string.general_notifications)) {
                         NotificationToggleItem(
-                            title = "Allow Notifications",
+                            title = stringResource(R.string.allow_notifications),
                             checked = prefs.allowNotifications,
                             onCheckedChange = { viewModel.toggleAllowNotifications(it) }
                         )
@@ -95,9 +97,9 @@ fun NotificationSettingsScreen(
                 }
 
                 item {
-                    NotificationSection(title = "Notification Types") {
+                    NotificationSection(title = stringResource(R.string.notification_types)) {
                         NotificationToggleItem(
-                            title = "Push Notifications",
+                            title = stringResource(R.string.push_notifications),
                             icon = Icons.Outlined.NotificationsActive,
                             checked = prefs.pushNotifications,
                             onCheckedChange = { viewModel.togglePushNotifications(it) }
@@ -108,7 +110,7 @@ fun NotificationSettingsScreen(
                             color = colorScheme.onSurface.copy(alpha = 0.1f)
                         )
                         NotificationToggleItem(
-                            title = "Sound & Vibration",
+                            title = stringResource(R.string.sound_vibration),
                             icon = Icons.Outlined.VolumeUp,
                             checked = prefs.soundAndVibration,
                             onCheckedChange = { viewModel.toggleSoundAndVibration(it) }
@@ -117,9 +119,9 @@ fun NotificationSettingsScreen(
                 }
 
                 item {
-                    NotificationSection(title = "Specific Alerts") {
+                    NotificationSection(title = stringResource(R.string.specific_alerts)) {
                         NotificationToggleItem(
-                            title = "New Feature Announcements",
+                            title = stringResource(R.string.new_feature_announcements),
                             checked = prefs.newFeatureAnnouncements,
                             onCheckedChange = { viewModel.toggleNewFeatureAnnouncements(it) }
                         )
@@ -129,7 +131,7 @@ fun NotificationSettingsScreen(
                             color = colorScheme.onSurface.copy(alpha = 0.1f)
                         )
                         NotificationToggleItem(
-                            title = "Daily Streak Reminder",
+                            title = stringResource(R.string.daily_streak_reminder),
                             checked = prefs.dailyStreakReminder,
                             onCheckedChange = { viewModel.toggleDailyStreakReminder(it) }
                         )
@@ -143,7 +145,7 @@ fun NotificationSettingsScreen(
                     ) {
                         TextButton(onClick = onNavigateToQuietHours) {
                             Text(
-                                "Quiet Hours Configuration",
+                                stringResource(R.string.quiet_hours_config),
                                 color = MaterialTheme.colorScheme.primary,
                                 fontWeight = FontWeight.Medium,
                                 textDecoration = androidx.compose.ui.text.style.TextDecoration.Underline

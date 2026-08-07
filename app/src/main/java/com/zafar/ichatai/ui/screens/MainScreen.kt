@@ -140,6 +140,19 @@ fun MainScreen(
     var showAttachmentMenu by remember { mutableStateOf(false) }
     var showExitDialog by remember { mutableStateOf(false) }
 
+    // New Chat when language changes
+    val currentLanguage by viewModel.currentLanguage.collectAsState()
+    val contextLanguage = context.resources.configuration.locales[0].language
+    
+    LaunchedEffect(contextLanguage) {
+        if (currentLanguage != contextLanguage) {
+            viewModel.updateLanguage(contextLanguage)
+            if (messages.isNotEmpty()) {
+                viewModel.createNewChat(context.getString(R.string.welcome_message))
+            }
+        }
+    }
+
     BackHandler(enabled = true) {
         if (drawerState.isOpen) {
             scope.launch { drawerState.close() }
@@ -168,7 +181,7 @@ fun MainScreen(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         if (uri != null) {
-            Toast.makeText(context, "File selected: $uri", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.file_selected, uri.toString()), Toast.LENGTH_SHORT).show()
         }
         showAttachmentMenu = false
     }
@@ -194,7 +207,7 @@ fun MainScreen(
         if (isGranted) {
             cameraLauncher.launch(null)
         } else {
-            Toast.makeText(context, "Camera permission denied", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.camera_permission_denied), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -224,14 +237,14 @@ fun MainScreen(
             },
             title = {
                 Text(
-                    text = "Exit Application",
+                    text = stringResource(R.string.exit_app_title),
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.headlineSmall
                 )
             },
             text = {
                 Text(
-                    text = "Are you sure you want to leave iChatAI? Your current session is automatically saved.",
+                    text = stringResource(R.string.exit_app_message),
                     style = MaterialTheme.typography.bodyMedium
                 )
             },
@@ -240,12 +253,12 @@ fun MainScreen(
                     onClick = { (context as? ComponentActivity)?.finish() },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
                 ) {
-                    Text("Exit", color = Color.White)
+                    Text(stringResource(R.string.exit), color = Color.White)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showExitDialog = false }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.cancel))
                 }
             },
             shape = RoundedCornerShape(28.dp),
@@ -537,7 +550,7 @@ fun ChatList(
         }
         if (isTyping) {
             item {
-                AiMessage("Thinking...")
+                AiMessage(stringResource(R.string.thinking))
             }
         }
     }
@@ -638,7 +651,7 @@ fun BottomSection(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Quick Prompt Chips",
+                text = stringResource(R.string.quick_prompt_chips),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontSize = 12.sp,
                 modifier = Modifier.padding(bottom = 12.dp)
@@ -651,14 +664,46 @@ fun BottomSection(
                 contentPadding = PaddingValues(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                item { PromptChip("Write a first draft", hasIcon = false, onClick = { onPromptClick("Write a short blog post introduction about the benefits of time blocking for remote workers.") }) }
-                item { PromptChip("Brainstorm ideas", hasIcon = false, onClick = { onPromptClick("Give me 5 unique gift ideas for a coffee enthusiast who already owns standard brewing gear.") }) }
-                item { PromptChip("Break the ice", hasIcon = false, onClick = { onPromptClick("Give me three fun, low-pressure conversation starters to use during a virtual team-building meeting.") }) }
-                item { PromptChip("Fix a clunky sentence", hasIcon = false, onClick = { onPromptClick("Rewrite the sentence which i will provide to you to make it sound more professional and engaging") }) }
-                item { PromptChip("Write code", hasIcon = false, onClick = { onPromptClick("Write a simple Python script to read a CSV file and print out the top 5 rows.") }) }
-                item { PromptChip("Build a playlist", hasIcon = false, onClick = { onPromptClick("Create a 10-song upbeat indie-pop playlist designed to keep energy high while coding or studying.") }) }
-                item { PromptChip("Take a quiz", hasIcon = false, onClick = { onPromptClick("Quiz me on basic geography with 5 multiple-choice questions, and give me my score at the end.") }) }
-                item { PromptChip("Plan a project", hasIcon = false, onClick = { onPromptClick("Outline a 4-week study plan for learning the basics of data analysis from scratch.") }) }
+                item { 
+                    val title = stringResource(R.string.prompt_draft_title)
+                    val content = stringResource(R.string.prompt_draft_content)
+                    PromptChip(title, hasIcon = false, onClick = { onPromptClick(content) }) 
+                }
+                item { 
+                    val title = stringResource(R.string.prompt_brainstorm_title)
+                    val content = stringResource(R.string.prompt_brainstorm_content)
+                    PromptChip(title, hasIcon = false, onClick = { onPromptClick(content) }) 
+                }
+                item { 
+                    val title = stringResource(R.string.prompt_icebreaker_title)
+                    val content = stringResource(R.string.prompt_icebreaker_content)
+                    PromptChip(title, hasIcon = false, onClick = { onPromptClick(content) }) 
+                }
+                item { 
+                    val title = stringResource(R.string.prompt_fix_sentence_title)
+                    val content = stringResource(R.string.prompt_fix_sentence_content)
+                    PromptChip(title, hasIcon = false, onClick = { onPromptClick(content) }) 
+                }
+                item { 
+                    val title = stringResource(R.string.prompt_code_title)
+                    val content = stringResource(R.string.prompt_code_content)
+                    PromptChip(title, hasIcon = false, onClick = { onPromptClick(content) }) 
+                }
+                item { 
+                    val title = stringResource(R.string.prompt_playlist_title)
+                    val content = stringResource(R.string.prompt_playlist_content)
+                    PromptChip(title, hasIcon = false, onClick = { onPromptClick(content) }) 
+                }
+                item { 
+                    val title = stringResource(R.string.prompt_quiz_title)
+                    val content = stringResource(R.string.prompt_quiz_content)
+                    PromptChip(title, hasIcon = false, onClick = { onPromptClick(content) }) 
+                }
+                item { 
+                    val title = stringResource(R.string.prompt_plan_title)
+                    val content = stringResource(R.string.prompt_plan_content)
+                    PromptChip(title, hasIcon = false, onClick = { onPromptClick(content) }) 
+                }
             }
 
             // Image Preview Area
@@ -713,7 +758,7 @@ fun BottomSection(
                     onValueChange = onValueChange,
                     placeholder = {
                         Text(
-                            "Ask anything...",
+                            stringResource(R.string.ask_anything),
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             fontSize = 15.sp
                         )
@@ -777,9 +822,9 @@ fun AttachmentMenu(
         Column(
             modifier = Modifier.padding(vertical = 8.dp)
         ) {
-            AttachmentItem(Icons.Default.CameraAlt, "Camera", onCameraClick)
-            AttachmentItem(Icons.Default.Image, "Gallery", onGalleryClick)
-            AttachmentItem(Icons.AutoMirrored.Filled.InsertDriveFile, "Files", onFilesClick)
+            AttachmentItem(Icons.Default.CameraAlt, stringResource(R.string.camera), onCameraClick)
+            AttachmentItem(Icons.Default.Image, stringResource(R.string.gallery), onGalleryClick)
+            AttachmentItem(Icons.AutoMirrored.Filled.InsertDriveFile, stringResource(R.string.files), onFilesClick)
         }
     }
 }

@@ -19,9 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.zafar.ichatai.R
 import com.zafar.ichatai.ui.components.GlowBackground
 import com.zafar.ichatai.ui.components.GlassCard
 import com.zafar.ichatai.data.local.entity.ChatSessionEntity
@@ -51,8 +53,8 @@ fun FavoriteChatScreen(
                 showDeleteDialog = false
                 sessionToDelete = null
             },
-            title = { Text("Delete Chat") },
-            text = { Text("Are you sure you want to delete this favorite chat? This action cannot be undone.") },
+            title = { Text(stringResource(R.string.delete_chat_title)) },
+            text = { Text(stringResource(R.string.delete_favorite_msg)) },
             confirmButton = {
                 Button(
                     onClick = {
@@ -62,7 +64,7 @@ fun FavoriteChatScreen(
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
                 ) {
-                    Text("Delete")
+                    Text(stringResource(R.string.delete))
                 }
             },
             dismissButton = {
@@ -70,7 +72,7 @@ fun FavoriteChatScreen(
                     showDeleteDialog = false
                     sessionToDelete = null
                 }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.cancel))
                 }
             }
         )
@@ -82,20 +84,20 @@ fun FavoriteChatScreen(
                 CenterAlignedTopAppBar(
                     title = { 
                         Text(
-                            "Favourites", 
+                            stringResource(R.string.favorites_title), 
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onBackground
                         ) 
                     },
                     navigationIcon = {
                         IconButton(onClick = onBackClick) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
                         }
                     },
                     actions = {
                         Box {
                             IconButton(onClick = { showSortMenu = true }) {
-                                Icon(Icons.AutoMirrored.Filled.Sort, contentDescription = "Sort")
+                                Icon(Icons.AutoMirrored.Filled.Sort, contentDescription = null)
                             }
                             DropdownMenu(
                                 expanded = showSortMenu,
@@ -138,7 +140,7 @@ fun FavoriteChatScreen(
                         .padding(vertical = 12.dp),
                     placeholder = { 
                         Text(
-                            "Search favourites...", 
+                            stringResource(R.string.search_favorites), 
                             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
                         ) 
                     },
@@ -164,13 +166,13 @@ fun FavoriteChatScreen(
                     if (favoriteHistory.isEmpty()) {
                         item {
                             Box(modifier = Modifier.fillParentMaxSize(), contentAlignment = Alignment.Center) {
-                                Text("No favorites found", color = Color.Gray)
+                                Text(stringResource(R.string.no_favorites_found), color = Color.Gray)
                             }
                         }
                     } else {
                         if (topPinned.isNotEmpty()) {
                             item {
-                                SectionHeader("Top Pinned Favourites")
+                                SectionHeader(stringResource(R.string.top_pinned_favorites))
                             }
                             items(topPinned, key = { it.session.id }) { item ->
                                 FavoriteItemCard(
@@ -189,7 +191,7 @@ fun FavoriteChatScreen(
 
                         if (regular.isNotEmpty()) {
                             item {
-                                SectionHeader("Regular Favourites")
+                                SectionHeader(stringResource(R.string.regular_favorites))
                             }
                             items(regular, key = { it.session.id }) { item ->
                                 FavoriteItemCard(
@@ -244,6 +246,7 @@ fun FavoriteItemCard(
     onDelete: () -> Unit
 ) {
     val isFavorite = item.session.isPinned
+    val context = androidx.compose.ui.platform.LocalContext.current
     
     GlassCard(
         onClick = onClick,
@@ -291,7 +294,11 @@ fun FavoriteItemCard(
                     maxLines = 1
                 )
                 Text(
-                    text = "Last accessed: ${TimeUtils.formatRelativeTime(item.session.timestamp)} | ${item.messageCount} messages",
+                    text = stringResource(
+                        R.string.last_accessed_format, 
+                        TimeUtils.formatRelativeTime(item.session.timestamp, context), 
+                        item.messageCount
+                    ),
                     fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -300,7 +307,7 @@ fun FavoriteItemCard(
             IconButton(onClick = onUnstar) {
                 Icon(
                     imageVector = Icons.Default.Star,
-                    contentDescription = "Unstar",
+                    contentDescription = stringResource(R.string.unstar),
                     tint = Color(0xFFFFC107),
                     modifier = Modifier.size(20.dp)
                 )
@@ -309,7 +316,7 @@ fun FavoriteItemCard(
             IconButton(onClick = onDelete) {
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = "Delete",
+                    contentDescription = stringResource(R.string.delete),
                     tint = MaterialTheme.colorScheme.error.copy(alpha = 0.7f),
                     modifier = Modifier.size(20.dp)
                 )
