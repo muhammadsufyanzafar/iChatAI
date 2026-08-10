@@ -49,6 +49,9 @@ class UserViewModel @Inject constructor(
         
     val gender: StateFlow<String> = userProfile.map { it?.gender ?: userPreferences.getGender() }
         .stateIn(viewModelScope, SharingStarted.Eagerly, userPreferences.getGender())
+
+    val dateOfBirth: StateFlow<String?> = userProfile.map { it?.dateOfBirth ?: userPreferences.getDateOfBirth() }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, userPreferences.getDateOfBirth())
         
     val avatarUri: StateFlow<String?> = userProfile.map { it?.avatarPath ?: userPreferences.getAvatarUri() }
         .stateIn(viewModelScope, SharingStarted.Eagerly, userPreferences.getAvatarUri())
@@ -62,6 +65,7 @@ class UserViewModel @Inject constructor(
                         name = userPreferences.getUserName(),
                         email = userPreferences.getUserEmail(),
                         gender = userPreferences.getGender(),
+                        dateOfBirth = userPreferences.getDateOfBirth(),
                         avatarPath = userPreferences.getAvatarUri()
                     )
                     userDao.insertUser(initialUser)
@@ -91,6 +95,14 @@ class UserViewModel @Inject constructor(
             val current = userProfile.value ?: createDefaultUser()
             userDao.insertUser(current.copy(gender = gender))
             userPreferences.saveGender(gender)
+        }
+    }
+
+    fun updateDateOfBirth(dob: String?) {
+        viewModelScope.launch {
+            val current = userProfile.value ?: createDefaultUser()
+            userDao.insertUser(current.copy(dateOfBirth = dob))
+            userPreferences.saveDateOfBirth(dob)
         }
     }
 
@@ -137,6 +149,7 @@ class UserViewModel @Inject constructor(
             name = "User${Random.nextInt(1000, 9999)}",
             email = "",
             gender = "Prefer not to say",
+            dateOfBirth = null,
             avatarPath = null
         )
     }

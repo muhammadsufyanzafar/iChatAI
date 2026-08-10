@@ -53,19 +53,6 @@
     <string name="help_using_ai">Using the AI</string>
     <string name="help_troubleshooting">Troubleshooting</string>
 
-    <string name="search_help">Search for help...</string>
-    <string name="browse_categories">Browse Categories</string>
-    <string name="show_all">Show All</string>
-    <string name="faq_title">Frequently Asked Questions</string>
-    <string name="category_faq_title">%1$s FAQs</string>
-    <string name="loading">Loading...</string>
-    <string name="no_results">No results found for \"%1$s\"</string>
-    <string name="still_need_help">Still Need Help?</string>
-    <string name="whatsapp_assist">Our team is here to assist you via WhatsApp.</string>
-    <string name="chat_whatsapp">Chat on WhatsApp</string>
-    <string name="view_service_status">View Service Status</string>
-    <string name="whatsapp_not_installed">WhatsApp not installed</string>
-
     <string name="lang_en">English</string>
     <string name="lang_es">Español</string>
     <string name="lang_fr">Français</string>
@@ -100,6 +87,7 @@
     <string name="prompt_playlist_content">Create a 10-song upbeat indie-pop playlist designed to keep energy high while coding or studying.</string>
     <string name="prompt_quiz_title">Take a quiz</string>
     <string name="prompt_quiz_content">Quiz me on basic geography with 5 multiple-choice questions, and give me my score at the end.</string>
+    <string name="prompt_quiz_answer">Quiz answer: %1$s</string>
     <string name="prompt_plan_title">Plan a project</string>
     <string name="prompt_plan_content">Outline a 4-week study plan for learning the basics of data analysis from scratch.</string>
 
@@ -162,6 +150,7 @@
     <string name="ai_model_preferences_title">AI Model Preferences</string>
     <string name="primary_ai_model">Primary AI Model</string>
     <string name="recommended">Recommended</string>
+    <string name="character_limit">Character Limit</string>
     <string name="response_creativity">Response Creativity</string>
     <string name="precise">Precise</string>
     <string name="balanced">Balanced</string>
@@ -182,6 +171,8 @@
     <string name="display_name">Display Name</string>
     <string name="email_address">Email Address</string>
     <string name="gender">Gender</string>
+    <string name="date_of_birth">Date of Birth</string>
+    <string name="select_date">Select Date</string>
     <string name="not_set">Not set</string>
     <string name="gallery_permission_required">Gallery permission is required to select a photo</string>
     <string name="camera_permission_required">Camera permission is required to take a photo</string>
@@ -211,6 +202,8 @@
     <string name="watch_short_ad">Watch Short Ad</string>
     <string name="watch_ad_reward">+20 Credits</string>
     <string name="check_in_daily_reward">+10-100 Credits</string>
+    <string name="daily_checkin_day">Daily Check-in (Day %1$d)</string>
+    <string name="ad_watched">Ad Watched</string>
 
     <!-- Cloud Sync Screen -->
     <string name="cloud_sync_status">Cloud Sync Status</string>
@@ -240,6 +233,14 @@
     <string name="no_errors_reported">No errors reported.</string>
     <string name="clear_log">Clear Log</string>
 
+    <string name="error_signin_failed">Sign-in failed or was cancelled by user.</string>
+    <string name="error_no_account">No Google account connected.</string>
+    <string name="error_no_backup">No backup found in cloud.</string>
+    <string name="error_backup_failed">Unknown backup error</string>
+    <string name="error_restore_failed">Unknown restore error</string>
+    <string name="error_delete_cloud_failed">Error deleting cloud data</string>
+
+
     <!-- Contact Us Screen -->
     <string name="get_in_touch">Get in Touch</string>
     <string name="chat_whatsapp_desc">Chat with us through WhatsApp for quick solutions.</string>
@@ -252,6 +253,7 @@
     <string name="visit_site_desc">Visit our website for more information.</string>
     <string name="visit_site">Visit Site</string>
     <string name="follow_us">Follow Us</string>
+    <string name="whatsapp_chat_message">Hello, I need support with iChatAI.</string>
     <string name="faq_full">Frequently Asked Questions (FAQ)</string>
     <string name="no_email_app">No email app found</string>
     <string name="unable_open_link">Unable to open link</string>
@@ -259,9 +261,11 @@
     <!-- About Screen -->
     <string name="about_ichatai">About iChatAI</string>
     <string name="app_version">App Version</string>
+    <string name="version_text">2.0.0</string>
     <string name="check_updates">Check for Updates</string>
     <string name="release_notes">Release Notes</string>
     <string name="developer">Developer</string>
+    <string name="developer_name">Muhammad Sufyan Zafar</string>
     <string name="website">Website</string>
     <string name="support_email">Support Email</string>
     <string name="privacy_policy">Privacy Policy</string>
@@ -274,6 +278,11 @@
     <string name="later">Later</string>
     <string name="close">Close</string>
     <string name="latest_version_msg">You are already on the latest version!</string>
+    <string name="email_subject">iChatAI Support Request</string>
+    <string name="email_body">Hello,\n\nI need help with...</string>
+    <string name="release_notes_markdown">### Version 2.0.0\n- **Advanced AI Models**: Integrated new OpenRouter free models.\n- **Frosted Glass UI**: Complete redesign with modern aesthetics.\n- **Local History**: Faster access to your chat archives.\n- **Daily Rewards**: Earn credits through check-ins and ads.\n- **Cloud Sync**: Securely backup your chats to Google Drive.</string>
+    <string name="full_archival_fixes">Full Archival Bug Fixes</string>
+
 
     <!-- Favorites Screen -->
     <string name="favorites_title">Favourites</string>
@@ -294,6 +303,12 @@
     <string name="new_feature_announcements">New Feature Announcements</string>
     <string name="daily_streak_reminder">Daily Streak Reminder</string>
     <string name="quiet_hours_config">Quiet Hours Configuration</string>
+    <string name="quiet_hours">Quiet Hours</string>
+    <string name="enable_quiet_hours">Enable Quiet Hours</string>
+    <string name="schedule">Schedule</string>
+    <string name="start_time">Start Time</string>
+    <string name="end_time">End Time</string>
+    <string name="ok">OK</string>
 
     <!-- Subscription Screen -->
     <string name="restore">Restore</string>
@@ -360,5 +375,84 @@
     <string name="json_format">JSON (.json)</string>
     <string name="csv_format">CSV (.csv)</string>
     <string name="export">Export</string>
-</resources>
 
+    <!-- Help & FAQ Screen -->
+    <string name="search_help">Search for help...</string>
+    <string name="browse_categories">Browse Categories</string>
+    <string name="show_all">Show All</string>
+    <string name="faq_title">Frequently Asked Questions</string>
+    <string name="category_faq_title">%1$s FAQs</string>
+    <string name="loading">Loading...</string>
+    <string name="no_results">No results found for \"%1$s\"</string>
+    <string name="still_need_help">Still Need Help?</string>
+    <string name="whatsapp_assist">Our team is here to assist you via WhatsApp.</string>
+    <string name="chat_whatsapp">Chat on WhatsApp</string>
+    <string name="view_service_status">View Service Status</string>
+    <string name="whatsapp_not_installed">WhatsApp not installed</string>
+    <string name="clear">Clear</string>
+    <string name="could_not_open_link">Could not open link</string>
+
+    <!-- Feedback Screen -->
+    <string name="send_feedback">Send Feedback</string>
+    <string name="feedback_success">Feedback submitted successfully!</string>
+    <string name="feedback_fail">Failed to submit feedback. Please try again.</string>
+    <string name="gallery_permission_denied">Permission denied to access gallery</string>
+    <string name="submitting">Submitting...</string>
+    <string name="submit_feedback">Submit Feedback</string>
+    <string name="help_improve_ichatai">Help us improve the iChatAI experience</string>
+    <string name="feedback_header_desc">Pick a category, tell us what happened, and attach screenshots if it helps.</string>
+    <string name="category_label">CATEGORY</string>
+    <string name="feedback_general">General Feedback</string>
+    <string name="feedback_bug">Bug / Crash Report</string>
+    <string name="feedback_feature">Feature Request</string>
+    <string name="feedback_accuracy">AI Model Accuracy / Hallucination</string>
+    <string name="feedback_ui">UI / Design Suggestion</string>
+    <string name="feedback_billing">Credit &amp; Billing Inquiry</string>
+    <string name="description_label">DESCRIPTION</string>
+    <string name="required">Required</string>
+    <string name="feedback_placeholder">Share what worked well, what failed, or what should be improved regarding our AI model or features.</string>
+    <string name="screenshots_label">SCREENSHOTS</string>
+    <string name="tap_to_attach">Tap to attach from gallery</string>
+    <string name="add_more">Add more</string>
+
+    <!-- Terms & Privacy -->
+    <string name="terms_privacy_title">Terms &amp; Privacy</string>
+
+    <!-- Splash Screen -->
+    <string name="splash_desc">Your Friendly AI Companion</string>
+
+    <string name="user_profile_desc">User Profile</string>
+    <string name="new_chat">New Chat</string>
+    <string name="ai_assistant">AI Assistant</string>
+    <string name="remove">Remove</string>
+    <string name="attachments">Attachments</string>
+
+    <string name="find_chats_placeholder">Find previous chats...</string>
+    <string name="recent_chats">Recent Chats</string>
+    <string name="search_results">Search Results</string>
+    <string name="support">Support</string>
+    <string name="ai_credits">AI Credits</string>
+
+    <string name="view_chat_history">View chat history</string>
+    <string name="view_favorite_chats">View favorite chats</string>
+    <string name="view_saved_prompts">View saved prompts</string>
+    <string name="manage_subscription">Manage subscription</string>
+    <string name="app_settings">App settings</string>
+    <string name="view_account_details">View account details</string>
+    <string name="get_help_faq">Get help and read FAQ</string>
+    <!-- Sorting & Filtering -->
+    <string name="sort_newest">Newest First</string>
+    <string name="sort_oldest">Oldest First</string>
+    <string name="sort_alphabetical">Alphabetical</string>
+    <string name="sort_most_messages">Most Messages</string>
+    <string name="filter_all">All</string>
+    <string name="filter_today">Today</string>
+    <string name="filter_yesterday">Yesterday</string>
+    <string name="filter_this_week">This Week</string>
+    <string name="filter_pinned_only">Pinned Only</string>
+    <string name="sort_most_used">Most Used</string>
+    <string name="folder">Folder</string>
+    <string name="prompt">Prompt</string>
+
+    <string name="user_profile_pic">User Profile Picture</string>
+</resources>

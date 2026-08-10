@@ -122,7 +122,7 @@ fun HelpAndFaqScreen(
                         trailingIcon = {
                             if (searchQuery.isNotEmpty()) {
                                 IconButton(onClick = { searchQuery = "" }) {
-                                    Icon(Icons.Rounded.Clear, contentDescription = "Clear", tint = colorScheme.onSurface.copy(alpha = 0.5f))
+                                    Icon(Icons.Rounded.Clear, contentDescription = stringResource(R.string.clear), tint = colorScheme.onSurface.copy(alpha = 0.5f))
                                 }
                             }
                         },
@@ -305,7 +305,7 @@ fun HelpAndFaqScreen(
                                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://ichatai-website.is-cool.dev/service-status"))
                                 context.startActivity(intent)
                             } catch (_: Exception) {
-                                Toast.makeText(context, "Could not open link", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, context.getString(R.string.could_not_open_link), Toast.LENGTH_SHORT).show()
                             }
                         }
                         .padding(bottom = 32.dp),

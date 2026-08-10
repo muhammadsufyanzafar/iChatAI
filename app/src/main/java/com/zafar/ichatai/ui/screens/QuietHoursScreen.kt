@@ -32,9 +32,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.zafar.ichatai.R
 import com.zafar.ichatai.ui.components.GlassCard
 import com.zafar.ichatai.ui.components.GlowBackground
 import com.zafar.ichatai.ui.viewmodel.NotificationViewModel
@@ -55,14 +57,14 @@ fun QuietHoursScreen(
                 TopAppBar(
                     title = {
                         Text(
-                            "Quiet Hours",
+                            stringResource(R.string.quiet_hours),
                             style = MaterialTheme.typography.headlineSmall,
                             fontWeight = FontWeight.Bold
                         )
                     },
                     navigationIcon = {
                         IconButton(onClick = onBackClick) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
@@ -79,23 +81,23 @@ fun QuietHoursScreen(
                     .padding(horizontal = 20.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
-                NotificationSection(title = "General") {
+                NotificationSection(title = stringResource(R.string.general)) {
                     NotificationToggleItem(
-                        title = "Enable Quiet Hours",
+                        title = stringResource(R.string.enable_quiet_hours),
                         checked = prefs.quietHoursEnabled,
                         onCheckedChange = { viewModel.toggleQuietHours(it) }
                     )
                 }
 
                 if (prefs.quietHoursEnabled) {
-                    NotificationSection(title = "Schedule") {
+                    NotificationSection(title = stringResource(R.string.schedule)) {
                         TimeSelectionItem(
-                            title = "Start Time",
+                            title = stringResource(R.string.start_time),
                             time = prefs.quietHoursStart,
                             onClick = { showStartTimePicker = true }
                         )
                         TimeSelectionItem(
-                            title = "End Time",
+                            title = stringResource(R.string.end_time),
                             time = prefs.quietHoursEnd,
                             onClick = { showEndTimePicker = true }
                         )
@@ -132,7 +134,7 @@ fun QuietHoursScreen(
                                 },
                                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                             ) {
-                                Text("OK")
+                                Text(stringResource(R.string.ok))
                             }
                         },
                         text = {

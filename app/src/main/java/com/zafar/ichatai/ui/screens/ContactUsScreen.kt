@@ -331,8 +331,8 @@ fun SocialIconButton(
 
 private fun startWhatsAppChat(context: Context) {
     try {
-        val phoneNumber = "+923445054799" // Placeholder: Use developer's actual WhatsApp number
-        val message = "Hello, I need support with iChatAI."
+        val phoneNumber = "+923445054799"
+        val message = context.getString(R.string.whatsapp_chat_message)
         val url = "https://wa.me/$phoneNumber?text=${Uri.encode(message)}"
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         context.startActivity(intent)
@@ -345,8 +345,8 @@ private fun sendEmail(context: Context) {
     try {
         val intent = Intent(Intent.ACTION_SENDTO).apply {
             data = Uri.parse("mailto:sufyan.pk444@gmail.com")
-            putExtra(Intent.EXTRA_SUBJECT, "iChatAI Support Request")
-            putExtra(Intent.EXTRA_TEXT, "Hello iChatAI Support Team,\n\n")
+            putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.email_subject))
+            putExtra(Intent.EXTRA_TEXT, context.getString(R.string.email_body))
         }
         context.startActivity(Intent.createChooser(intent, context.getString(R.string.compose_email)))
     } catch (_: Exception) {

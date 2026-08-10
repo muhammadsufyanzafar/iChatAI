@@ -12,7 +12,18 @@ import java.io.InputStreamReader
 class HelpRepository(private val context: Context) {
     suspend fun getFaqs(): List<FaqData> = withContext(Dispatchers.IO) {
         try {
-            val inputStream = context.assets.open("faqs.json")
+            val languageCode = context.resources.configuration.locales[0].language
+            val fileName = when (languageCode) {
+                "ar", "de", "es", "fr", "hi", "it", "pt", "ur", "zh" -> "faqs_$languageCode.json"
+                else -> "faqs.json"
+            }
+            
+            val inputStream = try {
+                context.assets.open(fileName)
+            } catch (e: Exception) {
+                context.assets.open("faqs.json")
+            }
+
             val reader = InputStreamReader(inputStream)
             val type = object : TypeToken<List<FaqJson>>() {}.type
             val faqJsons: List<FaqJson> = Gson().fromJson(reader, type)

@@ -1,0 +1,77 @@
+[
+  {
+    "question": "Comment démarrer une conversation ?",
+    "answer": "Tapez simplement votre message dans la zone de texte sur l'écran d'accueil et appuyez sur l'icône d'envoi. iChatAI répondra instantanément en utilisant le modèle d'IA sélectionné.",
+    "category": "GETTING_STARTED"
+  },
+  {
+    "question": "Quels modèles iChatAI utilise-t-il ?",
+    "answer": "Nous utilisons une variété de modèles haute performance via OpenRouter, y compris des versions gratuites et premium de Gemini, Mistral et des modèles basés sur GPT pour garantir la meilleure qualité de réponse.",
+    "category": "GETTING_STARTED"
+  },
+  {
+    "question": "L'utilisation d'iChatAI est-elle gratuite ?",
+    "answer": "Oui ! Vous commencez avec un ensemble de crédits gratuits. Vous pouvez en gagner plus en regardant des publicités, en vous enregistrant quotidiennement ou en effectuant des tâches spécifiques dans l'application.",
+    "category": "GETTING_STARTED"
+  },
+  {
+    "question": "Comment fonctionne le système de crédits ?",
+    "answer": "Chaque message envoyé à l'IA consomme 1 crédit. Vous pouvez consulter votre solde sur l'écran 'Crédits'. Les crédits sont automatiquement déduits après une réponse réussie.",
+    "category": "ACCOUNT_BILLING"
+  },
+  {
+    "question": "Comment gagner plus de crédits ?",
+    "answer": "Vous pouvez gagner des crédits en effectuant des check-ins quotidiens ou en regardant des publicités vidéo avec récompense. Appuyer sur l'icône '+' à côté de votre solde de crédits affichera toutes les options disponibles.",
+    "category": "ACCOUNT_BILLING"
+  },
+  {
+    "question": "Existe-t-il des plans d'abonnement ?",
+    "answer": "Des abonnements payants avec messagerie illimitée et accès prioritaire à des modèles plus rapides arrivent bientôt ! Gardez un œil sur l'écran 'Abonnement' pour les mises à jour.",
+    "category": "ACCOUNT_BILLING"
+  },
+  {
+    "question": "Comment mettre à jour mon profil ?",
+    "answer": "Accédez à Paramètres > Profil utilisateur. Ici, vous pouvez modifier votre nom d'affichage, votre e-mail et votre icône d'avatar pour personnaliser votre expérience.",
+    "category": "ACCOUNT_BILLING"
+  },
+  {
+    "question": "L'IA peut-elle analyser des images ?",
+    "answer": "Oui ! Appuyez sur l'icône d'image (caméra) dans la barre de saisie du chat pour télécharger ou prendre une photo. Vous pouvez ensuite poser des questions à l'IA sur le contenu de l'image.",
+    "category": "USING_AI"
+  },
+  {
+    "question": "Comment enregistrer mes prompts préférés ?",
+    "answer": "Vous pouvez enregistrer les prompts fréquemment utilisés dans la section 'Prompts enregistrés' du tiroir de navigation. Cela vous permet de réutiliser rapidement des instructions complexes.",
+    "category": "USING_AI"
+  },
+  {
+    "question": "Comment épingler ou supprimer des discussions ?",
+    "answer": "Dans l'écran 'Historique', appuyez longuement sur n'importe quelle session de discussion pour voir les options d'épinglage ou de suppression permanente.",
+    "category": "USING_AI"
+  },
+  {
+    "question": "Mon historique de discussion est-il privé ?",
+    "answer": "Absolument. Vos discussions sont stockées localement sur votre appareil à l'aide d'une base de données Room. Nous ne stockons pas vos conversations privées sur nos serveurs.",
+    "category": "USING_AI"
+  },
+  {
+    "question": "Pourquoi l'IA ne répond-elle pas ?",
+    "answer": "Assurez-vous d'avoir une connexion Internet stable et des crédits restants. Si vous voyez une erreur de délai d'attente, le modèle d'IA peut être temporairement surchargé — veuillez réessayer dans un instant.",
+    "category": "TROUBLESHOOTING"
+  },
+  {
+    "question": "La synchronisation cloud échoue, que dois-je faire ?",
+    "answer": "Assurez-vous d'avoir accordé à l'application la permission d'accéder à Google Drive. Vérifiez les limites de stockage de votre compte Google et assurez-vous d'avoir une connexion réseau valide.",
+    "category": "TROUBLESHOOTING"
+  },
+  {
+    "question": "Comment effacer le cache de l'application ?",
+    "answer": "Vous pouvez effacer le cache interne de l'application via Paramètres > Gestion des données et du stockage. Cela peut aider à résoudre des problèmes de performance mineurs sans supprimer vos discussions.",
+    "category": "TROUBLESHOOTING"
+  },
+  {
+    "question": "J'ai trouvé un bug, comment puis-je le signaler ?",
+    "answer": "Nous aimerions avoir de vos nouvelles ! Signalez-le via Feedback ou appuyez sur le bouton 'Live Chat' en bas du Centre d'aide pour nous envoyer un message directement via WhatsApp.",
+    "category": "TROUBLESHOOTING"
+  }
+]

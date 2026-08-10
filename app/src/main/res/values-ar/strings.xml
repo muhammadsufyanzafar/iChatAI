@@ -36,4 +36,376 @@
     <string name="storage_subtitle">مسح التخزين المؤقت، تصدير السجل</string>
     <string name="cloud_sync_subtitle">تشغيل/إيقاف، مزامنة الآن</string>
     <string name="about_subtitle">إصدار التطبيق 2.0، معلومات المطور</string>
+
+    <string name="help_getting_started">البداية</string>
+    <string name="help_account_billing">الحساب والفواتير</string>
+    <string name="help_using_ai">استخدام الذكاء الاصطناعي</string>
+    <string name="help_troubleshooting">استكشاف الأخطاء وإصلاحها</string>
+
+    <string name="search_help">البحث عن مساعدة...</string>
+    <string name="browse_categories">تصفح الفئات</string>
+    <string name="show_all">إظهار الكل</string>
+    <string name="faq_title">الأسئلة الشائعة</string>
+    <string name="category_faq_title">الأسئلة الشائعة لـ %1$s</string>
+    <string name="loading">جاري التحميل...</string>
+    <string name="no_results">لم يتم العثور على نتائج لـ \"%1$s\"</string>
+    <string name="still_need_help">هل ما زلت بحاجة للمساعدة؟</string>
+    <string name="whatsapp_assist">فريقنا متاح لمساعدتك عبر واتساب.</string>
+    <string name="chat_whatsapp">الدردشة على واتساب</string>
+    <string name="view_service_status">عرض حالة الخدمة</string>
+    <string name="whatsapp_not_installed">واتساب غير مثبت</string>
+
+    <!-- Main Screen -->
+    <string name="ask_anything">اسأل أي شيء...</string>
+    <string name="quick_prompt_chips">اقتراحات سريعة</string>
+    <string name="exit_app_title">إغلاق التطبيق</string>
+    <string name="exit_app_message">هل أنت متأكد أنك تريد مغادرة iChatAI؟ يتم حفظ جلستك الحالية تلقائيًا.</string>
+    <string name="exit">خروج</string>
+    <string name="cancel">إلغاء</string>
+    <string name="thinking">يفكر...</string>
+
+    <!-- Credits & Rewards -->
+    <string name="credits_title">الرصيد</string>
+    <string name="credit_history">سجل الرصيد</string>
+    <string name="available_credits">الرصيد المتاح</string>
+    <string name="boost_your_credits">زيادة رصيدك</string>
+    <string name="daily_checkin">التسجيل اليومي</string>
+    <string name="check_in">تسجيل</string>
+    <string name="claimed">تم الاستلام</string>
+    <string name="claim">استلام</string>
+    <string name="collected">تم الجمع</string>
+    <string name="jackpot">الجائزة الكبرى!</string>
+    <string name="streak_title">سلسلة تسجيل الدخول لمدة 7 أيام</string>
+    <string name="streak_format">7/%1$d</string>
+    <string name="streak_description">سجل وصولك يوميًا للحصول على المكافآت واربح الجائزة الكبرى في اليوم السابع!</string>
+    <string name="day_format">اليوم %1$d</string>
+    <string name="locked">مقفل</string>
+    <string name="credits_reward">+%1$d رصيد</string>
+    <string name="watch_short_ad">شاهد إعلانًا قصيرًا</string>
+    <string name="watch_ad_reward">+20 رصيد</string>
+    <string name="check_in_daily_reward">+10-100 رصيد</string>
+    <string name="daily_checkin_day">تسجيل الوصول اليومي (اليوم %1$d)</string>
+    <string name="ad_watched">تمت مشاهدة الإعلان</string>
+
+    <!-- Saved Prompts -->
+    <string name="saved_prompts">المطالبات المحفوظة</string>
+    <string name="search_prompts">البحث في المطالبات...</string>
+    <string name="my_folders">مجلداتي</string>
+    <string name="recent_individual_prompts">المطالبات الفردية والأخيرة</string>
+    <string name="prompts_in_folder">المطالبات في %1$s</string>
+    <string name="no_prompts_in_folder">لا توجد مطالبات في هذا المجلد</string>
+    <string name="new_folder">مجلد جديد</string>
+    <string name="edit_folder">تعديل المجلد</string>
+    <string name="folder_name">اسم المجلد</string>
+    <string name="select_color">اختر اللون</string>
+    <string name="create">إنشاء</string>
+    <string name="save">حفظ</string>
+    <string name="new_prompt">مطالبة جديدة</string>
+    <string name="edit_prompt">تعديل المطالبة</string>
+    <string name="prompt_title">العنوان</string>
+    <string name="prompt_content">محتوى المطالبة</string>
+    <string name="prompt_tag">الوسم (مثل: عمل)</string>
+    <string name="assign_to_folder">تعيين إلى مجلد</string>
+    <string name="none">بلا</string>
+    <string name="delete_item_title">حذف %1$s؟</string>
+    <string name="delete_folder_msg">هل أنت متأكد أنك تريد حذف \'%1$s\'؟ سيؤدي هذا أيضاً إلى حذف جميع المطالبات الموجودة داخل هذا المجلد.</string>
+    <string name="delete_prompt_msg">هل أنت متأكد أنك تريد حذف \'%1$s\'؟</string>
+    <string name="delete">حذف</string>
+    <string name="prompts_count">%1$d مطالبة</string>
+    <string name="last_used_format">آخر استخدام: %1$s | [الوسم: %2$s]</string>
+    <string name="general">عام</string>
+
+    <!-- Account Details -->
+    <string name="account_details_title">تفاصيل الحساب</string>
+    <string name="profile_photo">صورة الملف الشخصي</string>
+    <string name="display_name">اسم العرض</string>
+    <string name="email_address">عنوان البريد الإلكتروني</string>
+    <string name="gender">الجنس</string>
+    <string name="date_of_birth">تاريخ الميلاد</string>
+    <string name="not_set">لم يتم التعيين</string>
+    <string name="save_changes">حفظ التغييرات</string>
+    <string name="edit_name">تعديل الاسم</string>
+    <string name="edit_email">تعديل البريد الإلكتروني</string>
+    <string name="select_gender">اختر الجنس</string>
+    <string name="select_date">اختر التاريخ</string>
+    <string name="invalid_email">صيغة البريد الإلكتروني غير صحيحة</string>
+    <string name="delete_account">حذف الحساب</string>
+    <string name="delete_account_msg">هل أنت متأكد أنك تريد حذف حسابك؟ سيؤدي ذلك إلى مسح كل سجل الدردشة والإعدادات نهائيًا.</string>
+    <string name="delete_all_data">حذف كل البيانات</string>
+    <string name="male">ذكر</string>
+    <string name="female">أنثى</string>
+    <string name="prefer_not_to_say">يفضل عدم الذكر</string>
+
+    <!-- General UI -->
+    <string name="close">إغلاق</string>
+    <string name="app_version">إصدار التطبيق</string>
+    <string name="check_updates">التحقق من التحديثات</string>
+    <string name="latest_version_msg">أنت تستخدم أحدث إصدار بالفعل!</string>
+    <string name="export">تصدير</string>
+
+    <!-- Subscription Screen -->
+    <string name="restore">استعادة</string>
+    <string name="available_plans">الخطط المتاحة</string>
+    <string name="pro_monthly">برو شهري</string>
+    <string name="pro_annual">برو سنوي</string>
+    <string name="unlimited_messages">رسائل غير محدودة</string>
+    <string name="faster_ai_responses">ردود أسرع من الذكاء الاصطناعي</string>
+    <string name="priority_support">دعم ذو أولوية</string>
+    <string name="all_pro_monthly_benefits">جميع مزايا برو الشهري</string>
+    <string name="access_beta_features">الوصول إلى الميزات التجريبية</string>
+    <string name="early_access_new_models">الوصول المبكر إلى النماذج الجديدة</string>
+    <string name="coming_soon">قريباً</string>
+    <string name="save_percent">(توفير %1$d%%)</string>
+    <string name="best_value">أفضل قيمة</string>
+    <string name="month">شهر</string>
+    <string name="year">سنة</string>
+    <string name="current_plan_format">الخطة الحالية: %1$s</string>
+    <string name="free_plan">الخطة المجانية</string>
+    <string name="renews_format">يتجدد في: %1$s</string>
+    <string name="na">غير متوفر</string>
+    <string name="benefits_active">المزايا نشطة</string>
+    <string name="manage_billing">إدارة الفواتير</string>
+    <string name="switch_plan">تغيير الخطة</string>
+
+    <!-- Appearance Screen -->
+    <string name="theme_mode">وضع المظهر</string>
+    <string name="light">فاتح</string>
+    <string name="dark">داكن</string>
+    <string name="system_default">تلقائي حسب النظام</string>
+    <string name="accent_color">لون التمييز</string>
+    <string name="purple">أرجواني</string>
+    <string name="blue">أزرق</string>
+    <string name="green">أخضر</string>
+    <string name="yellow">أصفر</string>
+    <string name="red">أحمر</string>
+    <string name="pink">وردي</string>
+
+    <!-- AI Model Preferences -->
+    <string name="ai_model_preferences_title">تفضيلات نموذج الذكاء الاصطناعي</string>
+    <string name="primary_ai_model">نموذج الذكاء الاصطناعي الأساسي</string>
+    <string name="recommended">موصى به</string>
+    <string name="character_limit">حد الأحرف</string>
+    <string name="response_creativity">إبداع الاستجابة</string>
+    <string name="precise">دقيق</string>
+    <string name="balanced">متوازن</string>
+    <string name="imaginative">خيالي</string>
+    <string name="creativity_description">اضبط ميل النموذج لإنشاء ردود جديدة أو متحفظة.</string>
+
+    <!-- Notification Settings Screen -->
+    <string name="general_notifications">إشعارات عامة</string>
+    <string name="allow_notifications">السماح بالإشعارات</string>
+    <string name="notification_types">أنواع الإشعارات</string>
+    <string name="push_notifications">إشعارات الدفع</string>
+    <string name="sound_vibration">الصوت والاهتزاز</string>
+    <string name="specific_alerts">تنبيهات محددة</string>
+    <string name="new_feature_announcements">إعلانات الميزات الجديدة</string>
+    <string name="daily_streak_reminder">تذكير بسلسلة الأيام المتتالية</string>
+    <string name="quiet_hours_config">إعداد الساعات الهادئة</string>
+    <string name="quiet_hours">الساعات الهادئة</string>
+    <string name="enable_quiet_hours">تفعيل الساعات الهادئة</string>
+    <string name="schedule">الجدول الزمني</string>
+    <string name="start_time">وقت البدء</string>
+    <string name="end_time">وقت الانتهاء</string>
+    <string name="ok">موافق</string>
+
+    <!-- Help & FAQ Screen -->
+    <string name="faq_full">الأسئلة الشائعة (FAQ)</string>
+    <string name="clear">مسح</string>
+    <string name="could_not_open_link">تعذر فتح الرابط</string>
+
+    <!-- Feedback Screen -->
+    <string name="send_feedback">إرسال الملاحظات</string>
+    <string name="feedback_success">تم إرسال الملاحظات بنجاح!</string>
+    <string name="feedback_fail">فشل إرسال الملاحظات. يرجى المحاولة مرة أخرى.</string>
+    <string name="gallery_permission_denied">تم رفض الإذن للوصول إلى المعرض</string>
+    <string name="submitting">جاري الإرسال...</string>
+    <string name="submit_feedback">إرسال الملاحظات</string>
+    <string name="help_improve_ichatai">ساعدنا في تحسين تجربة iChatAI</string>
+    <string name="feedback_header_desc">اختر فئة، وأخبرنا بما حدث، وأرفق لقطات شاشة إذا كان ذلك مفيداً.</string>
+    <string name="category_label">الفئة</string>
+    <string name="feedback_general">ملاحظات عامة</string>
+    <string name="feedback_bug">تقرير عن خطأ / تعطل</string>
+    <string name="feedback_feature">طلب ميزة</string>
+    <string name="feedback_accuracy">دقة نموذج الذكاء الاصطناعي / هلوسة</string>
+    <string name="feedback_ui">اقتراح واجهة المستخدم / التصميم</string>
+    <string name="feedback_billing">استفسار عن الرصيد والفواتير</string>
+    <string name="description_label">الوصف</string>
+    <string name="required">مطلوب</string>
+    <string name="feedback_placeholder">شاركنا بما سار بشكل جيد، أو ما فشل، أو ما يجب تحسينه فيما يتعلق بنموذج الذكاء الاصطناعي أو الميزات الخاصة بنا.</string>
+    <string name="screenshots_label">لقطات الشاشة</string>
+    <string name="tap_to_attach">انقر للإرفاق من المعرض</string>
+    <string name="add_more">إضافة المزيد</string>
+
+    <!-- Terms & Privacy -->
+    <string name="terms_privacy_title">الشروط والخصوصية</string>
+
+    <!-- Splash Screen -->
+    <string name="splash_desc">رفيقك الودود في الذكاء الاصطناعي</string>
+
+    <string name="user_profile_desc">ملف المستخدم</string>
+    <string name="new_chat">دردشة جديدة</string>
+    <string name="ai_assistant">مساعد الذكاء الاصطناعي</string>
+    <string name="remove">إزالة</string>
+    <string name="attachments">المرفقات</string>
+
+    <string name="find_chats_placeholder">البحث عن المحادثات السابقة...</string>
+    <string name="recent_chats">المحادثات الأخيرة</string>
+    <string name="search_results">نتائج البحث</string>
+    <string name="support">الدعم</string>
+    <string name="ai_credits">رصيد الذكاء الاصطناعي</string>
+
+    <!-- Cloud Sync Screen -->
+    <string name="cloud_sync_status">حالة المزامنة السحابية</string>
+    <string name="connected_as">متصل كـ</string>
+    <string name="google_drive_sync">مزامنة جوجل درايف</string>
+    <string name="sign_in_backup_msg">سجل الدخول للنسخ الاحتياطي</string>
+    <string name="sign_in">تسجيل الدخول</string>
+    <string name="automatic_backup">نسخ احتياطي تلقائي</string>
+    <string name="automatic_backup_desc">نسخ البيانات احتياطيًا بشكل دوري إلى السحابة.</string>
+    <string name="sync_wifi_cellular">المزامنة عبر الواي فاي والشبكة الخلوية</string>
+    <string name="sync_wifi_cellular_desc">مزامنة البيانات عبر الأجهزة.</string>
+    <string name="last_synced_format">آخر مزامنة: %1$s</string>
+    <string name="never_synced">لم تتم المزامنة أبداً</string>
+    <string name="manual_sync">مزامنة يدوية</string>
+    <string name="manual_sync_desc">فرض مزامنة فورية لكل البيانات.</string>
+    <string name="sync_now">مزامنة الآن</string>
+    <string name="import_from_cloud">استيراد من السحابة</string>
+    <string name="sync_options">خيارات المزامنة</string>
+    <string name="sync_conversations">المحادثات والسجل</string>
+    <string name="sync_images">الصور والملفات</string>
+    <string name="sync_settings">الإعدادات والتفضيلات</string>
+    <string name="sync_prompts">المطالبات والقوالب المحفوظة</string>
+    <string name="delete_cloud_data">حذف كل البيانات من السحابة</string>
+    <string name="sync_error_log">سجل أخطاء المزامنة</string>
+    <string name="delete_cloud_data_title">حذف بيانات السحابة؟</string>
+    <string name="delete_cloud_data_msg">سيؤدي هذا إلى إزالة جميع بيانات النسخ الاحتياطي نهائيًا من جوجل درايف.</string>
+    <string name="no_errors_reported">لم يتم الإبلاغ عن أي أخطاء.</string>
+    <string name="clear_log">مسح السجل</string>
+
+    <string name="error_signin_failed">فشل تسجيل الدخول أو تم إلغاؤه من قبل المستخدم.</string>
+    <string name="error_no_account">لا يوجد حساب جوجل متصل.</string>
+    <string name="error_no_backup">لم يتم العثور على نسخة احتياطية في السحابة.</string>
+    <string name="error_backup_failed">خطأ غير معروف في النسخ الاحتياطي</string>
+    <string name="error_restore_failed">خطأ غير معروف في الاستعادة</string>
+    <string name="error_delete_cloud_failed">خطأ في حذف بيانات السحابة</string>
+
+    <!-- Storage Management Screen -->
+    <string name="storage_management_title">إدارة البيانات والتخزين</string>
+    <string name="storage_usage">استخدام التخزين</string>
+    <string name="conversations">المحادثات</string>
+    <string name="media">الوسائط</string>
+    <string name="cache">التخزين المؤقت</string>
+    <string name="free_space">المساحة الحرة</string>
+    <string name="used_format">تم استخدام %1$s</string>
+    <string name="total_format">الإجمالي %1$s</string>
+    <string name="cleanup_tools">أدوات التنظيف</string>
+    <string name="clear_app_cache">مسح التخزين المؤقت للتطبيق</string>
+    <string name="clear_cache_desc">الملفات المؤقتة والصور. يوفر حوالي %1$s.</string>
+    <string name="clear_cache">مسح التخزين المؤقت</string>
+    <string name="clear_chat_history">مسح سجل الدردشة</string>
+    <string name="clear_history_desc">حذف جميع سجلات المحادثات نهائيًا.</string>
+    <string name="clear_history">مسح السجل</string>
+    <string name="data_export">تصدير البيانات</string>
+    <string name="export_chat_history">تصدير سجل الدردشة</string>
+    <string name="export_desc">تحميل جميع الرسائل بصيغة JSON أو CSV.</string>
+    <string name="configure_export">تكوين التصدير</string>
+    <string name="auto_cleanup_settings">إعدادات التنظيف التلقائي</string>
+    <string name="status_active">الحالة: نشط ويعمل</string>
+    <string name="status_inactive">الحالة: غير نشط</string>
+    <string name="maintenance_policy">سياسة الصيانة</string>
+    <string name="maintenance_policy_desc">حذف الرسائل الأقدم من الأيام المختارة تلقائيًا.</string>
+    <string name="configure">تكوين</string>
+    <string name="auto_cleanup_policy">سياسة التنظيف التلقائي</string>
+    <string name="delete_older_than">حذف الرسائل الأقدم من %1$d يومًا.</string>
+    <string name="days_7">7 أيام</string>
+    <string name="days_90">90 يومًا</string>
+    <string name="clear_chat_history_title">مسح سجل الدردشة؟</string>
+    <string name="clear_chat_history_msg">سيؤدي هذا إلى حذف جميع سجلات المحادثات نهائيًا. لا يمكن التراجع عن هذا الإجراء.</string>
+    <string name="delete_all">حذف الكل</string>
+    <string name="select_export_format">اختر صيغة التصدير</string>
+    <string name="export_successful">نجح التصدير</string>
+    <string name="export_failed">فشل التصدير: %1$s</string>
+    <string name="cache_cleared">تم مسح التخزين المؤقت بنجاح</string>
+    <string name="chat_history_cleared">تم مسح سجل الدردشة</string>
+    <string name="json_format">JSON (.json)</string>
+    <string name="csv_format">CSV (.csv)</string>
+
+    <!-- About Screen -->
+    <string name="about_ichatai">حول iChatAI</string>
+    <string name="version_text">2.0.0</string>
+    <string name="release_notes">ملاحظات الإصدار</string>
+    <string name="developer">المطور</string>
+    <string name="developer_name">محمد سفيان ظفر</string>
+    <string name="website">الموقع الإلكتروني</string>
+    <string name="support_email">بريد الدعم</string>
+    <string name="privacy_policy">سياسة الخصوصية</string>
+    <string name="copyright_format">© 2026 %1$s. جميع الحقوق محفوظة.</string>
+    <string name="update_available">تحديث متوفر!</string>
+    <string name="version_format">الإصدار %1$s • %2$s</string>
+    <string name="available_on">متوفر على: </string>
+    <string name="whats_new">ما الجديد:</string>
+    <string name="update_now">تحديث الآن</string>
+    <string name="later">لاحقاً</string>
+    <string name="email_subject">طلب دعم iChatAI</string>
+    <string name="email_body">مرحباً،\n\nأحتاج إلى مساعدة في...</string>
+    <string name="release_notes_markdown">### الإصدار 2.0.0\n- **نماذج ذكاء اصطناعي متقدمة**: دمج نماذج OpenRouter المجانية الجديدة.\n- **واجهة زجاجية متجمدة**: إعادة تصميم كاملة بجماليات حديثة.\n- **السجل المحلي**: وصول أسرع إلى أرشيفات الدردشة الخاصة بك.\n- **المكافآت اليومية**: اربح رصيدًا من خلال تسجيلات الدخول والإعلانات.\n- **المزامنة السحابية**: نسخ احتياطي آمن لمحادثاتك على جوجل درايف.</string>
+    <string name="full_archival_fixes">إصلاحات أخطاء الأرشفة الكاملة</string>
+
+    <string name="view_chat_history">عرض سجل الدردشة</string>
+    <string name="view_favorite_chats">عرض الدردشات المفضلة</string>
+    <string name="view_saved_prompts">عرض المطالبات المحفوظة</string>
+    <string name="manage_subscription">إدارة الاشتراك</string>
+    <string name="app_settings">إعدادات التطبيق</string>
+    <string name="view_account_details">عرض تفاصيل الحساب</string>
+    <string name="get_help_faq">الحصول على المساعدة وقراءة الأسئلة الشائعة</string>
+    <string name="user_profile_pic">صورة الملف الشخصي للمستخدم</string>
+
+    <!-- Sorting & Filtering -->
+    <string name="sort_newest">الأحدث أولاً</string>
+    <string name="sort_oldest">الأقدم أولاً</string>
+    <string name="sort_alphabetical">أبجدي</string>
+    <string name="sort_most_messages">أكثر الرسائل</string>
+    <string name="filter_all">الكل</string>
+    <string name="filter_today">اليوم</string>
+    <string name="filter_yesterday">أمس</string>
+    <string name="filter_this_week">هذا الأسبوع</string>
+    <string name="filter_pinned_only">المثبتة فقط</string>
+    <string name="sort_most_used">الأكثر استخداماً</string>
+    <string name="folder">مجلد</string>
+    <string name="prompt">مطالبة</string>
+
+    <!-- Favorites Screen -->
+    <string name="favorites_title">المفضلة</string>
+    <string name="search_favorites">البحث في المفضلة...</string>
+    <string name="no_favorites_found">لم يتم العثور على مفضلة</string>
+    <string name="top_pinned_favorites">المفضلة المثبتة في الأعلى</string>
+    <string name="regular_favorites">المفضلة العادية</string>
+    <string name="unstar">إزالة النجمة</string>
+    <string name="delete_favorite_msg">هل أنت متأكد أنك تريد حذف هذه الدردشة المفضلة؟ لا يمكن التراجع عن هذا الإجراء.</string>
+    <string name="just_now">الآن فقط</string>
+    <string name="mins_ago">منذ %1$d دقيقة</string>
+    <string name="hours_ago">منذ %1$d ساعة</string>
+    <string name="days_ago">منذ %1$d يوم</string>
+
+    <!-- Chat History Screen -->
+    <string name="chat_history">سجل الدردشة</string>
+    <string name="search_history">البحث في السجل...</string>
+    <string name="no_history_found">لم يتم العثور على سجل</string>
+    <string name="delete_chat_title">حذف الدردشة</string>
+    <string name="delete_chat_msg">هل أنت متأكد أنك تريد حذف هذه الدردشة؟ لا يمكن التراجع عن هذا الإجراء.</string>
+    <string name="last_accessed_format">آخر وصول: %1$s | %2$d رسائل</string>
+    <string name="today">اليوم</string>
+    <string name="this_week">هذا الأسبوع</string>
+    <string name="older">أقدم</string>
+
+    <string name="get_in_touch">تواصل معنا</string>
+    <string name="chat_whatsapp_desc">دردش معنا عبر واتساب للحصول على حلول سريعة.</string>
+    <string name="start_chat">بدء الدردشة</string>
+    <string name="email_support">دعم البريد الإلكتروني</string>
+    <string name="email_support_desc">أرسل لنا استفسارًا مفصلاً.</string>
+    <string name="official_website">الموقع الرسمي</string>
+    <string name="visit_site_desc">قم بزيارة موقعنا لمزيد من المعلومات.</string>
+    <string name="visit_site">زيارة الموقع</string>
+    <string name="follow_us">تابعنا</string>
+    <string name="whatsapp_chat_message">مرحباً، أحتاج إلى دعم بخصوص iChatAI.</string>
 </resources>

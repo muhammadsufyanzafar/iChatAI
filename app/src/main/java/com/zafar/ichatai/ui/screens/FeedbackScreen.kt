@@ -71,12 +71,14 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import com.zafar.ichatai.R
 import com.zafar.ichatai.ui.components.GlassCard
 import com.zafar.ichatai.ui.components.GlowBackground
 import com.zafar.ichatai.viewmodel.FeedbackViewModel
@@ -94,10 +96,10 @@ fun FeedbackScreen(
     LaunchedEffect(uiState.submitSuccess) {
         uiState.submitSuccess?.let { success ->
             if (success) {
-                Toast.makeText(context, "Feedback submitted successfully!", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, context.getString(R.string.feedback_success), Toast.LENGTH_LONG).show()
                 onBackClick()
             } else {
-                Toast.makeText(context, "Failed to submit feedback. Please try again.", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, context.getString(R.string.feedback_fail), Toast.LENGTH_LONG).show()
             }
             viewModel.resetSubmissionStatus()
         }
@@ -116,7 +118,7 @@ fun FeedbackScreen(
             if (isGranted) {
                 launcher.launch("image/*")
             } else {
-                Toast.makeText(context, "Permission denied to access gallery", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.gallery_permission_denied), Toast.LENGTH_SHORT).show()
             }
         }
     )
@@ -142,7 +144,7 @@ fun FeedbackScreen(
                 TopAppBar(
                     title = {
                         Text(
-                            text = "Send Feedback",
+                            text = stringResource(R.string.send_feedback),
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold,
                             color = colorScheme.onBackground
@@ -152,7 +154,7 @@ fun FeedbackScreen(
                         IconButton(onClick = onBackClick) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back",
+                                contentDescription = stringResource(R.string.back),
                                 tint = colorScheme.onBackground
                             )
                         }
@@ -246,7 +248,7 @@ fun FeedbackBottomBar(
                 }
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = if (isSubmitting) "Submitting..." else "Submit Feedback",
+                    text = if (isSubmitting) stringResource(R.string.submitting) else stringResource(R.string.submit_feedback),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -285,14 +287,14 @@ fun FeedbackHeader() {
             Spacer(modifier = Modifier.width(16.dp))
             Column {
                 Text(
-                    text = "Help us improve the iChatAI experience",
+                    text = stringResource(R.string.help_improve_ichatai),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "Pick a category, tell us what happened, and attach screenshots if it helps.",
+                    text = stringResource(R.string.feedback_header_desc),
                     style = MaterialTheme.typography.bodySmall,
                     color = colorScheme.onSurface.copy(alpha = 0.6f)
                 )
@@ -311,7 +313,7 @@ fun CategorySection(
     val colorScheme = MaterialTheme.colorScheme
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Text(
-            text = "CATEGORY",
+            text = stringResource(R.string.category_label),
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.Bold,
             color = colorScheme.onSurface.copy(alpha = 0.5f),
@@ -335,10 +337,20 @@ fun CategorySection(
                         else -> Icons.Outlined.Info
                     }
 
+                    val translatedCategory = when (category) {
+                        "General Feedback" -> stringResource(R.string.feedback_general)
+                        "Bug / Crash Report" -> stringResource(R.string.feedback_bug)
+                        "Feature Request" -> stringResource(R.string.feedback_feature)
+                        "AI Model Accuracy / Hallucination" -> stringResource(R.string.feedback_accuracy)
+                        "UI / Design Suggestion" -> stringResource(R.string.feedback_ui)
+                        "Credit & Billing Inquiry" -> stringResource(R.string.feedback_billing)
+                        else -> category
+                    }
+
                     FilterChip(
                         selected = isSelected,
                         onClick = { onCategorySelected(category) },
-                        label = { Text(text = category) },
+                        label = { Text(text = translatedCategory) },
                         leadingIcon = {
                             Icon(
                                 imageVector = icon,
@@ -383,14 +395,14 @@ fun DescriptionSection(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "DESCRIPTION",
+                text = stringResource(R.string.description_label),
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.Bold,
                 color = colorScheme.onSurface.copy(alpha = 0.5f),
                 letterSpacing = 1.sp
             )
             Text(
-                text = "Required",
+                text = stringResource(R.string.required),
                 style = MaterialTheme.typography.labelSmall,
                 color = colorScheme.onSurface.copy(alpha = 0.3f)
             )
@@ -404,7 +416,7 @@ fun DescriptionSection(
                 .height(160.dp),
             placeholder = {
                 Text(
-                    text = "Share what worked well, what failed, or what should be improved regarding our AI model or features.",
+                    text = stringResource(R.string.feedback_placeholder),
                     style = MaterialTheme.typography.bodyMedium,
                     color = colorScheme.onSurface.copy(alpha = 0.4f)
                 )
@@ -435,7 +447,7 @@ fun ScreenshotSection(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "SCREENSHOTS",
+                text = stringResource(R.string.screenshots_label),
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.Bold,
                 color = colorScheme.onSurface.copy(alpha = 0.5f),
@@ -508,7 +520,7 @@ fun ScreenshotItem(
         ) {
             Icon(
                 imageVector = Icons.Default.Close,
-                contentDescription = "Remove",
+                contentDescription = stringResource(R.string.delete),
                 tint = Color.White,
                 modifier = Modifier.size(12.dp)
             )
@@ -552,7 +564,7 @@ fun DashedAttachmentBox(onClick: () -> Unit) {
             }
             Spacer(modifier = Modifier.height(12.dp))
             Text(
-                text = "Tap to attach from gallery",
+                text = stringResource(R.string.tap_to_attach),
                 style = MaterialTheme.typography.bodySmall,
                 color = colorScheme.onSurface.copy(alpha = 0.6f)
             )
@@ -577,7 +589,7 @@ fun AddMoreScreenshotsButton(onClick: () -> Unit) {
     ) {
         Icon(
             imageVector = Icons.Default.AddAPhoto,
-            contentDescription = "Add more",
+            contentDescription = stringResource(R.string.add_more),
             tint = colorScheme.onSurface.copy(alpha = 0.4f)
         )
     }

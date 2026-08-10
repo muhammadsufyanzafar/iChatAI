@@ -45,6 +45,14 @@ class UserPreferences @Inject constructor(
         sharedPreferences.edit().putString("user_gender", gender).apply()
     }
 
+    fun getDateOfBirth(): String? {
+        return sharedPreferences.getString("user_dob", null)
+    }
+
+    fun saveDateOfBirth(dob: String?) {
+        sharedPreferences.edit().putString("user_dob", dob).apply()
+    }
+
     fun getAvatarUri(): String? {
         return sharedPreferences.getString("user_avatar_uri", null)
     }

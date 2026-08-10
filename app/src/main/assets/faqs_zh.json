@@ -1,0 +1,77 @@
+[
+  {
+    "question": "如何开始对话？",
+    "answer": "只需在主屏幕的文本框中输入您的消息，然后点击发送图标。iChatAI 将使用选定的 AI 模型立即响应。",
+    "category": "GETTING_STARTED"
+  },
+  {
+    "question": "iChatAI 使用哪些模型？",
+    "answer": "我们通过 OpenRouter 利用各种高性能模型，包括 Gemini、Mistral 和基于 GPT 的模型的免费和高级版本，以确保最佳的响应质量。",
+    "category": "GETTING_STARTED"
+  },
+  {
+    "question": "iChatAI 是免费使用的吗？",
+    "answer": "是的！您开始时有一组免费积分。您可以通过观看广告、每日签到或在应用内执行特定任务来赚取更多积分。",
+    "category": "GETTING_STARTED"
+  },
+  {
+    "question": "积分系统是如何工作的？",
+    "answer": "发送给 AI 的每条消息消耗 1 个积分。您可以在“积分”屏幕中检查余额。成功响应后将自动扣除积分。",
+    "category": "ACCOUNT_BILLING"
+  },
+  {
+    "question": "我如何赚取更多积分？",
+    "answer": "您可以通过完成每日签到或观看激励视频广告来赚取积分。点击积分余额旁边的“+”图标将显示所有可用选项。",
+    "category": "ACCOUNT_BILLING"
+  },
+  {
+    "question": "有订阅计划吗？",
+    "answer": "具有无限消息传递和优先访问更快模型的付费订阅即将推出！请关注“订阅”屏幕以获取更新。",
+    "category": "ACCOUNT_BILLING"
+  },
+  {
+    "question": "我如何更新我的资料？",
+    "answer": "导航到设置 > 用户资料。在这里，您可以更改显示名称、电子邮件和头像图标，以个性化您的体验。",
+    "category": "ACCOUNT_BILLING"
+  },
+  {
+    "question": "AI 可以分析图像吗？",
+    "answer": "是的！点击聊天输入栏中的图像图标（摄像头）以上传或拍摄照片。然后，您可以向 AI 提问有关图像内容的问题。",
+    "category": "USING_AI"
+  },
+  {
+    "question": "如何保存我最喜欢的提示？",
+    "answer": "您可以从导航抽屉的“已保存提示”部分保存常用的提示。这使您可以快速重复使用复杂的指令。",
+    "category": "USING_AI"
+  },
+  {
+    "question": "如何置顶或删除聊天？",
+    "answer": "在“聊天历史”屏幕中，长按任何聊天会话以查看将其置顶或永久删除的选项。",
+    "category": "USING_AI"
+  },
+  {
+    "question": "我的对话历史是私密的吗？",
+    "answer": "当然。您的聊天使用 Room 数据库本地存储在您的设备上。我们不会在我们的服务器上存储您的私人对话。",
+    "category": "USING_AI"
+  },
+  {
+    "question": "为什么 AI 没有响应？",
+    "answer": "确保您有稳定的互联网连接和剩余积分。如果您看到超时错误，AI 模型可能暂时过载——请稍后再试。",
+    "category": "TROUBLESHOOTING"
+  },
+  {
+    "question": "云同步失败，我该怎么办？",
+    "answer": "确保您已授予应用访问 Google 云端硬盘的权限。检查您的 Google 账户存储限制，并确保您有有效的网络连接。",
+    "category": "TROUBLESHOOTING"
+  },
+  {
+    "question": "如何清除应用缓存？",
+    "answer": "您可以通过设置 > 数据与存储管理清除应用的内部缓存。这可以帮助解决轻微的性能问题，而不会删除您的聊天记录。",
+    "category": "TROUBLESHOOTING"
+  },
+  {
+    "question": "我发现了一个错误，如何报告？",
+    "answer": "我们很想听听您的意见！通过反馈报告或点击帮助中心底部的“实时聊天”按钮，通过 WhatsApp 直接向我们发送消息。",
+    "category": "TROUBLESHOOTING"
+  }
+]

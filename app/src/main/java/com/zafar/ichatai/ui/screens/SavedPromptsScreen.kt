@@ -132,8 +132,13 @@ fun SavedPromptsScreen(
                             }
                             DropdownMenu(expanded = showSortMenu, onDismissRequest = { showSortMenu = false }) {
                                 PromptSortOrder.entries.forEach { order ->
+                                    val label = when (order) {
+                                        PromptSortOrder.NEWEST -> stringResource(R.string.sort_newest)
+                                        PromptSortOrder.ALPHABETICAL -> stringResource(R.string.sort_alphabetical)
+                                        PromptSortOrder.MOST_USED -> stringResource(R.string.sort_most_used)
+                                    }
                                     DropdownMenuItem(
-                                        text = { Text(order.name.replace("_", " ").lowercase().replaceFirstChar { it.uppercase() }) },
+                                        text = { Text(label) },
                                         onClick = {
                                             promptViewModel.onSortOrderChange(order)
                                             showSortMenu = false
@@ -306,10 +311,11 @@ fun SavedPromptsScreen(
     if (itemToDelete != null) {
         val isFolder = itemToDelete is PromptFolderEntity
         val itemName = if (isFolder) (itemToDelete as PromptFolderEntity).name else (itemToDelete as SavedPromptEntity).title
-        
+        val typeLabel = if (isFolder) stringResource(R.string.folder) else stringResource(R.string.prompt)
+
         AlertDialog(
             onDismissRequest = { itemToDelete = null },
-            title = { Text(stringResource(R.string.delete_item_title, if (isFolder) "Folder" else "Prompt")) },
+            title = { Text(stringResource(R.string.delete_item_title, typeLabel)) },
             text = { 
                 Text(
                     if (isFolder) 

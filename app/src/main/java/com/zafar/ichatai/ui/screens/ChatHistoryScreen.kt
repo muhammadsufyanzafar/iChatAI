@@ -101,8 +101,14 @@ fun ChatHistoryScreen(
                                 onDismissRequest = { showSortMenu = false }
                             ) {
                                 SortOrder.entries.forEach { order ->
+                                    val label = when (order) {
+                                        SortOrder.NEWEST_FIRST -> stringResource(R.string.sort_newest)
+                                        SortOrder.OLDEST_FIRST -> stringResource(R.string.sort_oldest)
+                                        SortOrder.ALPHABETICAL -> stringResource(R.string.sort_alphabetical)
+                                        SortOrder.MOST_MESSAGES -> stringResource(R.string.sort_most_messages)
+                                    }
                                     DropdownMenuItem(
-                                        text = { Text(order.name.replace("_", " ").lowercase().replaceFirstChar { it.uppercase() }) },
+                                        text = { Text(label) },
                                         onClick = {
                                             viewModel.onHistorySortChange(order)
                                             showSortMenu = false
@@ -123,8 +129,15 @@ fun ChatHistoryScreen(
                                 onDismissRequest = { showFilterMenu = false }
                             ) {
                                 FilterCriteria.entries.forEach { criteria ->
+                                    val label = when (criteria) {
+                                        FilterCriteria.ALL -> stringResource(R.string.filter_all)
+                                        FilterCriteria.TODAY -> stringResource(R.string.filter_today)
+                                        FilterCriteria.YESTERDAY -> stringResource(R.string.filter_yesterday)
+                                        FilterCriteria.THIS_WEEK -> stringResource(R.string.filter_this_week)
+                                        FilterCriteria.PINNED_ONLY -> stringResource(R.string.filter_pinned_only)
+                                    }
                                     DropdownMenuItem(
-                                        text = { Text(criteria.name.replace("_", " ").lowercase().replaceFirstChar { it.uppercase() }) },
+                                        text = { Text(label) },
                                         onClick = {
                                             viewModel.onHistoryFilterChange(criteria)
                                             showFilterMenu = false

@@ -1,0 +1,77 @@
+[
+  {
+    "question": "¿Cómo inicio una conversación?",
+    "answer": "Simplemente escribe tu mensaje en el cuadro de texto de la pantalla de inicio y toca el icono de enviar. iChatAI responderá instantáneamente utilizando el modelo de IA seleccionado.",
+    "category": "GETTING_STARTED"
+  },
+  {
+    "question": "¿Qué modelos utiliza iChatAI?",
+    "answer": "Aprovechamos una variedad de modelos de alto rendimiento a través de OpenRouter, incluyendo versiones gratuitas y premium de Gemini, Mistral y modelos basados en GPT para garantizar la mejor calidad de respuesta.",
+    "category": "GETTING_STARTED"
+  },
+  {
+    "question": "¿Es iChatAI gratuito?",
+    "answer": "¡Sí! Comienzas con un conjunto de créditos gratuitos. Puedes ganar más viendo anuncios, registrándote diariamente o realizando tareas específicas dentro de la aplicación.",
+    "category": "GETTING_STARTED"
+  },
+  {
+    "question": "¿Cómo funciona el sistema de créditos?",
+    "answer": "Cada mensaje enviado a la IA consume 1 crédito. Puedes consultar tu saldo en la pantalla 'Créditos'. Los créditos se deducen automáticamente tras una respuesta exitosa.",
+    "category": "ACCOUNT_BILLING"
+  },
+  {
+    "question": "¿Cómo gano más créditos?",
+    "answer": "Puedes ganar créditos completando registros diarios o viendo anuncios de video recompensados. Al tocar el icono '+' junto a tu saldo de créditos se mostrarán todas las opciones disponibles.",
+    "category": "ACCOUNT_BILLING"
+  },
+  {
+    "question": "¿Hay algún plan de suscripción?",
+    "answer": "¡Próximamente habrá suscripciones pagas con mensajería ilimitada y acceso prioritario a modelos más rápidos! Mantente atento a la pantalla de 'Suscripción' para actualizaciones.",
+    "category": "ACCOUNT_BILLING"
+  },
+  {
+    "question": "¿Cómo actualizo mi perfil?",
+    "answer": "Navega a Ajustes > Perfil de usuario. Aquí puedes cambiar tu nombre de usuario, correo electrónico e icono de avatar para personalizar tu experiencia.",
+    "category": "ACCOUNT_BILLING"
+  },
+  {
+    "question": "¿Puede la IA analizar imágenes?",
+    "answer": "¡Sí! Toca el icono de imagen (cámara) en la barra de entrada del chat para subir o tomar una foto. Luego puedes hacerle preguntas a la IA sobre el contenido de la imagen.",
+    "category": "USING_AI"
+  },
+  {
+    "question": "¿Cómo guardo mis prompts favoritos?",
+    "answer": "Puedes guardar los prompts utilizados con frecuencia en la sección 'Prompts guardados' del panel de navegación. Esto te permite reutilizar rápidamente instrucciones complejas.",
+    "category": "USING_AI"
+  },
+  {
+    "question": "¿Cómo anclo o elimino chats?",
+    "answer": "En la pantalla 'Historial de chat', mantén presionada cualquier sesión de chat para ver las opciones para anclarla en la parte superior o eliminarla permanentemente.",
+    "category": "USING_AI"
+  },
+  {
+    "question": "¿Es privado mi historial de conversación?",
+    "answer": "Absolutamente. Tus chats se almacenan localmente en tu dispositivo utilizando una base de datos Room. No almacenamos tus conversaciones privadas en nuestros servidores.",
+    "category": "USING_AI"
+  },
+  {
+    "question": "¿Por qué la IA no responde?",
+    "answer": "Asegúrate de tener una conexión a internet estable y créditos restantes. Si ves un error de tiempo de espera, el modelo de IA podría estar sobrecargado temporalmente; por favor, inténtalo de nuevo en un momento.",
+    "category": "TROUBLESHOOTING"
+  },
+  {
+    "question": "La sincronización en la nube está fallando, ¿qué debo hacer?",
+    "answer": "Asegúrate de haber otorgado permiso a la aplicación para acceder a Google Drive. Verifica los límites de almacenamiento de tu cuenta de Google y asegúrate de tener una conexión de red válida.",
+    "category": "TROUBLESHOOTING"
+  },
+  {
+    "question": "¿Cómo borro la caché de la aplicación?",
+    "answer": "Puedes borrar la caché interna de la aplicación a través de Ajustes > Gestión de datos y almacenamiento. Esto puede ayudar a resolver problemas menores de rendimiento sin eliminar tus chats.",
+    "category": "TROUBLESHOOTING"
+  },
+  {
+    "question": "He encontrado un error, ¿cómo puedo reportarlo?",
+    "answer": "¡Nos encantaría saber de ti! Repórtalo a través de Comentarios o toca el botón 'Chat en vivo' en la parte inferior del Centro de ayuda para enviarnos un mensaje directamente a través de WhatsApp.",
+    "category": "TROUBLESHOOTING"
+  }
+]

@@ -31,7 +31,7 @@ import com.zafar.ichatai.data.local.entity.NotificationPreferencesEntity
         UserEntity::class,
         NotificationPreferencesEntity::class
     ],
-    version = 8,
+    version = 9,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

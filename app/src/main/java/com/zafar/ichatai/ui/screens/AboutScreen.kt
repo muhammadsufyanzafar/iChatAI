@@ -131,7 +131,7 @@ fun AboutScreen(
                         }
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
-                            text = "iChatAI",
+                            text = stringResource(R.string.app_name),
                             style = MaterialTheme.typography.headlineMedium,
                             fontWeight = FontWeight.Black,
                             color = colorScheme.onBackground
@@ -156,7 +156,7 @@ fun AboutScreen(
                                         color = colorScheme.onSurface
                                     )
                                     Text(
-                                        text = "2.0.0",
+                                        text = stringResource(R.string.version_text),
                                         style = MaterialTheme.typography.bodyMedium,
                                         color = colorScheme.onSurface.copy(alpha = 0.7f)
                                     )
@@ -202,7 +202,7 @@ fun AboutScreen(
                 item {
                     GlassCard(modifier = Modifier.fillMaxWidth()) {
                         Column(modifier = Modifier.padding(16.dp)) {
-                            AboutInfoRow(label = stringResource(R.string.developer), value = "Muhammad Sufyan Zafar")
+                            AboutInfoRow(label = stringResource(R.string.developer), value = stringResource(R.string.developer_name))
                             
                             HorizontalDivider(
                                 modifier = Modifier.padding(vertical = 12.dp),
@@ -260,7 +260,7 @@ fun AboutScreen(
                 // Footer
                 item {
                     Text(
-                        text = stringResource(R.string.copyright_format, "Muhammad Sufyan Zafar"),
+                        text = stringResource(R.string.copyright_format, stringResource(R.string.developer_name)),
                         style = MaterialTheme.typography.bodySmall,
                         color = colorScheme.onBackground.copy(alpha = 0.5f),
                         textAlign = TextAlign.Center,
@@ -501,17 +501,8 @@ fun ReleaseNotesDialog(onDismiss: () -> Unit) {
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     
-                    val releaseNotesMarkdown = """
-                        ### Version 2.0.0
-                        - **Advanced AI Models**: Integrated new OpenRouter free models.
-                        - **Frosted Glass UI**: Complete redesign with modern aesthetics.
-                        - **Local History**: Faster access to your chat archives.
-                        - **Daily Rewards**: Earn credits through check-ins and ads.
-                        - **Cloud Sync**: Securely backup your chats to Google Drive.
-                    """.trimIndent()
-                    
                     MarkdownText(
-                        markdown = releaseNotesMarkdown,
+                        markdown = stringResource(R.string.release_notes_markdown),
                         style = MaterialTheme.typography.bodyMedium.copy(
                             color = colorScheme.onSurface.copy(alpha = 0.9f)
                         )
@@ -529,7 +520,7 @@ fun ReleaseNotesDialog(onDismiss: () -> Unit) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Full Archival Bug Fixes",
+                            text = stringResource(R.string.full_archival_fixes),
                             style = MaterialTheme.typography.bodyMedium,
                             color = colorScheme.primary,
                             fontWeight = FontWeight.Bold
@@ -571,10 +562,10 @@ private fun sendEmail(context: Context) {
     try {
         val intent = Intent(Intent.ACTION_SENDTO).apply {
             data = Uri.parse("mailto:sufyan.pk444@gmail.com")
-            putExtra(Intent.EXTRA_SUBJECT, "iChatAI Support Request")
-            putExtra(Intent.EXTRA_TEXT, "Hello,\n\nI need help with...")
+            putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.email_subject))
+            putExtra(Intent.EXTRA_TEXT, context.getString(R.string.email_body))
         }
-        context.startActivity(Intent.createChooser(intent, "Send Email"))
+        context.startActivity(Intent.createChooser(intent, context.getString(R.string.compose_email)))
     } catch (_: Exception) {
         // Handle error
     }

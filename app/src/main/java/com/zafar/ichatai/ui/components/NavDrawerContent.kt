@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -54,8 +55,7 @@ fun NavDrawerContent(
     onSearchQueryChange: (String) -> Unit = {},
     chatHistory: List<ChatSessionWithCount> = emptyList(),
     onChatClick: (ChatSessionEntity) -> Unit = {},
-    onItemClick: (String) -> Unit = {},
-    onLogoutClick: () -> Unit = {}
+    onItemClick: (String) -> Unit = {}
 ) {
     val colorScheme = MaterialTheme.colorScheme
     val drawerBg = colorScheme.surface
@@ -63,20 +63,20 @@ fun NavDrawerContent(
     val sectionHeaderColor = colorScheme.onSurfaceVariant
 
     val generalItems = listOf(
-        NavItem(Icons.Rounded.History, "Chat History", "history", "View chat history"),
-        NavItem(Icons.Rounded.StarOutline, "Favorites", "favorites", "View favorite chats"),
-        NavItem(Icons.Rounded.FolderOpen, "Saved Prompts", "prompts", "View saved prompts")
+        NavItem(Icons.Rounded.History, stringResource(R.string.chat_history), "history", stringResource(R.string.view_chat_history)),
+        NavItem(Icons.Rounded.StarOutline, stringResource(R.string.favorites_title), "favorites", stringResource(R.string.view_favorite_chats)),
+        NavItem(Icons.Rounded.FolderOpen, stringResource(R.string.saved_prompts), "prompts", stringResource(R.string.view_saved_prompts))
     )
 
     val accountItems = listOf(
-        NavItem(Icons.Rounded.Shield, "Subscription", "subscription", "Manage subscription"),
-        NavItem(Icons.Rounded.Settings, "Settings", "settings", "App settings"),
-        NavItem(Icons.Rounded.PersonOutline, "Account Details", "account", "View account details")
+        NavItem(Icons.Rounded.Shield, stringResource(R.string.subscription), "subscription", stringResource(R.string.manage_subscription)),
+        NavItem(Icons.Rounded.Settings, stringResource(R.string.settings), "settings", stringResource(R.string.app_settings)),
+        NavItem(Icons.Rounded.PersonOutline, stringResource(R.string.account_details_title), "account", stringResource(R.string.view_account_details))
     )
 
     val supportItems = listOf(
-        NavItem(Icons.Rounded.Info, "Help & FAQ", "help", "Get help and read FAQ"),
-        NavItem(Icons.Rounded.ChatBubbleOutline, "Send Feedback", "feedback", "Send feedback")
+        NavItem(Icons.Rounded.Info, stringResource(R.string.help_faq), "help", stringResource(R.string.get_help_faq)),
+        NavItem(Icons.Rounded.ChatBubbleOutline, stringResource(R.string.send_feedback), "feedback", stringResource(R.string.send_feedback))
     )
 
     ModalDrawerSheet(
@@ -113,14 +113,14 @@ fun NavDrawerContent(
                                 }
                                 Image(
                                     painter = painterResource(id = resId),
-                                    contentDescription = "User Profile Picture",
+                                    contentDescription = stringResource(R.string.user_profile_pic),
                                     modifier = profileImageModifier,
                                     contentScale = ContentScale.Crop
                                 )
                             } else {
                                 AsyncImage(
                                     model = userAvatarUri,
-                                    contentDescription = "User Profile Picture",
+                                    contentDescription = stringResource(R.string.user_profile_pic),
                                     modifier = profileImageModifier,
                                     contentScale = ContentScale.Crop
                                 )
@@ -133,7 +133,7 @@ fun NavDrawerContent(
                             }
                             Image(
                                 painter = painterResource(id = avatarRes),
-                                contentDescription = "User Profile Picture",
+                                contentDescription = stringResource(R.string.user_profile_pic),
                                 modifier = profileImageModifier,
                                 contentScale = ContentScale.Crop
                             )
@@ -170,7 +170,7 @@ fun NavDrawerContent(
                     onValueChange = onSearchQueryChange,
                     placeholder = {
                         Text(
-                            text = "Find previous chats...",
+                            text = stringResource(R.string.find_chats_placeholder),
                             color = textColor.copy(alpha = 0.5f),
                             fontSize = 14.sp
                         )
@@ -178,7 +178,7 @@ fun NavDrawerContent(
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Rounded.Search,
-                            contentDescription = "Search icon",
+                            contentDescription = null,
                             tint = textColor.copy(alpha = 0.5f),
                             modifier = Modifier.size(20.dp)
                         )
@@ -188,7 +188,7 @@ fun NavDrawerContent(
                             IconButton(onClick = { onSearchQueryChange("") }) {
                                 Icon(
                                     imageVector = Icons.Rounded.Close,
-                                    contentDescription = "Clear search",
+                                    contentDescription = stringResource(R.string.clear),
                                     tint = textColor.copy(alpha = 0.5f),
                                     modifier = Modifier.size(20.dp)
                                 )
@@ -213,7 +213,7 @@ fun NavDrawerContent(
                 if (chatHistory.isNotEmpty()) {
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = if (searchQuery.isEmpty()) "Recent Chats" else "Search Results",
+                        text = if (searchQuery.isEmpty()) stringResource(R.string.recent_chats) else stringResource(R.string.search_results),
                         color = sectionHeaderColor,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
@@ -237,19 +237,19 @@ fun NavDrawerContent(
                     modifier = Modifier.weight(1f),
                     contentPadding = PaddingValues(bottom = 16.dp)
                 ) {
-                    item { DrawerSectionHeader("General", sectionHeaderColor) }
+                    item { DrawerSectionHeader(stringResource(R.string.general), sectionHeaderColor) }
                     items(generalItems.size) { index ->
                         DrawerNavigationItem(generalItems[index], textColor, onItemClick)
                     }
 
                     item { Spacer(modifier = Modifier.height(16.dp)) }
-                    item { DrawerSectionHeader("Account", sectionHeaderColor) }
+                    item { DrawerSectionHeader(stringResource(R.string.account), sectionHeaderColor) }
                     items(accountItems.size) { index ->
                         DrawerNavigationItem(accountItems[index], textColor, onItemClick)
                     }
 
                     item { Spacer(modifier = Modifier.height(16.dp)) }
-                    item { DrawerSectionHeader("Support", sectionHeaderColor) }
+                    item { DrawerSectionHeader(stringResource(R.string.support), sectionHeaderColor) }
                     items(supportItems.size) { index ->
                         DrawerNavigationItem(supportItems[index], textColor, onItemClick)
                     }
@@ -274,13 +274,13 @@ fun NavDrawerContent(
                         ) {
                             Icon(
                                 imageVector = Icons.Rounded.AutoAwesome,
-                                contentDescription = "AI Credits icon",
+                                contentDescription = null,
                                 tint = Color(0xFF64B5F6),
                                 modifier = Modifier.size(20.dp)
                             )
                             Spacer(modifier = Modifier.width(10.dp))
                             Text(
-                                text = "AI Credits",
+                                text = stringResource(R.string.ai_credits),
                                 color = textColor,
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.Medium

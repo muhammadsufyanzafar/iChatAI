@@ -286,6 +286,15 @@ fun HistoryItem(transaction: CreditTransactionEntity) {
     val dateFormat = SimpleDateFormat("MMM dd", Locale.getDefault())
     val dateString = dateFormat.format(Date(transaction.timestamp))
 
+    val localizedType = when {
+        transaction.type.startsWith("Daily Check In") -> {
+            val day = transaction.type.filter { it.isDigit() }.toIntOrNull() ?: 0
+            stringResource(R.string.daily_checkin_day, day)
+        }
+        transaction.type == "Ad Watched" -> stringResource(R.string.ad_watched)
+        else -> transaction.type
+    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -312,7 +321,7 @@ fun HistoryItem(transaction: CreditTransactionEntity) {
 
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = "${transaction.type} - $dateString",
+                text = "$localizedType - $dateString",
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onBackground
             )

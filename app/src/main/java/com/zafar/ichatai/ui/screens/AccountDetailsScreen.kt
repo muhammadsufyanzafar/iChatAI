@@ -59,12 +59,14 @@ fun AccountDetailsScreen(
     val userName by viewModel.userName.collectAsState()
     val userEmail by viewModel.userEmail.collectAsState()
     val gender by viewModel.gender.collectAsState()
+    val dateOfBirth by viewModel.dateOfBirth.collectAsState()
     val avatarUri by viewModel.avatarUri.collectAsState()
 
     var showDeleteDialog by remember { mutableStateOf(false) }
     var showEditNameDialog by remember { mutableStateOf(false) }
     var showEditEmailDialog by remember { mutableStateOf(false) }
     var showGenderDialog by remember { mutableStateOf(false) }
+    var showDOBDialog by remember { mutableStateOf(false) }
     var showAvatarSheet by remember { mutableStateOf(false) }
     var showFullScreenAvatar by remember { mutableStateOf(false) }
 
@@ -316,6 +318,14 @@ fun AccountDetailsScreen(
         )
     }
 
+    if (showDOBDialog) {
+        ProfessionalDateDialog(
+            currentDate = dateOfBirth,
+            onDismiss = { showDOBDialog = false },
+            onSave = { viewModel.updateDateOfBirth(it) }
+        )
+    }
+
     if (showDeleteDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteDialog = false },
@@ -453,6 +463,15 @@ fun AccountDetailsScreen(
                             label = stringResource(R.string.gender),
                             value = translatedGender,
                             onEdit = { showGenderDialog = true }
+                        )
+                        HorizontalDivider(
+                            modifier = Modifier.padding(vertical = 16.dp),
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f)
+                        )
+                        ProfileInfoItem(
+                            label = stringResource(R.string.date_of_birth),
+                            value = if (dateOfBirth.isNullOrEmpty()) stringResource(R.string.not_set) else dateOfBirth!!,
+                            onEdit = { showDOBDialog = true }
                         )
                     }
                 }
@@ -648,6 +667,49 @@ fun ProfessionalGenderDialog(
                 ) { Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurfaceVariant) }
             }
         }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ProfessionalDateDialog(
+    currentDate: String?,
+    onDismiss: () -> Unit,
+    onSave: (String) -> Unit
+) {
+    val datePickerState = rememberDatePickerState(
+        initialSelectedDateMillis = currentDate?.let {
+            try {
+                java.text.SimpleDateFormat("MMM dd, yyyy", java.util.Locale.getDefault()).parse(it)?.time
+            } catch (e: Exception) {
+                null
+            }
+        } ?: System.currentTimeMillis()
+    )
+
+    DatePickerDialog(
+        onDismissRequest = onDismiss,
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    datePickerState.selectedDateMillis?.let {
+                        val formattedDate = java.text.SimpleDateFormat("MMM dd, yyyy", java.util.Locale.getDefault()).format(java.util.Date(it))
+                        onSave(formattedDate)
+                    }
+                    onDismiss()
+                }
+            ) { Text(stringResource(R.string.save)) }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
+        }
+    ) {
+        DatePicker(state = datePickerState, title = {
+            Text(
+                text = stringResource(R.string.select_date),
+                modifier = Modifier.padding(start = 24.dp, top = 24.dp)
+            )
+        })
     }
 }
 

@@ -250,39 +250,39 @@ fun SettingsScreen(
                 }
 
                 // Log Out Button
-                item {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Button(
-                        onClick = { /* Log out action */ },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(60.dp),
-                        shape = RoundedCornerShape(20.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = colorScheme.surfaceVariant.copy(alpha = 0.5f),
-                            contentColor = Color(0xFFFF5252)
-                        ),
-                        border = androidx.compose.foundation.BorderStroke(1.dp, colorScheme.onSurface.copy(alpha = 0.08f))
-                    ) {
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            Text(
-                                text = stringResource(R.string.log_out),
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier.align(Alignment.Center)
-                            )
-                            Icon(
-                                imageVector = Icons.Default.AutoAwesome,
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .align(Alignment.CenterEnd)
-                                    .size(24.dp)
-                                    .padding(end = 4.dp),
-                                tint = colorScheme.onSurface.copy(alpha = 0.3f)
-                            )
-                        }
-                    }
-                }
+//                item {
+//                    Spacer(modifier = Modifier.height(8.dp))
+//                    Button(
+//                        onClick = { /* Log out action */ },
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .height(60.dp),
+//                        shape = RoundedCornerShape(20.dp),
+//                        colors = ButtonDefaults.buttonColors(
+//                            containerColor = colorScheme.surfaceVariant.copy(alpha = 0.5f),
+//                            contentColor = Color(0xFFFF5252)
+//                        ),
+//                        border = androidx.compose.foundation.BorderStroke(1.dp, colorScheme.onSurface.copy(alpha = 0.08f))
+//                    ) {
+//                        Box(modifier = Modifier.fillMaxSize()) {
+//                            Text(
+//                                text = stringResource(R.string.log_out),
+//                                style = MaterialTheme.typography.titleMedium,
+//                                fontWeight = FontWeight.Bold,
+//                                modifier = Modifier.align(Alignment.Center)
+//                            )
+//                            Icon(
+//                                imageVector = Icons.Default.AutoAwesome,
+//                                contentDescription = null,
+//                                modifier = Modifier
+//                                    .align(Alignment.CenterEnd)
+//                                    .size(24.dp)
+//                                    .padding(end = 4.dp),
+//                                tint = colorScheme.onSurface.copy(alpha = 0.3f)
+//                            )
+//                        }
+//                    }
+//                }
             }
         }
     }

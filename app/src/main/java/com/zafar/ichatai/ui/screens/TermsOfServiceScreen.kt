@@ -20,8 +20,10 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.zafar.ichatai.R
 import com.zafar.ichatai.ui.components.GlassCard
 import com.zafar.ichatai.ui.components.GlowBackground
 import dev.jeziellago.compose.markdowntext.MarkdownText
@@ -91,7 +93,7 @@ fun TermsOfServiceScreen(
                 TopAppBar(
                     title = {
                         Text(
-                            "Terms & Privacy",
+                            stringResource(R.string.terms_privacy_title),
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.ExtraBold,
                             color = colorScheme.onBackground
@@ -101,7 +103,7 @@ fun TermsOfServiceScreen(
                         IconButton(onClick = onBackClick) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back",
+                                contentDescription = stringResource(R.string.back),
                                 tint = colorScheme.onBackground
                             )
                         }

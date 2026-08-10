@@ -104,8 +104,14 @@ fun FavoriteChatScreen(
                                 onDismissRequest = { showSortMenu = false }
                             ) {
                                 SortOrder.entries.forEach { order ->
+                                    val label = when (order) {
+                                        SortOrder.NEWEST_FIRST -> stringResource(R.string.sort_newest)
+                                        SortOrder.OLDEST_FIRST -> stringResource(R.string.sort_oldest)
+                                        SortOrder.ALPHABETICAL -> stringResource(R.string.sort_alphabetical)
+                                        SortOrder.MOST_MESSAGES -> stringResource(R.string.sort_most_messages)
+                                    }
                                     DropdownMenuItem(
-                                        text = { Text(order.name.replace("_", " ").lowercase().replaceFirstChar { it.uppercase() }) },
+                                        text = { Text(label) },
                                         onClick = {
                                             viewModel.onFavoriteSortChange(order)
                                             showSortMenu = false

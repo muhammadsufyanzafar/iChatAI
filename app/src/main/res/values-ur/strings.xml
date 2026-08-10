@@ -36,4 +36,352 @@
     <string name="storage_subtitle">کیشے صاف کریں، ہسٹری ایکسپورٹ کریں</string>
     <string name="cloud_sync_subtitle">آن/آف، ابھی سنک کریں</string>
     <string name="about_subtitle">ایپ ورژن 2.0، ڈویلپر کی معلومات</string>
+
+    <!-- Main Screen -->
+    <string name="ask_anything">کچھ بھی پوچھیں...</string>
+    <string name="quick_prompt_chips">فوری تجاویز</string>
+    <string name="exit_app_title">ایپلی کیشن بند کریں</string>
+    <string name="exit_app_message">کیا آپ واقعی iChatAI چھوڑنا چاہتے ہیں؟ آپ کا موجودہ سیشن خود بخود محفوظ ہو گیا ہے۔</string>
+    <string name="exit">باہر نکلیں</string>
+    <string name="cancel">منسوخ کریں</string>
+    <string name="thinking">سوچ رہا ہے...</string>
+
+    <!-- Credits & Rewards -->
+    <string name="credits_title">کریڈٹ</string>
+    <string name="credit_history">کریڈٹ ہسٹری</string>
+    <string name="available_credits">دستیاب کریڈٹ</string>
+    <string name="boost_your_credits">اپنے کریڈٹ بڑھائیں</string>
+    <string name="daily_checkin">روزانہ چیک ان</string>
+    <string name="check_in">چیک ان</string>
+    <string name="claimed">وصول شدہ</string>
+    <string name="claim">وصول کریں</string>
+    <string name="collected">جمع شدہ</string>
+    <string name="jackpot">جیک پاٹ!</string>
+    <string name="streak_title">آپ کا 7 دن کا چیک ان سلسلہ</string>
+    <string name="streak_format">7/%1$d</string>
+    <string name="streak_description">انعامات حاصل کرنے کے لیے روزانہ چیک ان کریں اور ساتویں دن جیک پاٹ جیتیں!</string>
+    <string name="day_format">دن %1$d</string>
+    <string name="locked">مقفل</string>
+    <string name="credits_reward">+%1$d کریڈٹ</string>
+    <string name="watch_short_ad">مختصر اشتہار دیکھیں</string>
+    <string name="watch_ad_reward">+20 کریڈٹ</string>
+    <string name="check_in_daily_reward">+10-100 کریڈٹ</string>
+    <string name="daily_checkin_day">روزانہ چیک ان (دن %1$d)</string>
+    <string name="ad_watched">اشتہار دیکھا گیا</string>
+
+    <!-- Saved Prompts -->
+    <!-- Saved Prompts -->
+    <string name="saved_prompts">محفوظ کردہ پرامپٹس</string>
+    <string name="search_prompts">پرامپٹ تلاش کریں...</string>
+    <string name="my_folders">میرے فولڈرز</string>
+    <string name="recent_individual_prompts">حالیہ اور انفرادی پرامپٹس</string>
+    <string name="prompts_in_folder">%1$s میں پرامپٹس</string>
+    <string name="no_prompts_in_folder">اس فولڈر میں کوئی پرامپٹ نہیں ہے</string>
+    <string name="new_folder">نیا فولڈر</string>
+    <string name="edit_folder">فولڈر میں ترمیم کریں</string>
+    <string name="folder_name">فولڈر کا نام</string>
+    <string name="select_color">رنگ منتخب کریں</string>
+    <string name="create">تخلیق کریں</string>
+    <string name="save">محفوظ کریں</string>
+    <string name="new_prompt">نیا پرامپٹ</string>
+    <string name="edit_prompt">پرامپٹ میں ترمیم کریں</string>
+    <string name="prompt_title">عنوان</string>
+    <string name="prompt_content">پرامپٹ مواد</string>
+    <string name="prompt_tag">ٹیگ (مثلاً بزنس)</string>
+    <string name="assign_to_folder">فولڈر میں تفویض کریں</string>
+    <string name="none">کوئی نہیں</string>
+    <string name="delete_item_title">%1$s حذف کریں؟</string>
+    <string name="delete_folder_msg">کیا آپ واقعی \'%1$s\' حذف کرنا چاہتے ہیں؟ اس سے اس فولڈر کے تمام پرامپٹس بھی حذف ہو جائیں گے۔</string>
+    <string name="delete_prompt_msg">کیا آپ واقعی \'%1$s\' حذف کرنا چاہتے ہیں؟</string>
+    <string name="delete">حذف کریں</string>
+    <string name="prompts_count">%1$d پرامپٹس</string>
+    <string name="last_used_format">آخری بار استعمال کیا گیا: %1$s | [ٹیگ: %2$s]</string>
+    <string name="general">عام</string>
+
+
+    <!-- Account Details -->
+    <string name="account_details_title">اکاؤنٹ کی تفصیلات</string>
+    <string name="profile_photo">پروفائل فوٹو</string>
+    <string name="display_name">ظاہری نام</string>
+    <string name="email_address">ای میل ایڈریس</string>
+    <string name="gender">جنس</string>
+    <string name="date_of_birth">تاریخ پیدائش</string>
+    <string name="not_set">سیٹ نہیں ہے</string>
+    <string name="save_changes">تبدیلیاں محفوظ کریں</string>
+    <string name="edit_name">نام تبدیل کریں</string>
+    <string name="edit_email">ای میل تبدیل کریں</string>
+    <string name="select_gender">جنس منتخب کریں</string>
+    <string name="select_date">تاریخ منتخب کریں</string>
+    <string name="invalid_email">غلط ای میل فارمیٹ</string>
+    <string name="delete_account">اکاؤنٹ حذف کریں</string>
+    <string name="delete_account_msg">کیا آپ واقعی اپنا اکاؤنٹ حذف کرنا چاہتے ہیں؟ اس سے آپ کی تمام چیٹ ہسٹری اور ترتیبات ہمیشہ کے لیے ختم ہو جائیں گی۔</string>
+    <string name="delete_all_data">تمام ڈیٹا حذف کریں</string>
+    <string name="male">مرد</string>
+    <string name="female">عورت</string>
+    <string name="prefer_not_to_say">بتانا پسند نہیں کریں گے</string>
+
+    <!-- General -->
+    <string name="close">بند کریں</string>
+    <string name="app_version">ایپ ورژن</string>
+    <string name="check_updates">اپ ڈیٹ چیک کریں</string>
+    <string name="latest_version_msg">آپ پہلے ہی تازہ ترین ورژن پر ہیں!</string>
+
+    <!-- Subscription Screen -->
+    <string name="restore">بحال کریں</string>
+    <string name="available_plans">دستیاب پلانز</string>
+    <string name="pro_monthly">پرو ماہانہ</string>
+    <string name="pro_annual">پرو سالانہ</string>
+    <string name="unlimited_messages">لامحدود پیغامات</string>
+    <string name="faster_ai_responses">تیز رفتار AI جوابات</string>
+    <string name="priority_support">ترجیحی سپورٹ</string>
+    <string name="all_pro_monthly_benefits">تمام پرو ماہانہ فوائد</string>
+    <string name="access_beta_features">بیٹا فیچرز تک رسائی</string>
+    <string name="early_access_new_models">نئے ماڈلز تک جلد رسائی</string>
+    <string name="coming_soon">جلد آ رہا ہے</string>
+    <string name="save_percent">(%1$d%% بچائیں)</string>
+    <string name="best_value">بہترین قیمت</string>
+    <string name="month">ماہ</string>
+    <string name="year">سال</string>
+    <string name="current_plan_format">موجودہ پلان: %1$s</string>
+    <string name="free_plan">مفت پلان</string>
+    <string name="renews_format">تجدید: %1$s</string>
+    <string name="na">دستیاب نہیں</string>
+    <string name="benefits_active">فوائد فعال ہیں</string>
+    <string name="manage_billing">بلنگ کا انتظام کریں</string>
+    <string name="switch_plan">پلان تبدیل کریں</string>
+
+    <!-- Appearance Screen -->
+    <string name="theme_mode">تھیم موڈ</string>
+    <string name="light">لائٹ</string>
+    <string name="dark">ڈارک</string>
+    <string name="system_default">سسٹم ڈیفالٹ</string>
+    <string name="accent_color">ایکسینٹ رنگ</string>
+    <string name="purple">جامنی</string>
+    <string name="blue">نیلا</string>
+    <string name="green">سبز</string>
+    <string name="yellow">پیلا</string>
+    <string name="red">سرخ</string>
+    <string name="pink">گلابی</string>
+
+    <!-- AI Model Preferences -->
+    <string name="ai_model_preferences_title">AI ماڈل کی ترجیحات</string>
+    <string name="primary_ai_model">بنیادی AI ماڈل</string>
+    <string name="recommended">تجویز کردہ</string>
+    <string name="character_limit">حروف کی حد</string>
+    <string name="response_creativity">جواب کی تخلیقی صلاحیت</string>
+    <string name="precise">درست</string>
+    <string name="balanced">متوازن</string>
+    <string name="imaginative">تخیلاتی</string>
+    <string name="creativity_description">ماڈل کے نئے یا قدامت پسند جوابات پیدا کرنے کے رجحان کو ایڈجسٹ کریں۔</string>
+
+    <!-- Notification Settings Screen -->
+    <string name="general_notifications">عام اطلاعات</string>
+    <string name="allow_notifications">اطلاعات کی اجازت دیں</string>
+    <string name="notification_types">اطلاع کی اقسام</string>
+    <string name="push_notifications">پش نوٹیفیکیشنز</string>
+    <string name="sound_vibration">آواز اور تھرتھراہٹ</string>
+    <string name="specific_alerts">مخصوص انتباہات</string>
+    <string name="new_feature_announcements">نئی خصوصیت کے اعلانات</string>
+    <string name="daily_streak_reminder">روزانہ اسٹریک ریمائنڈر</string>
+    <string name="quiet_hours_config">خاموش اوقات کی ترتیب</string>
+    <string name="quiet_hours">خاموش اوقات</string>
+    <string name="enable_quiet_hours">خاموش اوقات فعال کریں</string>
+    <string name="schedule">شیڈول</string>
+    <string name="start_time">شروع ہونے کا وقت</string>
+    <string name="end_time">ختم ہونے کا وقت</string>
+    <string name="ok">ٹھیک ہے</string>
+
+    <!-- Help & FAQ Screen -->
+    <string name="faq_full">اکثر پوچھے گئے سوالات (FAQ)</string>
+    <string name="clear">صاف کریں</string>
+    <string name="could_not_open_link">لنک نہیں کھل سکا</string>
+
+    <!-- Feedback Screen -->
+    <string name="send_feedback">فیڈ بیک بھیجیں</string>
+    <string name="feedback_success">فیڈ بیک کامیابی سے جمع کر دیا گیا!</string>
+    <string name="feedback_fail">فیڈ بیک جمع کرنے میں ناکامی۔ براہ کرم دوبارہ کوشش کریں۔</string>
+    <string name="gallery_permission_denied">گیلری تک رسائی کی اجازت نہیں دی گئی</string>
+    <string name="submitting">جمع کیا جا رہا ہے...</string>
+    <string name="submit_feedback">فیڈ بیک جمع کریں</string>
+    <string name="help_improve_ichatai">iChatAI کے تجربے کو بہتر بنانے میں ہماری مدد کریں</string>
+    <string name="feedback_header_desc">ایک زمرہ منتخب کریں، ہمیں بتائیں کہ کیا ہوا، اور اگر مدد ملے تو اسکرین شاٹس منسلک کریں۔</string>
+    <string name="category_label">زمرہ</string>
+    <string name="feedback_general">عمومی فیڈ بیک</string>
+    <string name="feedback_bug">بگ / کریش رپورٹ</string>
+    <string name="feedback_feature">فیچر کی درخواست</string>
+    <string name="feedback_accuracy">AI ماڈل کی درستگی / غلط بیانی</string>
+    <string name="feedback_ui">UI / ڈیزائن کی تجویز</string>
+    <string name="feedback_billing">کریڈٹ اور بلنگ انکوائری</string>
+    <string name="description_label">تفصیل</string>
+    <string name="required">ضروری ہے</string>
+    <string name="feedback_placeholder">بتائیں کہ کیا اچھا رہا، کیا ناکام رہا، یا ہمارے AI ماڈل یا خصوصیات کے بارے میں کیا بہتر ہونا چاہیے۔</string>
+    <string name="screenshots_label">اسکرین شاٹس</string>
+    <string name="tap_to_attach">گیلری سے منسلک کرنے کے لیے تھپتھپائیں</string>
+    <string name="add_more">مزید شامل کریں</string>
+
+    <!-- Terms & Privacy -->
+    <string name="terms_privacy_title">شرائط اور رازداری</string>
+
+    <!-- Splash Screen -->
+    <string name="splash_desc">آپ کا دوستانہ AI ساتھی</string>
+
+    <string name="user_profile_desc">صارف کا پروفائل</string>
+    <string name="new_chat">نئی چیٹ</string>
+    <string name="ai_assistant">AI اسسٹنٹ</string>
+    <string name="remove">ختم کریں</string>
+    <string name="attachments">منسلکات</string>
+
+    <string name="find_chats_placeholder">پچھلی چیٹس تلاش کریں...</string>
+    <string name="recent_chats">حالیہ چیٹس</string>
+    <string name="search_results">تلاش کے نتائج</string>
+    <string name="support">سپورٹ</string>
+    <string name="ai_credits">AI کریڈٹس</string>
+
+    <!-- Cloud Sync Screen -->
+    <string name="cloud_sync_status">کلاؤڈ سنک کی حیثیت</string>
+    <string name="connected_as">کے طور پر منسلک ہے</string>
+    <string name="google_drive_sync">گوگل ڈرائیو سنک</string>
+    <string name="sign_in_backup_msg">بیک اپ کے لیے سائن ان کریں</string>
+    <string name="sign_in">سائن ان کریں</string>
+    <string name="automatic_backup">خودکار بیک اپ</string>
+    <string name="automatic_backup_desc">وقتاً فوقتاً ڈیٹا کو کلاؤڈ پر بیک اپ کریں۔</string>
+    <string name="sync_wifi_cellular">وائی فائی اور سیلولر پر سنک کریں</string>
+    <string name="sync_wifi_cellular_desc">تمام آلات پر ڈیٹا سنک کریں۔</string>
+    <string name="last_synced_format">آخری بار سنک کیا گیا: %1$s</string>
+    <string name="never_synced">کبھی سنک نہیں کیا گیا</string>
+    <string name="manual_sync">دستی سنک</string>
+    <string name="manual_sync_desc">تمام ڈیٹا کا فوری سنک کریں۔</string>
+    <string name="sync_now">ابھی سنک کریں</string>
+    <string name="import_from_cloud">کلاؤڈ سے درآمد کریں</string>
+    <string name="sync_options">سنک کے اختیارات</string>
+    <string name="sync_conversations">بات چیت اور تاریخ</string>
+    <string name="sync_images">تصاویر اور فائلیں</string>
+    <string name="sync_settings">ترتیبات اور ترجیحات</string>
+    <string name="sync_prompts">محفوظ کردہ پرامپٹس اور ٹیمپلیٹس</string>
+    <string name="delete_cloud_data">کلاؤڈ سے تمام ڈیٹا حذف کریں</string>
+    <string name="sync_error_log">سنک ایرر لاگ</string>
+    <string name="delete_cloud_data_title">کلاؤڈ ڈیٹا حذف کریں؟</string>
+    <string name="delete_cloud_data_msg">یہ آپ کے گوگل ڈرائیو سے آپ کے تمام بیک اپ ڈیٹا کو مستقل طور پر ختم کر دے گا۔</string>
+    <string name="no_errors_reported">کوئی غلطی رپورٹ نہیں ہوئی۔</string>
+    <string name="clear_log">لاگ صاف کریں</string>
+
+    <!-- Storage Management Screen -->
+    <string name="storage_management_title">ڈیٹا اور اسٹوریج مینجمنٹ</string>
+    <string name="storage_usage">اسٹوریج کا استعمال</string>
+    <string name="conversations">بات چیت</string>
+    <string name="media">میڈیا</string>
+    <string name="cache">کیشے</string>
+    <string name="free_space">خالی جگہ</string>
+    <string name="used_format">%1$s استعمال شدہ</string>
+    <string name="total_format">%1$s کل</string>
+    <string name="cleanup_tools">صفائی کے اوزار</string>
+    <string name="clear_app_cache">ایپ کیشے صاف کریں</string>
+    <string name="clear_cache_desc">عارضی فائلیں اور تصاویر۔ تقریباً %1$s خالی کرتا ہے۔</string>
+    <string name="clear_cache">کیشے صاف کریں</string>
+    <string name="clear_chat_history">چیٹ کی ہسٹری صاف کریں</string>
+    <string name="clear_history_desc">تمام گفتگو کے لاگز مستقل طور پر حذف کریں۔</string>
+    <string name="clear_history">ہسٹری صاف کریں</string>
+    <string name="data_export">ڈیٹا ایکسپورٹ</string>
+    <string name="export_chat_history">چیٹ ہسٹری ایکسپورٹ کریں</string>
+    <string name="export_desc">تمام پیغامات کو JSON یا CSV کے طور پر ڈاؤن لوڈ کریں۔</string>
+    <string name="configure_export">ایکسپورٹ ترتیب دیں</string>
+    <string name="auto_cleanup_settings">خودکار صفائی کی ترتیبات</string>
+    <string name="status_active">حالت: فعال اور کام کر رہا ہے</string>
+    <string name="status_inactive">حالت: غیر فعال</string>
+    <string name="maintenance_policy">مینٹیننس پالیسی</string>
+    <string name="maintenance_policy_desc">منتخب کردہ دنوں سے پرانے پیغامات خود بخود حذف کریں۔</string>
+    <string name="configure">ترتیب دیں</string>
+    <string name="auto_cleanup_policy">خودکار صفائی کی پالیسی</string>
+    <string name="delete_older_than">%1$d دنوں سے پرانے پیغامات حذف کریں۔</string>
+    <string name="days_7">7 دن</string>
+    <string name="days_90">90 دن</string>
+    <string name="clear_chat_history_title">چیٹ ہسٹری صاف کریں؟</string>
+    <string name="clear_chat_history_msg">یہ آپ کے تمام گفتگو کے لاگز مستقل طور پر حذف کر دے گا۔ اس عمل کو واپس نہیں لیا جا سکتا۔</string>
+    <string name="delete_all">سب حذف کریں</string>
+    <string name="select_export_format">ایکسپورٹ فارمیٹ منتخب کریں</string>
+    <string name="export_successful">ایکسپورٹ کامیاب</string>
+    <string name="export_failed">ایکسپورٹ ناکام: %1$s</string>
+    <string name="cache_cleared">کیشے کامیابی سے صاف ہو گیا</string>
+    <string name="chat_history_cleared">چیٹ ہسٹری صاف کر دی گئی</string>
+    <string name="json_format">JSON (.json)</string>
+    <string name="csv_format">CSV (.csv)</string>
+    <!-- About Screen -->
+    <string name="about_ichatai">iChatAI کے بارے میں</string>
+    <string name="version_text">2.0.0</string>
+    <string name="release_notes">ریلیز نوٹس</string>
+    <string name="developer">ڈویلپر</string>
+    <string name="developer_name">محمد سفیان ظفر</string>
+    <string name="website">ویب سائٹ</string>
+    <string name="support_email">سپورٹ ای میل</string>
+    <string name="privacy_policy">پرائیویسی پالیسی</string>
+    <string name="copyright_format">© 2026 %1$s. تمام حقوق محفوظ ہیں۔</string>
+    <string name="update_available">اپ ڈیٹ دستیاب ہے!</string>
+    <string name="version_format">ورژن %1$s • %2$s</string>
+    <string name="available_on">دستیاب ہے: </string>
+    <string name="whats_new">نیا کیا ہے:</string>
+    <string name="update_now">ابھی اپ ڈیٹ کریں</string>
+    <string name="later">بعد میں</string>
+    <string name="email_subject">iChatAI سپورٹ کی درخواست</string>
+    <string name="email_body">ہیلو،\n\nمجھے مدد چاہیے...</string>
+    <string name="release_notes_markdown">### ورژن 2.0.0\n- **جدید AI ماڈلز**: نئے OpenRouter فری ماڈلز شامل کیے گئے ہیں۔\n- **فروسٹڈ گلاس UI**: جدید جمالیات کے ساتھ مکمل ری ڈیزائن۔\n- **مقامی ہسٹری**: آپ کے چیٹ آرکائیوز تک تیز تر رسائی۔\n- **روزانہ انعامات**: چیک ان اور اشتہارات کے ذریعے کریڈٹ حاصل کریں۔\n- **کلاؤڈ سنک**: گوگل ڈرائیو پر اپنی چیٹس کا محفوظ بیک اپ لیں۔</string>
+    <string name="full_archival_fixes">مکمل آرکائیول بگ فکسز</string>
+
+    <string name="view_chat_history">چیٹ ہسٹری دیکھیں</string>
+    <string name="view_favorite_chats">پسندیدہ چیٹس دیکھیں</string>
+    <string name="view_saved_prompts">محفوظ کردہ پرامپٹس دیکھیں</string>
+    <string name="manage_subscription">سبسکرپشن کا انتظام کریں</string>
+    <string name="app_settings">ایپ کی ترتیبات</string>
+    <string name="view_account_details">اکاؤنٹ کی تفصیلات دیکھیں</string>
+    <string name="get_help_faq">مدد حاصل کریں اور اکثر پوچھے گئے سوالات پڑھیں</string>
+    <string name="user_profile_pic">صارف کی پروفائل تصویر</string>
+
+    <!-- Sorting & Filtering -->
+    <string name="sort_newest">پہلے تازہ ترین</string>
+    <string name="sort_oldest">پہلے قدیم ترین</string>
+    <string name="sort_alphabetical">حروف تہجی کے لحاظ سے</string>
+    <string name="sort_most_messages">سب سے زیادہ پیغامات</string>
+    <string name="filter_all">سب</string>
+    <string name="filter_today">آج</string>
+    <string name="filter_yesterday">کل</string>
+    <string name="filter_this_week">اس ہفتے</string>
+    <string name="filter_pinned_only">صرف پن شدہ</string>
+    <string name="sort_most_used">سب سے زیادہ استعمال شدہ</string>
+    <string name="folder">فولڈر</string>
+    <string name="prompt">پرامپٹ</string>
+
+    <!-- Favorites Screen -->
+    <string name="favorites_title">پسندیدہ</string>
+    <string name="search_favorites">پسندیدہ تلاش کریں...</string>
+    <string name="no_favorites_found">کوئی پسندیدہ نہیں ملا</string>
+    <string name="top_pinned_favorites">سب سے اوپر پن شدہ پسندیدہ</string>
+    <string name="regular_favorites">عام پسندیدہ</string>
+    <string name="unstar">ان اسٹار</string>
+    <string name="delete_favorite_msg">کیا آپ واقعی اس پسندیدہ چیٹ کو حذف کرنا چاہتے ہیں؟ اس عمل کو واپس نہیں لیا جا سکتا۔</string>
+    <string name="just_now">ابھی ابھی</string>
+    <string name="mins_ago">%1$d منٹ پہلے</string>
+    <string name="hours_ago">%1$d گھنٹے پہلے</string>
+    <string name="yesterday">کل</string>
+    <string name="days_ago">%1$d دن پہلے</string>
+
+    <!-- Chat History Screen -->
+    <string name="chat_history">چیٹ ہسٹری</string>
+    <string name="search_history">ہسٹری تلاش کریں...</string>
+    <string name="no_history_found">کوئی ہسٹری نہیں ملی</string>
+    <string name="delete_chat_title">چیٹ حذف کریں</string>
+    <string name="delete_chat_msg">کیا آپ واقعی اس چیٹ کو حذف کرنا چاہتے ہیں؟ اس عمل کو واپس نہیں لیا جا سکتا۔</string>
+    <string name="last_accessed_format">آخری رسائی: %1$s | %2$d پیغامات</string>
+    <string name="today">آج</string>
+    <string name="this_week">اس ہفتے</string>
+    <string name="older">پرانی</string>
+
+    <string name="get_in_touch">رابطے میں رہیں</string>
+    <string name="chat_whatsapp_desc">فوری حل کے لیے ہم سے واٹس ایپ کے ذریعے بات کریں۔</string>
+    <string name="start_chat">بات چیت شروع کریں</string>
+    <string name="email_support">ای میل سپورٹ</string>
+    <string name="email_support_desc">ہمیں تفصیلی انکوائری بھیجیں۔</string>
+    <string name="official_website">آفیشل ویب سائٹ</string>
+    <string name="visit_site_desc">مزید معلومات کے لیے ہماری ویب سائٹ دیکھیں۔</string>
+    <string name="visit_site">سائٹ وزٹ کریں</string>
+    <string name="follow_us">ہماری پیروی کریں</string>
+    <string name="whatsapp_chat_message">ہیلو، مجھے iChatAI کے حوالے سے سپورٹ چاہیے۔</string>
 </resources>

@@ -19,16 +19,16 @@
     <string name="notifications">Notifications</string>
     <string name="ai_model_preferences">Préférences du modèle d\'IA</string>
     <string name="storage_management">Gestion des données et du stockage</string>
-    <string name="cloud_sync">Synchronisation cloud</string>
+    <string name="cloud_sync">Synchronisation Cloud</string>
     <string name="help_faq">Centre d\'aide et FAQ</string>
     <string name="terms_of_service">Conditions d\'utilisation</string>
     <string name="about_app">À propos d\'iChatAI</string>
     <string name="contact_us">Contactez-nous</string>
-    <string name="user_profile_subtitle">Ouvrez le profil Nom, E-mail, Changer d\'avatar</string>
+    <string name="user_profile_subtitle">Appuyez pour ouvrir le profil : nom, email, changer d\'avatar</string>
     <string name="subscription">Abonnement</string>
     <string name="subscription_subtitle">Affiche le plan actuel, ex: Pro Annuel - Actif</string>
     <string name="security_privacy">Sécurité et confidentialité</string>
-    <string name="security_privacy_subtitle">Mot de passe, authentification à deux facteurs</string>
+    <string name="security_privacy_subtitle">Code d\'accès, authentification à deux facteurs</string>
     <string name="appearance_subtitle">Clair, Sombre, Système</string>
     <string name="language_subtitle">Anglais, Espagnol, Français, etc.</string>
     <string name="notifications_subtitle">Push, Son, Vibration</string>
@@ -37,15 +37,15 @@
     <string name="cloud_sync_subtitle">Activé/Désactivé, Synchroniser maintenant</string>
     <string name="about_subtitle">Version 2.0, infos développeur</string>
 
-    <string name="help_getting_started">Mise en route</string>
+    <string name="help_getting_started">Premiers pas</string>
     <string name="help_account_billing">Compte et facturation</string>
     <string name="help_using_ai">Utilisation de l\'IA</string>
     <string name="help_troubleshooting">Dépannage</string>
 
-    <string name="search_help">Chercher de l\'aide...</string>
+    <string name="search_help">Rechercher de l\'aide...</string>
     <string name="browse_categories">Parcourir les catégories</string>
-    <string name="show_all">Afficher tout</string>
-    <string name="faq_title">Questions fréquemment posées</string>
+    <string name="show_all">Tout afficher</string>
+    <string name="faq_title">Foire aux questions</string>
     <string name="category_faq_title">FAQ sur %1$s</string>
     <string name="loading">Chargement...</string>
     <string name="no_results">Aucun résultat trouvé pour \"%1$s\"</string>
@@ -54,4 +54,360 @@
     <string name="chat_whatsapp">Discuter sur WhatsApp</string>
     <string name="view_service_status">Voir l\'état du service</string>
     <string name="whatsapp_not_installed">WhatsApp n\'est pas installé</string>
+
+    <!-- Main Screen -->
+    <string name="ask_anything">Demandez n\'importe quoi...</string>
+    <string name="quick_prompt_chips">Suggestions rapides</string>
+    <string name="exit_app_title">Quitter l\'application</string>
+    <string name="exit_app_message">Êtes-vous sûr de vouloir quitter iChatAI ? Votre session actuelle est automatiquement enregistrée.</string>
+    <string name="exit">Quitter</string>
+    <string name="cancel">Annuler</string>
+    <string name="thinking">Réflexion...</string>
+
+    <!-- Credits & Rewards -->
+    <string name="credits_title">Crédits</string>
+    <string name="credit_history">Historique des crédits</string>
+    <string name="available_credits">Crédits disponibles</string>
+    <string name="boost_your_credits">Augmentez vos crédits</string>
+    <string name="daily_checkin">Check-in quotidien</string>
+    <string name="check_in">S\'enregistrer</string>
+    <string name="claimed">Réclamé</string>
+    <string name="claim">Réclamer</string>
+    <string name="collected">Collecté</string>
+    <string name="jackpot">JACKPOT !</string>
+    <string name="streak_title">Votre série de 7 jours</string>
+    <string name="streak_format">%1$d/7</string>
+    <string name="streak_description">Enregistrez-vous quotidiennement pour réclamer des récompenses et gagnez un jackpot le 7ème jour !</string>
+    <string name="day_format">Jour %1$d</string>
+    <string name="locked">Verrouillé</string>
+    <string name="credits_reward">+%1$d Crédits</string>
+    <string name="watch_short_ad">Regarder une courte vidéo</string>
+    <string name="watch_ad_reward">+20 Crédits</string>
+    <string name="check_in_daily_reward">+10-100 Crédits</string>
+    <string name="daily_checkin_day">Enregistrement quotidien (Jour %1$d)</string>
+    <string name="ad_watched">Publicité vue</string>
+
+    <!-- Saved Prompts -->
+    <string name="saved_prompts">Prompts enregistrés</string>
+    <string name="search_prompts">Rechercher des prompts...</string>
+    <string name="my_folders">Mes dossiers</string>
+    <string name="recent_individual_prompts">Prompts récents et individuels</string>
+    <string name="prompts_in_folder">Prompts dans %1$s</string>
+    <string name="no_prompts_in_folder">Aucun prompt dans ce dossier</string>
+    <string name="new_folder">Nouveau dossier</string>
+    <string name="edit_folder">Modifier le dossier</string>
+    <string name="folder_name">Nom du dossier</string>
+    <string name="select_color">Sélectionner la couleur</string>
+    <string name="create">Créer</string>
+    <string name="save">Enregistrer</string>
+    <string name="new_prompt">Nouveau prompt</string>
+    <string name="edit_prompt">Modifier le prompt</string>
+    <string name="prompt_title">Titre</string>
+    <string name="prompt_content">Contenu du prompt</string>
+    <string name="prompt_tag">Tag (ex: Business)</string>
+    <string name="assign_to_folder">Assigner au dossier</string>
+    <string name="none">Aucun</string>
+    <string name="delete_item_title">Supprimer %1$s ?</string>
+    <string name="delete_folder_msg">Êtes-vous sûr de vouloir supprimer \'%1$s\' ? Cela supprimera également tous les prompts à l\'intérieur.</string>
+    <string name="delete_prompt_msg">Êtes-vous sûr de vouloir supprimer \'%1$s\' ?</string>
+    <string name="delete">Supprimer</string>
+    <string name="prompts_count">%1$d prompts</string>
+    <string name="last_used_format">Dernière utilisation : %1$s | [Tag : %2$s]</string>
+    <string name="general">Général</string>
+
+
+    <!-- Account Details -->
+    <string name="account_details_title">Détails du compte</string>
+    <string name="profile_photo">Photo de profil</string>
+    <string name="display_name">Nom d\'affichage</string>
+    <string name="email_address">Adresse e-mail</string>
+    <string name="gender">Genre</string>
+    <string name="date_of_birth">Date de naissance</string>
+    <string name="not_set">Non défini</string>
+    <string name="save_changes">Enregistrer les modifications</string>
+    <string name="edit_name">Modifier le nom</string>
+    <string name="edit_email">Modifier l\'email</string>
+    <string name="select_gender">Sélectionner le genre</string>
+    <string name="select_date">Sélectionner la date</string>
+    <string name="invalid_email">Format d\'email invalide</string>
+    <string name="delete_account">Supprimer le compte</string>
+    <string name="delete_account_msg">Êtes-vous sûr de vouloir supprimer votre compte ? Cela effacera définitivement tout votre historique de discussion et vos paramètres.</string>
+    <string name="delete_all_data">Supprimer toutes les données</string>
+    <string name="male">Masculin</string>
+    <string name="female">Féminin</string>
+    <string name="prefer_not_to_say">Préfère ne pas dire</string>
+
+    <!-- General -->
+    <string name="close">Fermer</string>
+    <string name="app_version">Version de l\'application</string>
+    <string name="check_updates">Vérifier les mises à jour</string>
+    <string name="latest_version_msg">Vous avez déjà la dernière version !</string>
+
+    <!-- Subscription Screen -->
+    <string name="restore">Restaurer</string>
+    <string name="available_plans">Plans disponibles</string>
+    <string name="pro_monthly">Pro Mensuel</string>
+    <string name="pro_annual">Pro Annuel</string>
+    <string name="unlimited_messages">Messages illimités</string>
+    <string name="faster_ai_responses">Réponses IA plus rapides</string>
+    <string name="priority_support">Support prioritaire</string>
+    <string name="all_pro_monthly_benefits">Tous les avantages de Pro Mensuel</string>
+    <string name="access_beta_features">Accès aux fonctionnalités bêta</string>
+    <string name="early_access_new_models">Accès anticipé aux nouveaux modèles</string>
+    <string name="coming_soon">Prochainement</string>
+    <string name="save_percent">(Économisez %1$d%%)</string>
+    <string name="best_value">Meilleure offre</string>
+    <string name="month">mois</string>
+    <string name="year">an</string>
+    <string name="current_plan_format">Plan actuel : %1$s</string>
+    <string name="free_plan">Plan Gratuit</string>
+    <string name="renews_format">Renouvellement : %1$s</string>
+    <string name="na">N/A</string>
+    <string name="benefits_active">Avantages actifs</string>
+    <string name="manage_billing">Gérer la facturation</string>
+    <string name="switch_plan">Changer de plan</string>
+
+    <!-- Appearance Screen -->
+    <string name="theme_mode">Mode thématique</string>
+    <string name="light">Clair</string>
+    <string name="dark">Sombre</string>
+    <string name="system_default">Par défaut</string>
+    <string name="accent_color">Couleur d\'accentuation</string>
+    <string name="purple">Violet</string>
+    <string name="blue">Bleu</string>
+    <string name="green">Vert</string>
+    <string name="yellow">Jaune</string>
+    <string name="red">Rouge</string>
+    <string name="pink">Rose</string>
+
+    <!-- AI Model Preferences -->
+    <string name="ai_model_preferences_title">Préférences du modèle d\'IA</string>
+    <string name="primary_ai_model">Modèle d\'IA principal</string>
+    <string name="recommended">Recommandé</string>
+    <string name="character_limit">Limite de caractères</string>
+    <string name="response_creativity">Créativité de la réponse</string>
+    <string name="precise">Précis</string>
+    <string name="balanced">Équilibré</string>
+    <string name="imaginative">Imaginatif</string>
+    <string name="creativity_description">Ajustez la tendance du modèle à générer des réponses inédites ou conservatrices.</string>
+
+    <!-- Notification Settings Screen -->
+    <string name="general_notifications">Notifications générales</string>
+    <string name="allow_notifications">Autoriser les notifications</string>
+    <string name="notification_types">Types de notifications</string>
+    <string name="push_notifications">Notifications push</string>
+    <string name="sound_vibration">Son et vibration</string>
+    <string name="specific_alerts">Alertas spécifiques</string>
+    <string name="new_feature_announcements">Annonces de nouvelles fonctionnalités</string>
+    <string name="daily_streak_reminder">Rappel de série quotidienne</string>
+    <string name="quiet_hours_config">Configuration des heures de silence</string>
+    <string name="quiet_hours">Heures de silence</string>
+    <string name="enable_quiet_hours">Activer les heures de silence</string>
+    <string name="schedule">Programme</string>
+    <string name="start_time">Heure de début</string>
+    <string name="end_time">Heure de fin</string>
+    <string name="ok">OK</string>
+
+    <!-- Help & FAQ Screen -->
+    <string name="faq_full">Foire aux questions (FAQ)</string>
+    <string name="clear">Effacer</string>
+    <string name="could_not_open_link">Impossible d\'ouvrir le lien</string>
+
+    <!-- Feedback Screen -->
+    <string name="send_feedback">Envoyer un commentaire</string>
+    <string name="feedback_success">Commentaire envoyé avec succès !</string>
+    <string name="feedback_fail">Échec de l\'envoi du commentaire. Veuillez réessayer.</string>
+    <string name="gallery_permission_denied">Permission refusée d\'accéder à la galerie</string>
+    <string name="submitting">Envoi en cours...</string>
+    <string name="submit_feedback">Envoyer le commentaire</string>
+    <string name="help_improve_ichatai">Aidez-nous à améliorer l\'expérience iChatAI</string>
+    <string name="feedback_header_desc">Choisissez une catégorie, dites-nous ce qui s\'est passé et joignez des captures d\'écran si cela peut aider.</string>
+    <string name="category_label">CATÉGORIE</string>
+    <string name="feedback_general">Commentaires généraux</string>
+    <string name="feedback_bug">Rapport de bug / crash</string>
+    <string name="feedback_feature">Demande de fonctionnalité</string>
+    <string name="feedback_accuracy">Précision du modèle IA / Hallucination</string>
+    <string name="feedback_ui">Suggestion d\'UI / Design</string>
+    <string name="feedback_billing">Demande de crédit et facturation</string>
+    <string name="description_label">DESCRIPTION</string>
+    <string name="required">Requis</string>
+    <string name="feedback_placeholder">Partagez ce qui a bien fonctionné, ce qui a échoué ou ce qui devrait être amélioré concernant notre modèle IA ou nos fonctionnalités.</string>
+    <string name="screenshots_label">CAPTURES D\'ÉCRAN</string>
+    <string name="tap_to_attach">Appuyez pour joindre depuis la galerie</string>
+    <string name="add_more">Ajouter plus</string>
+
+    <!-- Terms & Privacy -->
+    <string name="terms_privacy_title">Conditions et confidentialité</string>
+
+    <!-- Splash Screen -->
+    <string name="splash_desc">Votre compagnon IA amical</string>
+
+    <string name="user_profile_desc">Profil utilisateur</string>
+    <string name="new_chat">Nouvelle discussion</string>
+    <string name="ai_assistant">Assistant IA</string>
+    <string name="remove">Supprimer</string>
+    <string name="attachments">Pièces jointes</string>
+
+    <string name="find_chats_placeholder">Trouver des discussions précédentes...</string>
+    <string name="recent_chats">Discussions récentes</string>
+    <string name="search_results">Résultats de recherche</string>
+    <string name="support">Support</string>
+    <string name="ai_credits">Crédits IA</string>
+
+    <!-- Cloud Sync Screen -->
+    <string name="cloud_sync_status">État de la synchronisation cloud</string>
+    <string name="connected_as">Connecté en tant que</string>
+    <string name="google_drive_sync">Synchronisation Google Drive</string>
+    <string name="sign_in_backup_msg">Connectez-vous pour sauvegarder</string>
+    <string name="sign_in">Se connecter</string>
+    <string name="automatic_backup">Sauvegarde automatique</string>
+    <string name="automatic_backup_desc">Sauvegardez périodiquement les données sur le cloud.</string>
+    <string name="sync_wifi_cellular">Synchroniser via Wi-Fi et cellulaire</string>
+    <string name="sync_wifi_cellular_desc">Synchronisez les données entre les appareils.</string>
+    <string name="last_synced_format">Dernière synchronisation : %1$s</string>
+    <string name="never_synced">Jamais synchronisé</string>
+    <string name="manual_sync">Synchronisation manuelle</string>
+    <string name="manual_sync_desc">Forcez une synchronisation immédiate de tout.</string>
+    <string name="sync_now">Synchroniser maintenant</string>
+    <string name="import_from_cloud">Importer du cloud</string>
+    <string name="sync_options">Options de synchronisation</string>
+    <string name="sync_conversations">Conversations et historique</string>
+    <string name="sync_images">Images et fichiers</string>
+    <string name="sync_settings">Paramètres et préférences</string>
+    <string name="sync_prompts">Prompts et modèles enregistrés</string>
+    <string name="delete_cloud_data">Supprimer toutes les données du cloud</string>
+    <string name="sync_error_log">Journal des erreurs de synchronisation</string>
+    <string name="delete_cloud_data_title">Supprimer les données cloud ?</string>
+    <string name="delete_cloud_data_msg">Cela supprimera définitivement toutes vos données de sauvegarde de Google Drive.</string>
+    <string name="no_errors_reported">Aucune erreur signalée.</string>
+    <string name="clear_log">Effacer le journal</string>
+
+    <string name="error_signin_failed">Échec de la connexion ou annulé par l\'utilisateur.</string>
+    <string name="error_no_account">Aucun compte Google connecté.</string>
+    <string name="error_no_backup">Aucune sauvegarde trouvée dans le cloud.</string>
+    <string name="error_backup_failed">Erreur de sauvegarde inconnue</string>
+    <string name="error_restore_failed">Erreur de restauration inconnue</string>
+    <string name="error_delete_cloud_failed">Erreur lors de la suppression des données cloud</string>
+
+
+    <!-- Storage Management Screen -->
+    <string name="storage_management_title">Gestion des données et du stockage</string>
+    <string name="storage_usage">Utilisation du stockage</string>
+    <string name="conversations">Conversations</string>
+    <string name="media">Médias</string>
+    <string name="cache">Cache</string>
+    <string name="free_space">Espace libre</string>
+    <string name="used_format">%1$s utilisé</string>
+    <string name="total_format">%1$s total</string>
+    <string name="cleanup_tools">Outils de nettoyage</string>
+    <string name="clear_app_cache">Effacer le cache de l\'app</string>
+    <string name="clear_cache_desc">Fichiers temp et images. Libère env. %1$s.</string>
+    <string name="clear_cache">Effacer le cache</string>
+    <string name="clear_chat_history">Effacer l\'historique</string>
+    <string name="clear_history_desc">Supprimer définitivement tous les journaux.</string>
+    <string name="clear_history">Effacer l\'historique</string>
+    <string name="data_export">Exportation de données</string>
+    <string name="export_chat_history">Exporter l\'historique</string>
+    <string name="export_desc">Télécharger tous les messages en JSON ou CSV.</string>
+    <string name="configure_export">Configurer l\'exportation</string>
+    <string name="auto_cleanup_settings">Nettoyage automatique</string>
+    <string name="status_active">Statut : Actif et fonctionnel</string>
+    <string name="status_inactive">Statut : Inactif</string>
+    <string name="maintenance_policy">Politique de maintenance</string>
+    <string name="maintenance_policy_desc">Supprimer automatiquement les messages plus anciens.</string>
+    <string name="configure">Configurer</string>
+    <string name="auto_cleanup_policy">Politique de nettoyage auto</string>
+    <string name="delete_older_than">Supprimer les messages de plus de %1$d jours.</string>
+    <string name="days_7">7 jours</string>
+    <string name="days_90">90 jours</string>
+    <string name="clear_chat_history_title">Effacer l\'historique ?</string>
+    <string name="clear_chat_history_msg">Cela supprimera définitivement tous vos journaux. Cette action est irréversible.</string>
+    <string name="delete_all">Tout supprimer</string>
+    <string name="select_export_format">Format d\'exportation</string>
+    <string name="export_successful">Exportation réussie</string>
+    <string name="export_failed">Échec de l\'exportation : %1$s</string>
+    <string name="cache_cleared">Cache effacé avec succès</string>
+    <string name="chat_history_cleared">Historique effacé</string>
+    <string name="json_format">JSON (.json)</string>
+    <string name="csv_format">CSV (.csv)</string>
+
+    <!-- About Screen -->
+    <string name="about_ichatai">À propos d\'iChatAI</string>
+    <string name="version_text">2.0.0</string>
+    <string name="release_notes">Notes de version</string>
+    <string name="developer">Développeur</string>
+    <string name="developer_name">Muhammad Sufyan Zafar</string>
+    <string name="website">Site web</string>
+    <string name="support_email">Email de support</string>
+    <string name="privacy_policy">Politique de confidentialité</string>
+    <string name="copyright_format">© 2026 %1$s. Tous droits réservés.</string>
+    <string name="update_available">Mise à jour disponible !</string>
+    <string name="version_format">Version %1$s • %2$s</string>
+    <string name="available_on">Disponible sur : </string>
+    <string name="whats_new">Quoi de neuf :</string>
+    <string name="update_now">Mettre à jour maintenant</string>
+    <string name="later">Plus tard</string>
+    <string name="email_subject">Demande de support iChatAI</string>
+    <string name="email_body">Bonjour,\n\nj\'ai besoin d\'aide avec...</string>
+    <string name="release_notes_markdown">### Version 2.0.0\n- **Modèles d\'IA avancés** : Intégration des nouveaux modèles gratuits d\'OpenRouter.\n- **Interface en verre dépoli** : Refonte complète avec une esthétique moderne.\n- **Historique local** : Accès plus rapide à vos archives de discussion.\n- **Récompenses quotidiennes** : Gagnez des crédits via les enregistrements et les publicités.\n- **Synchronisation Cloud** : Sauvegardez vos discussions en toute sécurité sur Google Drive.</string>
+    <string name="full_archival_fixes">Corrections de bugs d\'archivage complet</string>
+
+    <string name="view_chat_history">Voir l\'historique des discussions</string>
+    <string name="view_favorite_chats">Voir les discussions favorites</string>
+    <string name="view_saved_prompts">Voir les prompts enregistrés</string>
+    <string name="manage_subscription">Gérer l\'abonnement</string>
+    <string name="app_settings">Paramètres de l\'application</string>
+    <string name="view_account_details">Voir les détails du compte</string>
+    <string name="get_help_faq">Obtenir de l\'aide et lire la FAQ</string>
+    <string name="user_profile_pic">Photo de profil de l\'utilisateur</string>
+
+    <!-- Sorting & Filtering -->
+    <string name="sort_newest">Les plus récents d\'abord</string>
+    <string name="sort_oldest">Les plus anciens d\'abord</string>
+    <string name="sort_alphabetical">Alphabétique</string>
+    <string name="sort_most_messages">Le plus de messages</string>
+    <string name="filter_all">Tout</string>
+    <string name="filter_today">Aujourd\'hui</string>
+    <string name="filter_yesterday">Hier</string>
+    <string name="filter_this_week">Cette semaine</string>
+    <string name="filter_pinned_only">Uniquement épinglés</string>
+    <string name="sort_most_used">Plus utilisés</string>
+    <string name="folder">Dossier</string>
+    <string name="prompt">Prompt</string>
+
+    <!-- Favorites Screen -->
+    <string name="favorites_title">Favoris</string>
+    <string name="search_favorites">Rechercher des favoris...</string>
+    <string name="no_favorites_found">Aucun favori trouvé</string>
+    <string name="top_pinned_favorites">Favoris épinglés en haut</string>
+    <string name="regular_favorites">Favoris réguliers</string>
+    <string name="unstar">Retirer des favoris</string>
+    <string name="delete_favorite_msg">Êtes-vous sûr de vouloir supprimer cette discussion favorite ? Cette action est irréversible.</string>
+    <string name="just_now">À l\'instant</string>
+    <string name="mins_ago">il y a %1$d min</string>
+    <string name="hours_ago">il y a %1$d heures</string>
+    <string name="yesterday">Hier</string>
+    <string name="days_ago">il y a %1$d jours</string>
+
+    <!-- Chat History Screen -->
+    <string name="chat_history">Historique des discussions</string>
+    <string name="search_history">Rechercher dans l\'historique...</string>
+    <string name="no_history_found">Aucun historique trouvé</string>
+    <string name="delete_chat_title">Supprimer la discussion</string>
+    <string name="delete_chat_msg">Êtes-vous sûr de vouloir supprimer cette discussion ? Cette action est irréversible.</string>
+    <string name="last_accessed_format">Dernier accès : %1$s | %2$d messages</string>
+    <string name="today">Aujourd\'hui</string>
+    <string name="this_week">Cette semaine</string>
+    <string name="older">Plus ancien</string>
+
+    <string name="get_in_touch">Contactez-nous</string>
+    <string name="chat_whatsapp_desc">Discutez avec nous via WhatsApp pour des solutions rapides.</string>
+    <string name="start_chat">Démarrer la discussion</string>
+    <string name="email_support">Support par email</string>
+    <string name="email_support_desc">Envoyez-nous une demande détaillée.</string>
+    <string name="official_website">Site officiel</string>
+    <string name="visit_site_desc">Visitez notre site pour plus d\'informations.</string>
+    <string name="visit_site">Visiter le site</string>
+    <string name="follow_us">Suivez-nous</string>
+    <string name="whatsapp_chat_message">Bonjour, j\'ai besoin d\'aide concernant iChatAI.</string>
 </resources>

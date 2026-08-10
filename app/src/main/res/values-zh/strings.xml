@@ -36,4 +36,356 @@
     <string name="storage_subtitle">清除缓存、导出历史记录</string>
     <string name="cloud_sync_subtitle">开启/关闭，立即同步</string>
     <string name="about_subtitle">应用版本 2.0，开发者信息</string>
+
+    <!-- Main Screen -->
+    <string name="ask_anything">随便问...</string>
+    <string name="quick_prompt_chips">快捷提示</string>
+    <string name="exit_app_title">退出应用</string>
+    <string name="exit_app_message">您确定要离开 iChatAI 吗？您的当前会话将自动保存。</string>
+    <string name="exit">退出</string>
+    <string name="cancel">取消</string>
+    <string name="thinking">思考中...</string>
+
+    <!-- Credits & Rewards -->
+    <string name="credits_title">积分</string>
+    <string name="credit_history">积分历史</string>
+    <string name="available_credits">可用积分</string>
+    <string name="boost_your_credits">增加积分</string>
+    <string name="daily_checkin">每日签到</string>
+    <string name="check_in">签到</string>
+    <string name="claimed">已领取</string>
+    <string name="claim">领取</string>
+    <string name="collected">已收集</string>
+    <string name="jackpot">大奖！</string>
+    <string name="streak_title">您的 7 天签到连续记录</string>
+    <string name="streak_format">%1$d/7</string>
+    <string name="streak_description">每日签到领取奖励，并在第 7 天赢取大奖！</string>
+    <string name="day_format">第 %1$d 天</string>
+    <string name="locked">未解锁</string>
+    <string name="credits_reward">+%1$d 积分</string>
+    <string name="watch_short_ad">观看短视频广告</string>
+    <string name="watch_ad_reward">+20 积分</string>
+    <string name="check_in_daily_reward">+10-100 积分</string>
+    <string name="daily_checkin_day">每日签到（第 %1$d 天）</string>
+    <string name="ad_watched">广告已观看</string>
+
+    <!-- Saved Prompts -->
+    <!-- Saved Prompts -->
+    <string name="saved_prompts">已保存的提示</string>
+    <string name="search_prompts">搜索提示...</string>
+    <string name="my_folders">我的文件夹</string>
+    <string name="recent_individual_prompts">最近和个人提示</string>
+    <string name="prompts_in_folder">%1$s 中的提示</string>
+    <string name="no_prompts_in_folder">此文件夹中没有提示</string>
+    <string name="new_folder">新建文件夹</string>
+    <string name="edit_folder">编辑文件夹</string>
+    <string name="folder_name">文件夹名称</string>
+    <string name="select_color">选择颜色</string>
+    <string name="create">创建</string>
+    <string name="save">保存</string>
+    <string name="new_prompt">新建提示</string>
+    <string name="edit_prompt">编辑提示</string>
+    <string name="prompt_title">标题</string>
+    <string name="prompt_content">提示内容</string>
+    <string name="prompt_tag">标签（例如：商务）</string>
+    <string name="assign_to_folder">分配到文件夹</string>
+    <string name="none">无</string>
+    <string name="delete_item_title">删除 %1$s？</string>
+    <string name="delete_folder_msg">您确定要删除“%1$s”吗？这也将删除此文件夹内的所有提示。</string>
+    <string name="delete_prompt_msg">您确定要删除“%1$s”吗？</string>
+    <string name="delete">删除</string>
+    <string name="prompts_count">%1$d 个提示</string>
+    <string name="last_used_format">上次使用：%1$s | [标签：%2$s]</string>
+    <string name="general">常规</string>
+
+
+    <!-- Account Details -->
+    <string name="account_details_title">账户详情</string>
+    <string name="profile_photo">个人资料照片</string>
+    <string name="display_name">显示名称</string>
+    <string name="email_address">电子邮件地址</string>
+    <string name="gender">性别</string>
+    <string name="date_of_birth">出生日期</string>
+    <string name="not_set">未设置</string>
+    <string name="save_changes">保存更改</string>
+    <string name="edit_name">编辑姓名</string>
+    <string name="edit_email">编辑电子邮件</string>
+    <string name="select_gender">选择性别</string>
+    <string name="select_date">选择日期</string>
+    <string name="invalid_email">电子邮件格式无效</string>
+    <string name="delete_account">删除账户</string>
+    <string name="delete_account_msg">您确定要删除您的账户吗？这将永久删除您的所有聊天记录和设置。</string>
+    <string name="delete_all_data">删除所有数据</string>
+    <string name="male">男</string>
+    <string name="female">女</string>
+    <string name="prefer_not_to_say">不想透露</string>
+
+    <!-- General -->
+    <string name="close">关闭</string>
+    <string name="app_version">应用版本</string>
+    <string name="check_updates">检查更新</string>
+    <string name="latest_version_msg">您已是最新版本！</string>
+
+    <!-- Subscription Screen -->
+    <string name="restore">恢复购买</string>
+    <string name="available_plans">可用方案</string>
+    <string name="pro_monthly">按月专业版</string>
+    <string name="pro_annual">按年专业版</string>
+    <string name="unlimited_messages">无限消息</string>
+    <string name="faster_ai_responses">更快的 AI 响应</string>
+    <string name="priority_support">优先支持</string>
+    <string name="all_pro_monthly_benefits">包含所有按月专业版权益</string>
+    <string name="access_beta_features">抢先体验测试版功能</string>
+    <string name="early_access_new_models">抢先体验新模型</string>
+    <string name="coming_soon">即将推出</string>
+    <string name="save_percent">(节省 %1$d%%)</string>
+    <string name="best_value">最佳选择</string>
+    <string name="month">月</string>
+    <string name="year">年</string>
+    <string name="current_plan_format">当前方案：%1$s</string>
+    <string name="free_plan">免费版</string>
+    <string name="renews_format">续订日期：%1$s</string>
+    <string name="na">无</string>
+    <string name="benefits_active">权益已激活</string>
+    <string name="manage_billing">管理账单</string>
+    <string name="switch_plan">切换方案</string>
+
+    <!-- Appearance Screen -->
+    <string name="theme_mode">主题模式</string>
+    <string name="light">浅色</string>
+    <string name="dark">深色</string>
+    <string name="system_default">系统默认</string>
+    <string name="accent_color">强调色</string>
+    <string name="purple">紫色</string>
+    <string name="blue">蓝色</string>
+    <string name="green">绿色</string>
+    <string name="yellow">黄色</string>
+    <string name="red">红色</string>
+    <string name="pink">粉红色</string>
+
+    <!-- AI Model Preferences -->
+    <string name="ai_model_preferences_title">AI 模型偏好</string>
+    <string name="primary_ai_model">首选 AI 模型</string>
+    <string name="recommended">推荐</string>
+    <string name="character_limit">字符限制</string>
+    <string name="response_creativity">回答创意度</string>
+    <string name="precise">精确</string>
+    <string name="balanced">平衡</string>
+    <string name="imaginative">富有想象力</string>
+    <string name="creativity_description">调节模型生成新颖或保守回答的倾向。</string>
+
+    <!-- Notification Settings Screen -->
+    <string name="general_notifications">一般通知</string>
+    <string name="allow_notifications">允许通知</string>
+    <string name="notification_types">通知类型</string>
+    <string name="push_notifications">推送通知</string>
+    <string name="sound_vibration">声音和振动</string>
+    <string name="specific_alerts">特定警报</string>
+    <string name="new_feature_announcements">新功能公告</string>
+    <string name="daily_streak_reminder">每日连胜提醒</string>
+    <string name="quiet_hours_config">静音时间配置</string>
+    <string name="quiet_hours">静音时间</string>
+    <string name="enable_quiet_hours">开启静音时间</string>
+    <string name="schedule">时间表</string>
+    <string name="start_time">开始时间</string>
+    <string name="end_time">结束时间</string>
+    <string name="ok">确定</string>
+
+    <!-- Help & FAQ Screen -->
+    <string name="faq_full">常见问题 (FAQ)</string>
+    <string name="clear">清除</string>
+    <string name="could_not_open_link">无法打开链接</string>
+
+    <!-- Feedback Screen -->
+    <string name="send_feedback">发送反馈</string>
+    <string name="feedback_success">反馈提交成功！</string>
+    <string name="feedback_fail">反馈提交失败。请重试。</string>
+    <string name="gallery_permission_denied">访问相册权限被拒绝</string>
+    <string name="submitting">正在提交...</string>
+    <string name="submit_feedback">提交反馈</string>
+    <string name="help_improve_ichatai">帮助我们改进 iChatAI 体验</string>
+    <string name="feedback_header_desc">选择一个类别，告诉我们发生了什么，如果需要，可以附上截图。</string>
+    <string name="category_label">类别</string>
+    <string name="feedback_general">一般反馈</string>
+    <string name="feedback_bug">错误 / 崩溃报告</string>
+    <string name="feedback_feature">功能请求</string>
+    <string name="feedback_accuracy">AI 模型准确性 / 幻觉</string>
+    <string name="feedback_ui">UI / 设计建议</string>
+    <string name="feedback_billing">积分与账单查询</string>
+    <string name="description_label">描述</string>
+    <string name="required">必填</string>
+    <string name="feedback_placeholder">分享哪些方面做得好，哪些方面失败了，或者在我们的 AI 模型或功能方面应该改进什么。</string>
+    <string name="screenshots_label">截图</string>
+    <string name="tap_to_attach">点击从相册添加</string>
+    <string name="add_more">添加更多</string>
+
+    <!-- Terms & Privacy -->
+    <string name="terms_privacy_title">条款与隐私</string>
+
+    <!-- Splash Screen -->
+    <string name="splash_desc">您的友好 AI 伙伴</string>
+
+    <string name="user_profile_desc">用户资料</string>
+    <string name="new_chat">新对话</string>
+    <string name="ai_assistant">AI 助手</string>
+    <string name="remove">移除</string>
+    <string name="attachments">附件</string>
+
+    <string name="find_chats_placeholder">查找之前的对话...</string>
+    <string name="recent_chats">最近对话</string>
+    <string name="search_results">搜索结果</string>
+    <string name="support">支持</string>
+    <string name="ai_credits">AI 积分</string>
+
+    <!-- Cloud Sync Screen -->
+    <string name="cloud_sync_status">云同步状态</string>
+    <string name="connected_as">已连接为</string>
+    <string name="google_drive_sync">Google 云端硬盘同步</string>
+    <string name="sign_in_backup_msg">登录以备份数据</string>
+    <string name="sign_in">登录</string>
+    <string name="automatic_backup">自动备份</string>
+    <string name="automatic_backup_desc">定期将数据备份到云端。</string>
+    <string name="sync_wifi_cellular">通过 Wi-Fi 和蜂窝网络同步</string>
+    <string name="sync_wifi_cellular_desc">跨设备同步数据。</string>
+    <string name="last_synced_format">上次同步：%1$s</string>
+    <string name="never_synced">从未同步</string>
+    <string name="manual_sync">手动同步</string>
+    <string name="manual_sync_desc">强制立即同步所有数据。</string>
+    <string name="sync_now">立即同步</string>
+    <string name="import_from_cloud">从云端导入</string>
+    <string name="sync_options">同步选项</string>
+    <string name="sync_conversations">对话与历史记录</string>
+    <string name="sync_images">图片与文件</string>
+    <string name="sync_settings">设置与偏好</string>
+    <string name="sync_prompts">已保存的提示与模板</string>
+    <string name="delete_cloud_data">从云端删除所有数据</string>
+    <string name="sync_error_log">同步错误日志</string>
+    <string name="delete_cloud_data_title">删除云端数据？</string>
+    <string name="delete_cloud_data_msg">这将永久删除您在 Google 云端硬盘中的所有备份数据。</string>
+    <string name="no_errors_reported">未报告错误。</string>
+    <string name="clear_log">清除日志</string>
+
+    <!-- Storage Management Screen -->
+    <string name="storage_management_title">数据与存储管理</string>
+    <string name="storage_usage">存储使用情况</string>
+    <string name="conversations">对话</string>
+    <string name="media">媒体</string>
+    <string name="cache">缓存</string>
+    <string name="free_space">剩余空间</string>
+    <string name="used_format">已使用 %1$s</string>
+    <string name="total_format">总量 %1$s</string>
+    <string name="cleanup_tools">清理工具</string>
+    <string name="clear_app_cache">清除应用缓存</string>
+    <string name="clear_cache_desc">临时文件和图片。可释放约 %1$s。</string>
+    <string name="clear_cache">清除缓存</string>
+    <string name="clear_chat_history">清除聊天记录</string>
+    <string name="clear_history_desc">永久删除所有对话记录。</string>
+    <string name="clear_history">清除历史</string>
+    <string name="data_export">数据导出</string>
+    <string name="export_chat_history">导出聊天记录</string>
+    <string name="export_desc">以 JSON 或 CSV 格式下载所有消息。</string>
+    <string name="configure_export">配置导出</string>
+    <string name="auto_cleanup_settings">自动清理设置</string>
+    <string name="status_active">状态：已激活并运行中</string>
+    <string name="status_inactive">状态：未激活</string>
+    <string name="maintenance_policy">维护策略</string>
+    <string name="maintenance_policy_desc">自动删除早于所选天数的消息。</string>
+    <string name="configure">配置</string>
+    <string name="auto_cleanup_policy">自动清理策略</string>
+    <string name="delete_older_than">删除早于 %1$d 天的消息。</string>
+    <string name="days_7">7 天</string>
+    <string name="days_90">90 天</string>
+    <string name="clear_chat_history_title">清除聊天记录？</string>
+    <string name="clear_chat_history_msg">这将永久删除您的所有对话记录。此操作无法撤销。</string>
+    <string name="delete_all">全部删除</string>
+    <string name="select_export_format">选择导出格式</string>
+    <string name="export_successful">导出成功</string>
+    <string name="export_failed">导出失败：%1$s</string>
+    <string name="cache_cleared">缓存清除成功</string>
+    <string name="chat_history_cleared">聊天记录已清除</string>
+    <string name="json_format">JSON (.json)</string>
+    <string name="csv_format">CSV (.csv)</string>
+    <string name="help_getting_started">入门指南</string>
+    <string name="help_account_billing">账户与账单</string>
+    <string name="help_using_ai">使用 AI</string>
+    <string name="help_troubleshooting">故障排除</string>
+    <!-- About Screen -->
+    <string name="about_ichatai">关于 iChatAI</string>
+    <string name="version_text">2.0.0</string>
+    <string name="release_notes">发行说明</string>
+    <string name="developer">开发者</string>
+    <string name="developer_name">Muhammad Sufyan Zafar</string>
+    <string name="website">网站</string>
+    <string name="support_email">支持邮箱</string>
+    <string name="privacy_policy">隐私政策</string>
+    <string name="copyright_format">© 2026 %1$s. 保留所有权利。</string>
+    <string name="update_available">有可用更新！</string>
+    <string name="version_format">版本 %1$s • %2$s</string>
+    <string name="available_on">可用平台：</string>
+    <string name="whats_new">更新内容：</string>
+    <string name="update_now">立即更新</string>
+    <string name="later">以后再说</string>
+    <string name="email_subject">iChatAI 支持请求</string>
+    <string name="email_body">您好，\n\n我需要帮助...</string>
+    <string name="release_notes_markdown">### 版本 2.0.0\n- **先进的 AI 模型**：集成了新的 OpenRouter 免费模型。\n- **磨砂玻璃 UI**：采用现代美学的全新设计。\n- **本地历史记录**：更快速地访问您的聊天存档。\n- **每日奖励**：通过签到和广告赚取积分。\n- **云同步**：安全地将您的聊天记录备份到 Google 云端硬盘。</string>
+    <string name="full_archival_fixes">完整的存档错误修复</string>
+
+    <string name="view_chat_history">查看聊天记录</string>
+    <string name="view_favorite_chats">查看收藏的聊天</string>
+    <string name="view_saved_prompts">查看保存的提示词</string>
+    <string name="manage_subscription">管理订阅</string>
+    <string name="app_settings">应用设置</string>
+    <string name="view_account_details">查看账户详情</string>
+    <string name="get_help_faq">获取帮助并阅读常见问题</string>
+    <string name="user_profile_pic">用户个人资料图片</string>
+
+    <!-- Sorting & Filtering -->
+    <string name="sort_newest">从新到旧</string>
+    <string name="sort_oldest">从旧到新</string>
+    <string name="sort_alphabetical">按字母顺序</string>
+    <string name="sort_most_messages">消息最多</string>
+    <string name="filter_all">全部</string>
+    <string name="filter_today">今天</string>
+    <string name="filter_yesterday">昨天</string>
+    <string name="filter_this_week">本周</string>
+    <string name="filter_pinned_only">仅置顶</string>
+    <string name="sort_most_used">最常用</string>
+    <string name="folder">文件夹</string>
+    <string name="prompt">提示词</string>
+
+    <!-- Favorites Screen -->
+    <string name="favorites_title">收藏</string>
+    <string name="search_favorites">搜索收藏...</string>
+    <string name="no_favorites_found">未找到收藏</string>
+    <string name="top_pinned_favorites">顶部置顶收藏</string>
+    <string name="regular_favorites">普通收藏</string>
+    <string name="unstar">取消收藏</string>
+    <string name="delete_favorite_msg">您确定要删除此收藏聊天吗？此操作无法撤销。</string>
+    <string name="just_now">刚刚</string>
+    <string name="mins_ago">%1$d 分钟前</string>
+    <string name="hours_ago">%1$d 小时前</string>
+    <string name="yesterday">昨天</string>
+    <string name="days_ago">%1$d 天前</string>
+
+    <!-- Chat History Screen -->
+    <string name="chat_history">聊天记录</string>
+    <string name="search_history">搜索历史记录...</string>
+    <string name="no_history_found">未找到历史记录</string>
+    <string name="delete_chat_title">删除聊天</string>
+    <string name="delete_chat_msg">您确定要删除此聊天吗？此操作无法撤销。</string>
+    <string name="last_accessed_format">上次访问：%1$s | %2$d 条消息</string>
+    <string name="today">今天</string>
+    <string name="this_week">本周</string>
+    <string name="older">更早</string>
+
+    <string name="get_in_touch">联系我们</string>
+    <string name="chat_whatsapp_desc">通过 WhatsApp 与我们聊天，获取快速解决方案。</string>
+    <string name="start_chat">开始聊天</string>
+    <string name="email_support">邮件支持</string>
+    <string name="email_support_desc">发送详细的查询邮件。</string>
+    <string name="official_website">官方网站</string>
+    <string name="visit_site_desc">访问我们的网站了解更多信息。</string>
+    <string name="visit_site">访问网站</string>
+    <string name="follow_us">关注我们</string>
+    <string name="whatsapp_chat_message">您好，我需要 iChatAI 的支持。</string>
 </resources>

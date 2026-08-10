@@ -1,0 +1,77 @@
+[
+  {
+    "question": "Come inizio una conversazione?",
+    "answer": "Basta digitare il messaggio nella casella di testo nella schermata Home e toccare l'icona di invio. iChatAI risponderà istantaneamente utilizzando il modello AI selezionato.",
+    "category": "GETTING_STARTED"
+  },
+  {
+    "question": "Quali modelli utilizza iChatAI?",
+    "answer": "Utilizziamo una varietà di modelli ad alte prestazioni tramite OpenRouter, comprese versioni gratuite e premium di Gemini, Mistral e modelli basati su GPT per garantire la migliore qualità di risposta.",
+    "category": "GETTING_STARTED"
+  },
+  {
+    "question": "iChatAI è gratuito?",
+    "answer": "Sì! Inizi con un set di crediti gratuiti. Puoi ottenerne di più guardando annunci, effettuando il check-in giornaliero o completando attività specifiche all'interno dell'app.",
+    "category": "GETTING_STARTED"
+  },
+  {
+    "question": "Come funziona il sistema dei crediti?",
+    "answer": "Ogni messaggio inviato all'IA consuma 1 credito. Puoi controllare il tuo saldo nella schermata 'Crediti'. I crediti vengono detratti automaticamente in seguito a una risposta con esito positivo.",
+    "category": "ACCOUNT_BILLING"
+  },
+  {
+    "question": "Come posso guadagnare più crediti?",
+    "answer": "Puoi guadagnare crediti completando i check-in giornalieri o guardando annunci video premiati. Toccando l'icona '+' accanto al tuo saldo crediti verranno mostrate tutte le opzioni disponibili.",
+    "category": "ACCOUNT_BILLING"
+  },
+  {
+    "question": "Esistono piani di abbonamento?",
+    "answer": "Abbonamenti a pagamento con messaggistica illimitata e accesso prioritario a modelli più veloci arriveranno presto! Tieni d'occhio la schermata 'Abbonamento' per gli aggiornamenti.",
+    "category": "ACCOUNT_BILLING"
+  },
+  {
+    "question": "Come aggiornare il mio profilo?",
+    "answer": "Vai su Impostazioni > Profilo utente. Qui puoi modificare il nome visualizzato, l'email e l'icona dell'avatar per personalizzare la tua esperienza.",
+    "category": "ACCOUNT_BILLING"
+  },
+  {
+    "question": "L'IA può analizzare le immagini?",
+    "answer": "Sì! Tocca l'icona dell'immagine (fotocamera) nella barra di inserimento della chat per caricare o scattare una foto. Puoi quindi porre all'IA domande sul contenuto dell'immagine.",
+    "category": "USING_AI"
+  },
+  {
+    "question": "Come salvo i miei prompt preferiti?",
+    "answer": "Puoi salvare i prompt utilizzati di frequente nella sezione 'Prompt salvati' dal menu di navigazione. Ciò ti consente di riutilizzare rapidamente istruzioni complesse.",
+    "category": "USING_AI"
+  },
+  {
+    "question": "Come posso fissare o eliminare le chat?",
+    "answer": "Nella schermata 'Cronologia chat', premi a lungo su qualsiasi sessione di chat per vedere le opzioni per fissarla in alto o eliminarla permanentemente.",
+    "category": "USING_AI"
+  },
+  {
+    "question": "La mia cronologia delle conversazioni è privata?",
+    "answer": "Assolutamente. Le tue chat vengono memorizzate localmente sul tuo dispositivo utilizzando un database Room. Non memorizziamo le tue conversazioni private sui nostri server.",
+    "category": "USING_AI"
+  },
+  {
+    "question": "Perché l'IA non risponde?",
+    "answer": "Assicurati di avere una connessione Internet stabile e crediti residui. Se vedi un errore di timeout, il modello AI potrebbe essere temporaneamente sovraccarico: riprova tra un momento.",
+    "category": "TROUBLESHOOTING"
+  },
+  {
+    "question": "La sincronizzazione cloud non riesce, cosa devo fare?",
+    "answer": "Assicurati di aver concesso all'app il permesso di accedere a Google Drive. Controlla i limiti di archiviazione del tuo account Google e assicurati di avere una connessione di rete valida.",
+    "category": "TROUBLESHOOTING"
+  },
+  {
+    "question": "Come svuoto la cache dell'app?",
+    "answer": "Puoi svuotare la cache interna dell'app tramite Impostazioni > Gestione dati e archiviazione. Ciò può aiutare a risolvere piccoli problemi di prestazioni senza eliminare le tue chat.",
+    "category": "TROUBLESHOOTING"
+  },
+  {
+    "question": "Ho trovato un bug, come posso segnalarlo?",
+    "answer": "Ci piacerebbe avere tue notizie! Segnalalo tramite Feedback o tocca il pulsante 'Chat dal vivo' nella parte inferiore del Centro assistenza per inviarci un messaggio direttamente tramite WhatsApp.",
+    "category": "TROUBLESHOOTING"
+  }
+]

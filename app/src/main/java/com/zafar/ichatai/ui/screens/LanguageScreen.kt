@@ -87,34 +87,6 @@ fun LanguageScreen(
                 ) {
                     item {
                         GlassCard {
-                            Column(modifier = Modifier.padding(16.dp)) {
-                                Text(
-                                    text = stringResource(R.string.app_language),
-                                    style = MaterialTheme.typography.titleMedium,
-                                    fontWeight = FontWeight.Bold,
-                                    color = colorScheme.onSurface,
-                                    modifier = Modifier.padding(bottom = 12.dp)
-                                )
-                                
-                                languages.forEach { language ->
-                                    LanguageItem(
-                                        language = language,
-                                        isSelected = selectedLanguage == language.code,
-                                        onClick = { viewModel.setLanguage(language.code) }
-                                    )
-                                    if (language != languages.last()) {
-                                        HorizontalDivider(
-                                            modifier = Modifier.padding(vertical = 8.dp),
-                                            color = colorScheme.onSurface.copy(alpha = 0.08f)
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    item {
-                        GlassCard {
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -143,6 +115,33 @@ fun LanguageScreen(
                                         checkedTrackColor = colorScheme.primary.copy(alpha = 0.5f)
                                     )
                                 )
+                            }
+                        }
+                    }
+                    item {
+                        GlassCard {
+                            Column(modifier = Modifier.padding(16.dp)) {
+                                Text(
+                                    text = stringResource(R.string.app_language),
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.Bold,
+                                    color = colorScheme.onSurface,
+                                    modifier = Modifier.padding(bottom = 12.dp)
+                                )
+                                
+                                languages.forEach { language ->
+                                    LanguageItem(
+                                        language = language,
+                                        isSelected = selectedLanguage == language.code,
+                                        onClick = { viewModel.setLanguage(language.code) }
+                                    )
+                                    if (language != languages.last()) {
+                                        HorizontalDivider(
+                                            modifier = Modifier.padding(vertical = 8.dp),
+                                            color = colorScheme.onSurface.copy(alpha = 0.08f)
+                                        )
+                                    }
+                                }
                             }
                         }
                     }

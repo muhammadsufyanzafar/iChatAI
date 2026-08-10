@@ -461,14 +461,14 @@ fun TopBar(
                 }
                 Image(
                     painter = painterResource(id = resId),
-                    contentDescription = "User Profile",
+                    contentDescription = stringResource(R.string.user_profile_desc),
                     modifier = avatarModifier,
                     contentScale = ContentScale.Crop
                 )
             } else {
                 AsyncImage(
                     model = userAvatarUri,
-                    contentDescription = "User Profile",
+                    contentDescription = stringResource(R.string.user_profile_desc),
                     modifier = avatarModifier,
                     contentScale = ContentScale.Crop
                 )
@@ -481,7 +481,7 @@ fun TopBar(
             }
             Image(
                 painter = painterResource(id = avatarRes),
-                contentDescription = "User Profile",
+                contentDescription = stringResource(R.string.user_profile_desc),
                 modifier = avatarModifier,
                 contentScale = ContentScale.Crop
             )
@@ -519,7 +519,7 @@ fun TopBar(
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.OpenInNew,
-                    contentDescription = "New Chat",
+                    contentDescription = stringResource(R.string.new_chat),
                     tint = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier.size(24.dp)
                 )
@@ -564,7 +564,7 @@ fun AiMessage(text: String) {
     ) {
         Image(
             painter = painterResource(id = R.drawable.bot_avatar),
-            contentDescription = "AI Assistant",
+            contentDescription = stringResource(R.string.ai_assistant),
             modifier = Modifier
                 .size(38.dp)
                 .clip(CircleShape),
@@ -730,7 +730,7 @@ fun BottomSection(
                     ) {
                         Icon(
                             Icons.Default.Close,
-                            contentDescription = "Remove",
+                            contentDescription = stringResource(R.string.remove),
                             tint = Color.White,
                             modifier = Modifier.size(16.dp)
                         )
@@ -747,7 +747,7 @@ fun BottomSection(
                 IconButton(onClick = onAddClick) {
                     Icon(
                         imageVector = Icons.Default.Add,
-                        contentDescription = "Attachments",
+                        contentDescription = stringResource(R.string.attachments),
                         tint = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.size(24.dp)
                     )

@@ -1,0 +1,77 @@
+[
+  {
+    "question": "Wie starte ich eine Unterhaltung?",
+    "answer": "Geben Sie einfach Ihre Nachricht in das Textfeld auf dem Startbildschirm ein und tippen Sie auf das Sende-Symbol. iChatAI antwortet sofort unter Verwendung des ausgewählten KI-Modells.",
+    "category": "GETTING_STARTED"
+  },
+  {
+    "question": "Welche Modelle verwendet iChatAI?",
+    "answer": "Wir nutzen eine Vielzahl von Hochleistungsmodellen über OpenRouter, einschließlich kostenloser und Premium-Versionen von Gemini, Mistral und GPT-basierten Modellen, um die beste Antwortqualität zu gewährleisten.",
+    "category": "GETTING_STARTED"
+  },
+  {
+    "question": "Ist iChatAI kostenlos?",
+    "answer": "Ja! Sie beginnen mit einem Satz kostenloser Credits. Sie können mehr verdienen, indem Sie Anzeigen ansehen, täglich einchecken oder bestimmte Aufgaben in der App ausführen.",
+    "category": "GETTING_STARTED"
+  },
+  {
+    "question": "Wie funktioniert das Credit-System?",
+    "answer": "Jede an die KI gesendete Nachricht verbraucht 1 Credit. Sie können Ihr Guthaben auf dem Bildschirm 'Credits' überprüfen. Credits werden bei erfolgreicher Antwort automatisch abgezogen.",
+    "category": "ACCOUNT_BILLING"
+  },
+  {
+    "question": "Wie verdiene ich mehr Credits?",
+    "answer": "Sie können Credits verdienen, indem Sie tägliche Check-ins abschließen oder belohnte Videoanzeigen ansehen. Das Tippen auf das '+'-Symbol neben Ihrem Credit-Guthaben zeigt alle verfügbaren Optionen an.",
+    "category": "ACCOUNT_BILLING"
+  },
+  {
+    "question": "Gibt es Abonnement-Pläne?",
+    "answer": "Kostenpflichtige Abonnements mit unbegrenztem Messaging und bevorzugtem Zugang zu schnelleren Modellen kommen bald! Behalten Sie den Bildschirm 'Abonnement' für Updates im Auge.",
+    "category": "ACCOUNT_BILLING"
+  },
+  {
+    "question": "Wie aktualisiere ich mein Profil?",
+    "answer": "Navigieren Sie zu Einstellungen > Benutzerprofil. Hier können Sie Ihren Anzeigenamen, Ihre E-Mail und Ihr Avatar-Symbol ändern, um Ihr Erlebnis zu personalisieren.",
+    "category": "ACCOUNT_BILLING"
+  },
+  {
+    "question": "Kann die KI Bilder analysieren?",
+    "answer": "Ja! Tippen Sie auf das Bildsymbol (Kamera) in der Chat-Eingabeleiste, um ein Foto hochzuladen oder aufzunehmen. Sie können der KI dann Fragen zum Inhalt des Bildes stellen.",
+    "category": "USING_AI"
+  },
+  {
+    "question": "Wie speichere ich meine Lieblings-Prompts?",
+    "answer": "Sie können häufig verwendete Prompts im Abschnitt 'Gespeicherte Prompts' im Navigationsmenü speichern. Dies ermöglicht es Ihnen, komplexe Anweisungen schnell wiederzuverwenden.",
+    "category": "USING_AI"
+  },
+  {
+    "question": "Wie kann ich Chats fixieren oder löschen?",
+    "answer": "Drücken Sie im Bildschirm 'Chat-Verlauf' lange auf eine Chat-Sitzung, um Optionen zum Fixieren oben oder zum dauerhaften Löschen anzuzeigen.",
+    "category": "USING_AI"
+  },
+  {
+    "question": "Ist mein Konversationsverlauf privat?",
+    "answer": "Absolut. Ihre Chats werden lokal auf Ihrem Gerät mithilfe einer Room-Datenbank gespeichert. Wir speichern Ihre privaten Unterhaltungen nicht auf unseren Servern.",
+    "category": "USING_AI"
+  },
+  {
+    "question": "Warum antwortet die KI nicht?",
+    "answer": "Stellen Sie sicher, dass Sie eine stabile Internetverbindung und verbleibende Credits haben. Wenn Sie einen Zeitüberschreitungsfehler sehen, ist das KI-Modell möglicherweise vorübergehend überlastet – bitte versuchen Sie es in einem Moment erneut.",
+    "category": "TROUBLESHOOTING"
+  },
+  {
+    "question": "Die Cloud-Synchronisierung schlägt fehl, was soll ich tun?",
+    "answer": "Stellen Sie sicher, dass Sie der App die Erlaubnis erteilt haben, auf Google Drive zuzugreifen. Überprüfen Sie die Speichergrenzen Ihres Google-Kontos und stellen Sie sicher, dass Sie eine gültige Netzwerkverbindung haben.",
+    "category": "TROUBLESHOOTING"
+  },
+  {
+    "question": "Wie leere ich den App-Cache?",
+    "answer": "Sie können den internen Cache der App über Einstellungen > Daten- & Speicherverwaltung leeren. Dies kann helfen, kleinere Leistungsprobleme zu beheben, ohne Ihre Chats zu löschen.",
+    "category": "TROUBLESHOOTING"
+  },
+  {
+    "question": "Ich habe einen Fehler gefunden, wie kann ich ihn melden?",
+    "answer": "Wir würden uns freuen, von Ihnen zu hören! Melden Sie ihn über Feedback oder tippen Sie auf die Schaltfläche 'Live-Chat' unten im Hilfe-Center, um uns direkt eine Nachricht über WhatsApp zu senden.",
+    "category": "TROUBLESHOOTING"
+  }
+]
