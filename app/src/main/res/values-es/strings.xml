@@ -201,6 +201,8 @@
     <string name="specific_alerts">Alertas específicas</string>
     <string name="new_feature_announcements">Anuncios de nuevas funciones</string>
     <string name="daily_streak_reminder">Recordatorio de racha diaria</string>
+    <string name="streak_reminder_title">¡No pierdas tu racha!</string>
+    <string name="streak_reminder_msg">Tus créditos diarios te esperan. ¡Regístrate ahora para reclamarlos!</string>
     <string name="quiet_hours_config">Configuración de horas de silencio</string>
     <string name="quiet_hours">Horas de silencio</string>
     <string name="enable_quiet_hours">Activar horas de silencio</string>

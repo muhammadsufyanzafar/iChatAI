@@ -12,6 +12,7 @@ import com.google.api.services.drive.DriveScopes
 import com.zafar.ichatai.data.local.UserPreferences
 import com.zafar.ichatai.data.repository.CloudSyncRepository
 import com.zafar.ichatai.service.SyncWorker
+import com.zafar.ichatai.utils.NotificationHelper
 import com.zafar.ichatai.utils.VibrationHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -151,6 +152,7 @@ class CloudSyncViewModel @Inject constructor(
                 vibrationHelper.vibrateSuccess()
             } else {
                 vibrationHelper.vibrateError()
+                NotificationHelper.showSyncErrorNotification(getApplication(), result.exceptionOrNull()?.message ?: "Unknown Error")
             }
             _uiState.value = _uiState.value.copy(
                 isSyncing = false,
@@ -176,6 +178,7 @@ class CloudSyncViewModel @Inject constructor(
                 vibrationHelper.vibrateSuccess()
             } else {
                 vibrationHelper.vibrateError()
+                NotificationHelper.showSyncErrorNotification(getApplication(), result.exceptionOrNull()?.message ?: "Unknown Error")
             }
             _uiState.value = _uiState.value.copy(
                 isSyncing = false,

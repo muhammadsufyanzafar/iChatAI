@@ -303,6 +303,10 @@
     <string name="specific_alerts">Specific Alerts</string>
     <string name="new_feature_announcements">New Feature Announcements</string>
     <string name="daily_streak_reminder">Daily Streak Reminder</string>
+    <string name="streak_reminder_title">Don\'t lose your streak!</string>
+    <string name="streak_reminder_msg">Your daily credits are waiting. Check in now to claim them!</string>
+    <string name="low_credits_title">Low Credits</string>
+    <string name="low_credits_msg">You have fewer than 5 credits left. Watch an ad to keep chatting!</string>
     <string name="quiet_hours_config">Quiet Hours Configuration</string>
     <string name="quiet_hours">Quiet Hours</string>
     <string name="enable_quiet_hours">Enable Quiet Hours</string>

@@ -91,6 +91,7 @@ import com.zafar.ichatai.data.ChatMessage
 import com.zafar.ichatai.ui.components.GlassCard
 import com.zafar.ichatai.ui.components.GlowBackground
 import com.zafar.ichatai.ui.components.NavDrawerContent
+import com.zafar.ichatai.utils.NotificationHelper
 import com.zafar.ichatai.viewmodel.ChatViewModel
 import com.zafar.ichatai.viewmodel.CreditsViewModel
 import com.zafar.ichatai.viewmodel.UserViewModel
@@ -150,6 +151,12 @@ fun MainScreen(
             if (messages.isNotEmpty()) {
                 viewModel.createNewChat(context.getString(R.string.welcome_message))
             }
+        }
+    }
+
+    LaunchedEffect(totalCredits) {
+        if (totalCredits < 5 && totalCredits > 0) {
+            NotificationHelper.showLowCreditsNotification(context)
         }
     }
 

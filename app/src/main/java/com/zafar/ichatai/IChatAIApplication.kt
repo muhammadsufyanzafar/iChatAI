@@ -7,6 +7,7 @@ import androidx.work.Configuration
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.zafar.ichatai.data.local.UserPreferences
 import com.zafar.ichatai.utils.DeviceInfoCollector
+import com.zafar.ichatai.utils.NotificationHelper
 import com.zafar.ichatai.utils.SessionManager
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
@@ -30,6 +31,9 @@ class IChatAIApplication : Application(), Configuration.Provider {
 
         // Apply theme mode
         applyThemeMode()
+
+        // Initialize Notification Channels
+        NotificationHelper.createNotificationChannels(this)
     }
 
     private fun applyThemeMode() {

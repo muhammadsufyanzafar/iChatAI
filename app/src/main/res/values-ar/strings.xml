@@ -201,6 +201,8 @@
     <string name="specific_alerts">تنبيهات محددة</string>
     <string name="new_feature_announcements">إعلانات الميزات الجديدة</string>
     <string name="daily_streak_reminder">تذكير بسلسلة الأيام المتتالية</string>
+    <string name="streak_reminder_title">لا تفقد رصيدك اليومي!</string>
+    <string name="streak_reminder_msg">رصيدك اليومي في انتظارك. سجل وصولك الآن للمطالبة به!</string>
     <string name="quiet_hours_config">إعداد الساعات الهادئة</string>
     <string name="quiet_hours">الساعات الهادئة</string>
     <string name="enable_quiet_hours">تفعيل الساعات الهادئة</string>

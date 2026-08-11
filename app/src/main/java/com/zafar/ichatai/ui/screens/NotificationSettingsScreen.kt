@@ -1,5 +1,10 @@
 package com.zafar.ichatai.ui.screens
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,16 +36,19 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.zafar.ichatai.R
 import com.zafar.ichatai.ui.components.GlassCard
@@ -56,6 +64,29 @@ fun NotificationSettingsScreen(
 ) {
     val prefs by viewModel.preferences.collectAsState()
     val colorScheme = MaterialTheme.colorScheme
+    val context = LocalContext.current
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            viewModel.toggleAllowNotifications(true)
+        }
+    }
+
+    // Sync UI with actual system permission status on start
+    LaunchedEffect(Unit) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val isGranted = ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_GRANTED
+            
+            if (prefs.allowNotifications != isGranted) {
+                viewModel.toggleAllowNotifications(isGranted)
+            }
+        }
+    }
 
     GlowBackground {
         Scaffold(
@@ -92,7 +123,22 @@ fun NotificationSettingsScreen(
                         NotificationToggleItem(
                             title = stringResource(R.string.allow_notifications),
                             checked = prefs.allowNotifications,
-                            onCheckedChange = { viewModel.toggleAllowNotifications(it) }
+                            onCheckedChange = { enabled ->
+                                if (enabled && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                    val hasPermission = ContextCompat.checkSelfPermission(
+                                        context,
+                                        Manifest.permission.POST_NOTIFICATIONS
+                                    ) == PackageManager.PERMISSION_GRANTED
+                                    
+                                    if (hasPermission) {
+                                        viewModel.toggleAllowNotifications(true)
+                                    } else {
+                                        permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                                    }
+                                } else {
+                                    viewModel.toggleAllowNotifications(enabled)
+                                }
+                            }
                         )
                     }
                 }

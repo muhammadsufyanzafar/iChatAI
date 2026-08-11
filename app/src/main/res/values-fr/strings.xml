@@ -201,6 +201,8 @@
     <string name="specific_alerts">Alertas spécifiques</string>
     <string name="new_feature_announcements">Annonces de nouvelles fonctionnalités</string>
     <string name="daily_streak_reminder">Rappel de série quotidienne</string>
+    <string name="streak_reminder_title">Ne perdez pas votre série !</string>
+    <string name="streak_reminder_msg">Vos crédits quotidiens vous attendent. Enregistrez-vous maintenant pour les réclamer !</string>
     <string name="quiet_hours_config">Configuration des heures de silence</string>
     <string name="quiet_hours">Heures de silence</string>
     <string name="enable_quiet_hours">Activer les heures de silence</string>

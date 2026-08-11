@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.zafar.ichatai.data.local.dao.CheckInDao
 import com.zafar.ichatai.data.local.entity.CheckInStateEntity
 import com.zafar.ichatai.data.repository.CreditRepository
+import com.zafar.ichatai.data.repository.NotificationRepository
 import com.zafar.ichatai.utils.VibrationHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -16,6 +17,7 @@ import javax.inject.Inject
 class CheckInViewModel @Inject constructor(
     private val checkInDao: CheckInDao,
     private val creditRepository: CreditRepository,
+    private val notificationRepository: NotificationRepository,
     private val vibrationHelper: VibrationHelper
 ) : ViewModel() {
 
@@ -40,6 +42,8 @@ class CheckInViewModel @Inject constructor(
                 
                 creditRepository.addCredits("Daily Check In (Day $newStreak)", rewardAmount)
                 vibrationHelper.vibrateSuccess()
+                notificationRepository.scheduleStreakReminder()
+
                 checkInDao.updateCheckInState(
                     CheckInStateEntity(
                         lastCheckInMillis = now,

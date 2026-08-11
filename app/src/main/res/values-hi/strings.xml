@@ -183,6 +183,8 @@
     <string name="specific_alerts">विशिष्ट अलर्ट</string>
     <string name="new_feature_announcements">नई सुविधा घोषणाएं</string>
     <string name="daily_streak_reminder">दैनिक स्ट्रीक रिमाइंडर</string>
+    <string name="streak_reminder_title">अपनी स्ट्रीक न खोएं!</string>
+    <string name="streak_reminder_msg">आपके दैनिक क्रेडिट प्रतीक्षा कर रहे हैं। उन्हें प्राप्त करने के लिए अभी चेक इन करें!</string>
     <string name="quiet_hours_config">शांत घंटे कॉन्फ़िगरेशन</string>
     <string name="quiet_hours">शांत घंटे</string>
     <string name="enable_quiet_hours">शांत घंटे सक्षम करें</string>

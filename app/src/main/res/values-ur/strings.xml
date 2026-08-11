@@ -184,6 +184,8 @@
     <string name="specific_alerts">مخصوص انتباہات</string>
     <string name="new_feature_announcements">نئی خصوصیت کے اعلانات</string>
     <string name="daily_streak_reminder">روزانہ اسٹریک ریمائنڈر</string>
+    <string name="streak_reminder_title">اپنی اسٹریک ضائع نہ کریں!</string>
+    <string name="streak_reminder_msg">آپ کے روزانہ کریڈٹس انتظار کر رہے ہیں۔ انہیں حاصل کرنے کے لیے ابھی چیک ان کریں!</string>
     <string name="quiet_hours_config">خاموش اوقات کی ترتیب</string>
     <string name="quiet_hours">خاموش اوقات</string>
     <string name="enable_quiet_hours">خاموش اوقات فعال کریں</string>

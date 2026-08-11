@@ -183,6 +183,8 @@
     <string name="specific_alerts">Avvisi specifici</string>
     <string name="new_feature_announcements">Annunci di nuove funzioni</string>
     <string name="daily_streak_reminder">Promemoria serie giornaliera</string>
+    <string name="streak_reminder_title">Non perdere la tua serie!</string>
+    <string name="streak_reminder_msg">I tuoi crediti giornalieri ti aspettano. Effettua il check-in ora per riscattarli!</string>
     <string name="quiet_hours_config">Configurazione ore di silenzio</string>
     <string name="quiet_hours">Ore di silenzio</string>
     <string name="enable_quiet_hours">Attiva ore di silenzio</string>

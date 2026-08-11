@@ -52,27 +52,15 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun showNotification(remoteMessage: RemoteMessage) {
-        val channelId = "default_channel"
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val scopeLaunch = CoroutineScope(Dispatchers.IO).launch {
-                val prefs = repository.getCurrentPreferences()
-                val importance = if (prefs.soundAndVibration) {
-                    NotificationManager.IMPORTANCE_DEFAULT
-                } else {
-                    NotificationManager.IMPORTANCE_LOW
-                }
-                val channel = NotificationChannel(channelId, "General Notifications", importance).apply {
-                    description = "Default notification channel"
-                    if (!prefs.soundAndVibration) {
-                        setSound(null, null)
-                        enableVibration(false)
-                    }
-                }
-                notificationManager.createNotificationChannel(channel)
-            }
+        // Use the appropriate channel based on topic
+        val topic = remoteMessage.from?.replace("/topics/", "")
+        val channelId = when (topic) {
+            "streak_reminders" -> "streak_reminders"
+            "feature_announcements" -> "announcements"
+            else -> "announcements"
         }
+
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         val intent = Intent(this, MainActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)

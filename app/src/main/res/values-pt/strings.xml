@@ -184,6 +184,8 @@
     <string name="specific_alerts">Alertas específicos</string>
     <string name="new_feature_announcements">Anúncios de novos recursos</string>
     <string name="daily_streak_reminder">Lembrete de sequência diária</string>
+    <string name="streak_reminder_title">Não perca sua sequência!</string>
+    <string name="streak_reminder_msg">Seus créditos diários estão esperando. Faça check-in agora para resgatá-los!</string>
     <string name="quiet_hours_config">Configuração de horas de silêncio</string>
     <string name="quiet_hours">Horário de silêncio</string>
     <string name="enable_quiet_hours">Ativar horário de silêncio</string>

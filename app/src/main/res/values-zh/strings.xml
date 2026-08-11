@@ -184,6 +184,8 @@
     <string name="specific_alerts">特定警报</string>
     <string name="new_feature_announcements">新功能公告</string>
     <string name="daily_streak_reminder">每日连胜提醒</string>
+    <string name="streak_reminder_title">不要丢失您的连胜记录！</string>
+    <string name="streak_reminder_msg">您的每日积分正在等待领取。立即签到领取吧！</string>
     <string name="quiet_hours_config">静音时间配置</string>
     <string name="quiet_hours">静音时间</string>
     <string name="enable_quiet_hours">开启静音时间</string>

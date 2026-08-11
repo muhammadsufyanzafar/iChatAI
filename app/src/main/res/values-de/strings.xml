@@ -201,6 +201,8 @@
     <string name="specific_alerts">Spezifische Warnungen</string>
     <string name="new_feature_announcements">Ankündigungen neuer Funktionen</string>
     <string name="daily_streak_reminder">Tägliche Streak-Erinnerung</string>
+    <string name="streak_reminder_title">Verliere nicht deine Serie!</string>
+    <string name="streak_reminder_msg">Deine täglichen Credits warten auf dich. Checke jetzt ein, um sie einzulösen!</string>
     <string name="quiet_hours_config">Konfiguration der Ruhezeiten</string>
     <string name="quiet_hours">Ruhezeiten</string>
     <string name="enable_quiet_hours">Ruhezeiten aktivieren</string>
