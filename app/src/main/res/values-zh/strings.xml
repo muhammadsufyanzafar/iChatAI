@@ -239,6 +239,8 @@
     <string name="search_results">搜索结果</string>
     <string name="support">支持</string>
     <string name="ai_credits">AI 积分</string>
+    <string name="online">在线</string>
+    <string name="offline">离线</string>
 
     <!-- Cloud Sync Screen -->
     <string name="cloud_sync_status">云同步状态</string>

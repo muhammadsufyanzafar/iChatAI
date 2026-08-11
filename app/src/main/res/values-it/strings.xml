@@ -238,6 +238,8 @@
     <string name="search_results">Risultati della ricerca</string>
     <string name="support">Supporto</string>
     <string name="ai_credits">Crediti AI</string>
+    <string name="online">Online</string>
+    <string name="offline">Offline</string>
 
     <!-- Cloud Sync Screen -->
     <string name="cloud_sync_status">Stato sincronizzazione cloud</string>

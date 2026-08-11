@@ -238,6 +238,8 @@
     <string name="search_results">खोज परिणाम</string>
     <string name="support">सहायتا</string>
     <string name="ai_credits">AI क्रेडिट</string>
+    <string name="online">ऑनलाइन</string>
+    <string name="offline">ऑफलाइन</string>
 
     <!-- Cloud Sync Screen -->
     <string name="cloud_sync_status">क्लाउड सिंक स्थिति</string>

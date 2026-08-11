@@ -437,6 +437,8 @@
     <string name="search_results">Search Results</string>
     <string name="support">Support</string>
     <string name="ai_credits">AI Credits</string>
+    <string name="online">Online</string>
+    <string name="offline">Offline</string>
 
     <string name="view_chat_history">View chat history</string>
     <string name="view_favorite_chats">View favorite chats</string>

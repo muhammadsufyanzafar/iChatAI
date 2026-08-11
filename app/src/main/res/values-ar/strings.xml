@@ -256,6 +256,8 @@
     <string name="search_results">نتائج البحث</string>
     <string name="support">الدعم</string>
     <string name="ai_credits">رصيد الذكاء الاصطناعي</string>
+    <string name="online">متصل</string>
+    <string name="offline">غير متصل</string>
 
     <!-- Cloud Sync Screen -->
     <string name="cloud_sync_status">حالة المزامنة السحابية</string>

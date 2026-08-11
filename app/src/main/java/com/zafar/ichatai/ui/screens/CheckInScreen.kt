@@ -329,7 +329,7 @@ fun JackpotCard(
                     text = stringResource(R.string.jackpot),
                     fontSize = 24.sp,
                     fontWeight = FontWeight.ExtraBold,
-                    color = if (isClaimed) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f) else Color.White
+                    color = if (isClaimed) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f) else Color(0xFFFFD700)
                 )
                 Text(
                     text = stringResource(R.string.credits_reward, 100),

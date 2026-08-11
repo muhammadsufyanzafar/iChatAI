@@ -256,6 +256,8 @@
     <string name="search_results">Suchergebnisse</string>
     <string name="support">Support</string>
     <string name="ai_credits">KI-Guthaben</string>
+    <string name="online">Online</string>
+    <string name="offline">Offline</string>
 
     <!-- Cloud Sync Screen -->
     <string name="cloud_sync_status">Cloud-Sync-Status</string>

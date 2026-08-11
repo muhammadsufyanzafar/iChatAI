@@ -239,6 +239,8 @@
     <string name="search_results">Resultados da busca</string>
     <string name="support">Suporte</string>
     <string name="ai_credits">Créditos de IA</string>
+    <string name="online">Online</string>
+    <string name="offline">Offline</string>
 
     <!-- Cloud Sync Screen -->
     <string name="cloud_sync_status">Status da sincronização na nuvem</string>
