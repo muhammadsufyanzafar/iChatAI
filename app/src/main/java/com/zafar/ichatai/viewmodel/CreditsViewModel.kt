@@ -10,6 +10,7 @@ import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.zafar.ichatai.data.repository.CreditRepository
 import com.zafar.ichatai.data.local.entity.CreditTransactionEntity
+import com.zafar.ichatai.utils.VibrationHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 class CreditsViewModel @Inject constructor(
     application: Application,
-    private val repository: CreditRepository
+    private val repository: CreditRepository,
+    private val vibrationHelper: VibrationHelper
 ) : AndroidViewModel(application) {
     
     val allTransactions: StateFlow<List<CreditTransactionEntity>>
@@ -56,6 +58,7 @@ class CreditsViewModel @Inject constructor(
     fun showRewardedAd(activity: Activity) {
         rewardedAd?.let { ad ->
             ad.show(activity) { rewardItem ->
+                vibrationHelper.vibrateSuccess()
                 viewModelScope.launch {
                     repository.addCredits("Ad Watched", 20)
                 }

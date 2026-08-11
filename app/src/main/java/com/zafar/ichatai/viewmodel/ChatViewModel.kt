@@ -15,6 +15,7 @@ import com.zafar.ichatai.data.repository.PromptRepository
 import com.zafar.ichatai.network.AiClient
 import com.zafar.ichatai.network.RemoteConfigManager
 import com.zafar.ichatai.utils.NetworkObserver
+import com.zafar.ichatai.utils.VibrationHelper
 import com.zafar.ichatai.BuildConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -39,7 +40,8 @@ class ChatViewModel @Inject constructor(
     private val promptRepository: PromptRepository,
     private val userPreferences: UserPreferences,
     private val networkObserver: NetworkObserver,
-    private val remoteConfigManager: RemoteConfigManager
+    private val remoteConfigManager: RemoteConfigManager,
+    private val vibrationHelper: VibrationHelper
 ) : ViewModel() {
     
     // A separate scope for persistence to ensure it survives viewModelScope cancellation
@@ -303,6 +305,7 @@ class ChatViewModel @Inject constructor(
         val imageUri = selectedImageUri.value
         
         if (text.isNotBlank() || imageUri != null) {
+            vibrationHelper.vibrateClick()
             val userMsg = ChatMessage("user", text, imageUri)
             _messages.value = _messages.value + userMsg
             inputText.value = ""
@@ -361,6 +364,7 @@ class ChatViewModel @Inject constructor(
                 )
                 val assistantMsg = ChatMessage("assistant", responseContent)
                 _messages.value = _messages.value + assistantMsg
+                vibrationHelper.vibrateMessageReceived()
                 
                 // Optional: Save after each AI response for better reliability 
                 // but we stay "deferred" per user request.
@@ -380,6 +384,7 @@ class ChatViewModel @Inject constructor(
                 }
                 val assistantMsg = ChatMessage("assistant", errorMessage)
                 _messages.value = _messages.value + assistantMsg
+                vibrationHelper.vibrateError()
             } finally {
                 isTyping.value = false
             }

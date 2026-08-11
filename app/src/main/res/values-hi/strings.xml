@@ -178,6 +178,7 @@
     <string name="allow_notifications">सूचनाओं की अनुमति दें</string>
     <string name="notification_types">सूचना प्रकार</string>
     <string name="push_notifications">पुश सूचनाएं</string>
+    <string name="vibration">कंपन</string>
     <string name="sound_vibration">ध्वनि और कंपन</string>
     <string name="specific_alerts">विशिष्ट अलर्ट</string>
     <string name="new_feature_announcements">नई सुविधा घोषणाएं</string>

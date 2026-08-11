@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Vibration
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.NotificationsActive
 import androidx.compose.material.icons.outlined.NotificationsNone
@@ -114,6 +115,17 @@ fun NotificationSettingsScreen(
                             icon = Icons.Outlined.VolumeUp,
                             checked = prefs.soundAndVibration,
                             onCheckedChange = { viewModel.toggleSoundAndVibration(it) }
+                        )
+                        HorizontalDivider(
+                            modifier = Modifier.padding(horizontal = 16.dp),
+                            thickness = 0.5.dp,
+                            color = colorScheme.onSurface.copy(alpha = 0.1f)
+                        )
+                        NotificationToggleItem(
+                            title = stringResource(R.string.vibration),
+                            icon = Icons.Default.Vibration,
+                            checked = prefs.vibrationEnabled,
+                            onCheckedChange = { viewModel.toggleVibration(it) }
                         )
                     }
                 }

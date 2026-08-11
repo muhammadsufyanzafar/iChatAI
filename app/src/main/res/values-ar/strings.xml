@@ -196,6 +196,7 @@
     <string name="allow_notifications">السماح بالإشعارات</string>
     <string name="notification_types">أنواع الإشعارات</string>
     <string name="push_notifications">إشعارات الدفع</string>
+    <string name="vibration">الاهتزاز</string>
     <string name="sound_vibration">الصوت والاهتزاز</string>
     <string name="specific_alerts">تنبيهات محددة</string>
     <string name="new_feature_announcements">إعلانات الميزات الجديدة</string>

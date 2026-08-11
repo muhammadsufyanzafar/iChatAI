@@ -179,6 +179,7 @@
     <string name="allow_notifications">允许通知</string>
     <string name="notification_types">通知类型</string>
     <string name="push_notifications">推送通知</string>
+    <string name="vibration">振动</string>
     <string name="sound_vibration">声音和振动</string>
     <string name="specific_alerts">特定警报</string>
     <string name="new_feature_announcements">新功能公告</string>

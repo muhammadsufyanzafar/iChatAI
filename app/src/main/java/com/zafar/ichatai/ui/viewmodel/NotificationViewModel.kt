@@ -46,6 +46,13 @@ class NotificationViewModel @Inject constructor(
         }
     }
 
+    fun toggleVibration(enabled: Boolean) {
+        viewModelScope.launch {
+            val current = preferences.value
+            repository.updatePreferences(current.copy(vibrationEnabled = enabled))
+        }
+    }
+
     fun toggleNewFeatureAnnouncements(enabled: Boolean) {
         viewModelScope.launch {
             val current = preferences.value

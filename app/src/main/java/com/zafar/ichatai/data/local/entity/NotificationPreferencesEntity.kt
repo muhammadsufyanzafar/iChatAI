@@ -9,6 +9,7 @@ data class NotificationPreferencesEntity(
     val allowNotifications: Boolean = true,
     val pushNotifications: Boolean = true,
     val soundAndVibration: Boolean = true,
+    val vibrationEnabled: Boolean = true,
     val newFeatureAnnouncements: Boolean = true,
     val dailyStreakReminder: Boolean = true,
     val quietHoursEnabled: Boolean = false,

@@ -12,6 +12,7 @@ import com.google.api.services.drive.DriveScopes
 import com.zafar.ichatai.data.local.UserPreferences
 import com.zafar.ichatai.data.repository.CloudSyncRepository
 import com.zafar.ichatai.service.SyncWorker
+import com.zafar.ichatai.utils.VibrationHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,7 +25,8 @@ import javax.inject.Inject
 class CloudSyncViewModel @Inject constructor(
     application: Application,
     private val repository: CloudSyncRepository,
-    private val userPreferences: UserPreferences
+    private val userPreferences: UserPreferences,
+    private val vibrationHelper: VibrationHelper
 ) : AndroidViewModel(application) {
 
     private val _uiState = MutableStateFlow(CloudSyncUiState())
@@ -138,11 +140,18 @@ class CloudSyncViewModel @Inject constructor(
         if (account == null) {
             userPreferences.appendSyncError("Cannot sync: No Google account connected.")
             _uiState.value = _uiState.value.copy(errorLog = userPreferences.getSyncErrorLog())
+            vibrationHelper.vibrateError()
             return
         }
         viewModelScope.launch {
+            vibrationHelper.vibrateClick()
             _uiState.value = _uiState.value.copy(isSyncing = true)
             val result = repository.backupToCloud(account)
+            if (result.isSuccess) {
+                vibrationHelper.vibrateSuccess()
+            } else {
+                vibrationHelper.vibrateError()
+            }
             _uiState.value = _uiState.value.copy(
                 isSyncing = false,
                 lastSyncTime = userPreferences.getLastSyncTime(),
@@ -156,11 +165,18 @@ class CloudSyncViewModel @Inject constructor(
         if (account == null) {
             userPreferences.appendSyncError("Cannot import: No Google account connected.")
             _uiState.value = _uiState.value.copy(errorLog = userPreferences.getSyncErrorLog())
+            vibrationHelper.vibrateError()
             return
         }
         viewModelScope.launch {
+            vibrationHelper.vibrateClick()
             _uiState.value = _uiState.value.copy(isSyncing = true)
             val result = repository.restoreFromCloud(account)
+            if (result.isSuccess) {
+                vibrationHelper.vibrateSuccess()
+            } else {
+                vibrationHelper.vibrateError()
+            }
             _uiState.value = _uiState.value.copy(
                 isSyncing = false,
                 errorLog = userPreferences.getSyncErrorLog()

@@ -178,6 +178,7 @@
     <string name="allow_notifications">Consenti notifiche</string>
     <string name="notification_types">Tipi di notifiche</string>
     <string name="push_notifications">Notifiche push</string>
+    <string name="vibration">Vibrazione</string>
     <string name="sound_vibration">Suono e vibrazione</string>
     <string name="specific_alerts">Avvisi specifici</string>
     <string name="new_feature_announcements">Annunci di nuove funzioni</string>

@@ -298,6 +298,7 @@
     <string name="allow_notifications">Allow Notifications</string>
     <string name="notification_types">Notification Types</string>
     <string name="push_notifications">Push Notifications</string>
+    <string name="vibration">Vibration</string>
     <string name="sound_vibration">Sound &amp; Vibration</string>
     <string name="specific_alerts">Specific Alerts</string>
     <string name="new_feature_announcements">New Feature Announcements</string>

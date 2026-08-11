@@ -196,6 +196,7 @@
     <string name="allow_notifications">Permitir notificaciones</string>
     <string name="notification_types">Tipos de notificaciones</string>
     <string name="push_notifications">Notificaciones push</string>
+    <string name="vibration">Vibración</string>
     <string name="sound_vibration">Sonido y vibración</string>
     <string name="specific_alerts">Alertas específicas</string>
     <string name="new_feature_announcements">Anuncios de nuevas funciones</string>
