@@ -391,10 +391,11 @@ fun MainScreen(
                             selectedImageUri = selectedImageUri,
                             onValueChange = { viewModel.onInputChange(it) },
                             onSendClick = { viewModel.sendMessage(context) },
-                            onPromptClick = { viewModel.sendPrompt(context, it) },
+                            onPromptClick = { viewModel.onInputChange(it) },
                             onAddClick = { showAttachmentMenu = !showAttachmentMenu },
                             onRemoveImage = { viewModel.removeSelectedImage() },
-                            isTyping = isTyping
+                            isTyping = isTyping,
+                            showQuickPrompts = messages.size <= 1
                         )
 
                         if (showAttachmentMenu) {
@@ -644,7 +645,8 @@ fun BottomSection(
     onPromptClick: (String) -> Unit,
     onAddClick: () -> Unit,
     onRemoveImage: () -> Unit,
-    isTyping: Boolean
+    isTyping: Boolean,
+    showQuickPrompts: Boolean
 ) {
     Surface(
         color = MaterialTheme.colorScheme.surface,
@@ -657,59 +659,67 @@ fun BottomSection(
                 .padding(top = 16.dp, bottom = 12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = stringResource(R.string.quick_prompt_chips),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                fontSize = 12.sp,
-                modifier = Modifier.padding(bottom = 12.dp)
-            )
-
-            LazyRow(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp),
-                contentPadding = PaddingValues(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            androidx.compose.animation.AnimatedVisibility(
+                visible = showQuickPrompts,
+                enter = androidx.compose.animation.fadeIn() + androidx.compose.animation.expandVertically(),
+                exit = androidx.compose.animation.fadeOut() + androidx.compose.animation.shrinkVertically()
             ) {
-                item { 
-                    val title = stringResource(R.string.prompt_draft_title)
-                    val content = stringResource(R.string.prompt_draft_content)
-                    PromptChip(title, hasIcon = false, onClick = { onPromptClick(content) }) 
-                }
-                item { 
-                    val title = stringResource(R.string.prompt_brainstorm_title)
-                    val content = stringResource(R.string.prompt_brainstorm_content)
-                    PromptChip(title, hasIcon = false, onClick = { onPromptClick(content) }) 
-                }
-                item { 
-                    val title = stringResource(R.string.prompt_icebreaker_title)
-                    val content = stringResource(R.string.prompt_icebreaker_content)
-                    PromptChip(title, hasIcon = false, onClick = { onPromptClick(content) }) 
-                }
-                item { 
-                    val title = stringResource(R.string.prompt_fix_sentence_title)
-                    val content = stringResource(R.string.prompt_fix_sentence_content)
-                    PromptChip(title, hasIcon = false, onClick = { onPromptClick(content) }) 
-                }
-                item { 
-                    val title = stringResource(R.string.prompt_code_title)
-                    val content = stringResource(R.string.prompt_code_content)
-                    PromptChip(title, hasIcon = false, onClick = { onPromptClick(content) }) 
-                }
-                item { 
-                    val title = stringResource(R.string.prompt_playlist_title)
-                    val content = stringResource(R.string.prompt_playlist_content)
-                    PromptChip(title, hasIcon = false, onClick = { onPromptClick(content) }) 
-                }
-                item { 
-                    val title = stringResource(R.string.prompt_quiz_title)
-                    val content = stringResource(R.string.prompt_quiz_content)
-                    PromptChip(title, hasIcon = false, onClick = { onPromptClick(content) }) 
-                }
-                item { 
-                    val title = stringResource(R.string.prompt_plan_title)
-                    val content = stringResource(R.string.prompt_plan_content)
-                    PromptChip(title, hasIcon = false, onClick = { onPromptClick(content) }) 
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        text = stringResource(R.string.quick_prompt_chips),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        fontSize = 12.sp,
+                        modifier = Modifier.padding(bottom = 12.dp)
+                    )
+
+                    LazyRow(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 16.dp),
+                        contentPadding = PaddingValues(horizontal = 16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        item { 
+                            val title = stringResource(R.string.prompt_draft_title)
+                            val content = stringResource(R.string.prompt_draft_content)
+                            PromptChip(title, hasIcon = false, onClick = { onPromptClick(content) }) 
+                        }
+                        item { 
+                            val title = stringResource(R.string.prompt_brainstorm_title)
+                            val content = stringResource(R.string.prompt_brainstorm_content)
+                            PromptChip(title, hasIcon = false, onClick = { onPromptClick(content) }) 
+                        }
+                        item { 
+                            val title = stringResource(R.string.prompt_icebreaker_title)
+                            val content = stringResource(R.string.prompt_icebreaker_content)
+                            PromptChip(title, hasIcon = false, onClick = { onPromptClick(content) }) 
+                        }
+                        item { 
+                            val title = stringResource(R.string.prompt_fix_sentence_title)
+                            val content = stringResource(R.string.prompt_fix_sentence_content)
+                            PromptChip(title, hasIcon = false, onClick = { onPromptClick(content) }) 
+                        }
+                        item { 
+                            val title = stringResource(R.string.prompt_code_title)
+                            val content = stringResource(R.string.prompt_code_content)
+                            PromptChip(title, hasIcon = false, onClick = { onPromptClick(content) }) 
+                        }
+                        item { 
+                            val title = stringResource(R.string.prompt_playlist_title)
+                            val content = stringResource(R.string.prompt_playlist_content)
+                            PromptChip(title, hasIcon = false, onClick = { onPromptClick(content) }) 
+                        }
+                        item { 
+                            val title = stringResource(R.string.prompt_quiz_title)
+                            val content = stringResource(R.string.prompt_quiz_content)
+                            PromptChip(title, hasIcon = false, onClick = { onPromptClick(content) }) 
+                        }
+                        item { 
+                            val title = stringResource(R.string.prompt_plan_title)
+                            val content = stringResource(R.string.prompt_plan_content)
+                            PromptChip(title, hasIcon = false, onClick = { onPromptClick(content) }) 
+                        }
+                    }
                 }
             }
 
@@ -749,9 +759,12 @@ fun BottomSection(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 12.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.Bottom
             ) {
-                IconButton(onClick = onAddClick) {
+                IconButton(
+                    onClick = onAddClick,
+                    modifier = Modifier.padding(bottom = 4.dp)
+                ) {
                     Icon(
                         imageVector = Icons.Default.Add,
                         contentDescription = stringResource(R.string.attachments),
@@ -766,19 +779,20 @@ fun BottomSection(
                     placeholder = {
                         Text(
                             stringResource(R.string.ask_anything),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
                             fontSize = 15.sp
                         )
                     },
                     modifier = Modifier
                         .weight(1f)
-                        .height(52.dp),
-                    shape = RoundedCornerShape(26.dp),
+                        .padding(vertical = 4.dp)
+                        .heightIn(min = 48.dp, max = 150.dp),
+                    shape = RoundedCornerShape(24.dp),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                        focusedBorderColor = MaterialTheme.colorScheme.outline,
-                        unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                        focusedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
+                        unfocusedBorderColor = Color.Transparent,
                         cursorColor = MaterialTheme.colorScheme.primary
                     ),
                     trailingIcon = {
@@ -787,13 +801,13 @@ fun BottomSection(
                             enabled = (inputText.isNotBlank() || selectedImageUri != null) && !isTyping,
                             modifier = Modifier
                                 .padding(end = 4.dp)
-                                .size(38.dp)
+                                .size(36.dp)
                                 .clip(CircleShape)
                                 .background(
                                     if ((inputText.isNotBlank() || selectedImageUri != null) && !isTyping)
                                         MaterialTheme.colorScheme.primary
                                     else
-                                        MaterialTheme.colorScheme.surfaceVariant
+                                        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
                                 )
                         ) {
                             Icon(
@@ -802,12 +816,12 @@ fun BottomSection(
                                 tint = if ((inputText.isNotBlank() || selectedImageUri != null) && !isTyping)
                                     MaterialTheme.colorScheme.onPrimary
                                 else
-                                    MaterialTheme.colorScheme.onSurfaceVariant,
+                                    MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                                 modifier = Modifier.size(18.dp)
                             )
                         }
                     },
-                    singleLine = true
+                    maxLines = 6
                 )
             }
         }
