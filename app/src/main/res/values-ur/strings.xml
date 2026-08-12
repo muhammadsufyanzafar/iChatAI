@@ -45,6 +45,7 @@
     <string name="exit">باہر نکلیں</string>
     <string name="cancel">منسوخ کریں</string>
     <string name="thinking">سوچ رہا ہے...</string>
+    <string name="max_attachments_reached">Maximum 3 attachments allowed</string>
 
     <!-- Credits & Rewards -->
     <string name="credits_title">کریڈٹ</string>

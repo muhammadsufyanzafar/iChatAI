@@ -23,6 +23,6 @@ data class ChatMessageEntity(
     val sessionId: Long,
     val role: String,
     val content: String,
-    val imageUri: Uri? = null,
+    val imageUris: List<Uri> = emptyList(),
     val timestamp: Long
 )

@@ -45,6 +45,7 @@
     <string name="exit">退出</string>
     <string name="cancel">取消</string>
     <string name="thinking">思考中...</string>
+    <string name="max_attachments_reached">Maximum 3 attachments allowed</string>
 
     <!-- Credits & Rewards -->
     <string name="credits_title">积分</string>

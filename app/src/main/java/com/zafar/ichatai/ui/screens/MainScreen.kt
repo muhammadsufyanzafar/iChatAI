@@ -118,7 +118,7 @@ fun MainScreen(
     val messages by viewModel.messages.collectAsState()
     val inputText by viewModel.inputText
     val isTyping by viewModel.isTyping
-    val selectedImageUri by viewModel.selectedImageUri
+    val selectedAttachments by viewModel.selectedAttachments.collectAsState()
     val isOnline by viewModel.isOnline.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
     val chatHistory by viewModel.chatHistory.collectAsState()
@@ -149,13 +149,13 @@ fun MainScreen(
         if (currentLanguage != contextLanguage) {
             viewModel.updateLanguage(contextLanguage)
             if (messages.isNotEmpty()) {
-                viewModel.createNewChat(context.getString(R.string.welcome_message))
+                viewModel.createNewChat()
             }
         }
     }
 
     LaunchedEffect(totalCredits) {
-        if (totalCredits < 5 && totalCredits > 0) {
+        if (totalCredits in 1..4) {
             NotificationHelper.showLowCreditsNotification(context)
         }
     }
@@ -188,9 +188,29 @@ fun MainScreen(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         if (uri != null) {
-            Toast.makeText(context, context.getString(R.string.file_selected, uri.toString()), Toast.LENGTH_SHORT).show()
+            viewModel.onImageSelected(uri)
         }
         showAttachmentMenu = false
+    }
+
+    val galleryPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            galleryLauncher.launch("image/*")
+        } else {
+            Toast.makeText(context, context.getString(R.string.gallery_permission_required), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    val filePermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            fileLauncher.launch("*/*")
+        } else {
+            Toast.makeText(context, context.getString(R.string.file_permission_required), Toast.LENGTH_SHORT).show()
+        }
     }
 
     val cameraLauncher = rememberLauncherForActivityResult(
@@ -215,13 +235,6 @@ fun MainScreen(
             cameraLauncher.launch(null)
         } else {
             Toast.makeText(context, context.getString(R.string.camera_permission_denied), Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    val welcomeMsg = stringResource(R.string.welcome_message)
-    LaunchedEffect(messages) {
-        if (messages.isEmpty()) {
-            viewModel.createNewChat(welcomeMsg)
         }
     }
 
@@ -293,67 +306,40 @@ fun MainScreen(
                 onItemClick = { route ->
                     when (route) {
                         "history" -> {
-                            scope.launch {
-                                viewModel.saveCurrentSessionSuspend()
-                                onNavigateToHistory()
-                                drawerState.close()
-                            }
+                            onNavigateToHistory()
+                            scope.launch { drawerState.close() }
                         }
                         "favorites" -> {
-                            scope.launch {
-                                viewModel.saveCurrentSessionSuspend()
-                                onNavigateToFavorites()
-                                drawerState.close()
-                            }
+                            onNavigateToFavorites()
+                            scope.launch { drawerState.close() }
                         }
                         "prompts" -> {
-                            scope.launch {
-                                viewModel.saveCurrentSessionSuspend()
-                                onNavigateToPrompts()
-                                drawerState.close()
-                            }
+                            onNavigateToPrompts()
+                            scope.launch { drawerState.close() }
                         }
                         "subscription" -> {
-                            scope.launch {
-                                viewModel.saveCurrentSessionSuspend()
-                                onNavigateToSubscription()
-                                drawerState.close()
-                            }
+                            onNavigateToSubscription()
+                            scope.launch { drawerState.close() }
                         }
                         "credits" -> {
-                            scope.launch {
-                                viewModel.saveCurrentSessionSuspend()
-                                onNavigateToCredits()
-                                drawerState.close()
-                            }
+                            onNavigateToCredits()
+                            scope.launch { drawerState.close() }
                         }
                         "settings" -> {
-                            scope.launch {
-                                viewModel.saveCurrentSessionSuspend()
-                                onNavigateToSettings()
-                                drawerState.close()
-                            }
+                            onNavigateToSettings()
+                            scope.launch { drawerState.close() }
                         }
                         "account" -> {
-                            scope.launch {
-                                viewModel.saveCurrentSessionSuspend()
-                                onNavigateToAccount()
-                                drawerState.close()
-                            }
+                            onNavigateToAccount()
+                            scope.launch { drawerState.close() }
                         }
                         "help" -> {
-                            scope.launch {
-                                viewModel.saveCurrentSessionSuspend()
-                                onNavigateToHelp()
-                                drawerState.close()
-                            }
+                            onNavigateToHelp()
+                            scope.launch { drawerState.close() }
                         }
                         "feedback" -> {
-                            scope.launch {
-                                viewModel.saveCurrentSessionSuspend()
-                                onNavigateToFeedback()
-                                drawerState.close()
-                            }
+                            onNavigateToFeedback()
+                            scope.launch { drawerState.close() }
                         }
                     }
                 },
@@ -375,7 +361,8 @@ fun MainScreen(
                         credits = totalCredits,
                         userAvatarUri = userAvatarUri,
                         userGender = userGender,
-                        onNewChatClick = { viewModel.createNewChat(welcomeMsg) },
+                        canCreateNewChat = messages.isNotEmpty(),
+                        onNewChatClick = { viewModel.createNewChat() },
                         onMenuClick = {
                             scope.launch { drawerState.open() }
                         },
@@ -388,14 +375,20 @@ fun MainScreen(
                     Box {
                         BottomSection(
                             inputText = inputText,
-                            selectedImageUri = selectedImageUri,
+                            selectedAttachments = selectedAttachments,
                             onValueChange = { viewModel.onInputChange(it) },
                             onSendClick = { viewModel.sendMessage(context) },
                             onPromptClick = { viewModel.onInputChange(it) },
-                            onAddClick = { showAttachmentMenu = !showAttachmentMenu },
-                            onRemoveImage = { viewModel.removeSelectedImage() },
+                            onAddClick = { 
+                                if (selectedAttachments.size < 3) {
+                                    showAttachmentMenu = !showAttachmentMenu 
+                                } else {
+                                    Toast.makeText(context, context.getString(R.string.max_attachments_reached), Toast.LENGTH_SHORT).show()
+                                }
+                            },
+                            onRemoveAttachment = { viewModel.removeSelectedImage(it) },
                             isTyping = isTyping,
-                            showQuickPrompts = messages.size <= 1
+                            showQuickPrompts = messages.isEmpty()
                         )
 
                         if (showAttachmentMenu) {
@@ -408,8 +401,20 @@ fun MainScreen(
                                     onCameraClick = {
                                         permissionLauncher.launch(android.Manifest.permission.CAMERA)
                                     },
-                                    onGalleryClick = { galleryLauncher.launch("image/*") },
-                                    onFilesClick = { fileLauncher.launch("*/*") }
+                                    onGalleryClick = { 
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                            galleryPermissionLauncher.launch(android.Manifest.permission.READ_MEDIA_IMAGES)
+                                        } else {
+                                            galleryPermissionLauncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                                        }
+                                    },
+                                    onFilesClick = { 
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                            filePermissionLauncher.launch(android.Manifest.permission.READ_MEDIA_IMAGES) // Or appropriate for files
+                                        } else {
+                                            filePermissionLauncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                                        }
+                                    }
                                 )
                             }
                         }
@@ -417,7 +422,7 @@ fun MainScreen(
                 },
                 containerColor = Color.Transparent
             ) { paddingValues ->
-                Column(
+                Box(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(paddingValues)
@@ -427,13 +432,68 @@ fun MainScreen(
                         isTyping = isTyping,
                         listState = listState,
                         modifier = Modifier
-                            .weight(1f)
-                            .fillMaxWidth()
+                            .fillMaxSize()
                             .padding(horizontal = 16.dp)
                     )
+
+                    androidx.compose.animation.AnimatedVisibility(
+                        visible = messages.isEmpty(),
+                        modifier = Modifier.align(Alignment.Center),
+                        enter = androidx.compose.animation.fadeIn() + androidx.compose.animation.expandVertically(),
+                        exit = androidx.compose.animation.fadeOut() + androidx.compose.animation.shrinkVertically()
+                    ) {
+                        WelcomeGreeting(userName)
+                    }
                 }
             }
         }
+    }
+}
+
+@Composable
+fun WelcomeGreeting(userName: String, modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    val greeting = remember { getGreeting(context) }
+    
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = if (userName.isNotBlank()) 
+                "${stringResource(R.string.hello)}, $userName!" 
+            else stringResource(R.string.hello),
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Black,
+            color = MaterialTheme.colorScheme.onBackground,
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+        )
+        Text(
+            text = greeting,
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.primary,
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        Text(
+            text = stringResource(R.string.greeting_subtext),
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+        )
+    }
+}
+
+private fun getGreeting(context: android.content.Context): String {
+    val hour = java.util.Calendar.getInstance().get(java.util.Calendar.HOUR_OF_DAY)
+    return when (hour) {
+        in 5..11 -> context.getString(R.string.good_morning)
+        in 12..16 -> context.getString(R.string.good_afternoon)
+        in 17..20 -> context.getString(R.string.good_evening)
+        else -> context.getString(R.string.good_night)
     }
 }
 
@@ -442,6 +502,7 @@ fun TopBar(
     credits: Int,
     userAvatarUri: String?,
     userGender: String,
+    canCreateNewChat: Boolean,
     onNewChatClick: () -> Unit,
     onMenuClick: () -> Unit,
     onCreditsClick: () -> Unit = {}
@@ -520,6 +581,7 @@ fun TopBar(
 
         IconButton(
             onClick = onNewChatClick,
+            enabled = canCreateNewChat,
             modifier = Modifier.padding(end = 4.dp)
         ) {
             Column(
@@ -528,7 +590,8 @@ fun TopBar(
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.OpenInNew,
                     contentDescription = stringResource(R.string.new_chat),
-                    tint = MaterialTheme.colorScheme.onBackground,
+                    tint = if (canCreateNewChat) MaterialTheme.colorScheme.onBackground 
+                           else MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f),
                     modifier = Modifier.size(24.dp)
                 )
             }
@@ -607,16 +670,19 @@ fun UserMessage(message: ChatMessage) {
             modifier = Modifier.widthIn(max = 300.dp)
         ) {
             Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
-                if (message.imageUri != null) {
-                    AsyncImage(
-                        model = message.imageUri,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .heightIn(max = 200.dp)
-                            .clip(RoundedCornerShape(12.dp)),
-                        contentScale = ContentScale.Crop
-                    )
+                if (message.imageUris.isNotEmpty()) {
+                    message.imageUris.forEach { uri ->
+                        AsyncImage(
+                            model = uri,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .heightIn(max = 200.dp)
+                                .clip(RoundedCornerShape(12.dp))
+                                .padding(vertical = 4.dp),
+                            contentScale = ContentScale.Crop
+                        )
+                    }
                     if (message.content.isNotBlank()) {
                         Spacer(modifier = Modifier.height(8.dp))
                     }
@@ -639,12 +705,12 @@ fun UserMessage(message: ChatMessage) {
 @Composable
 fun BottomSection(
     inputText: String,
-    selectedImageUri: Uri?,
+    selectedAttachments: List<Uri>,
     onValueChange: (String) -> Unit,
     onSendClick: () -> Unit,
     onPromptClick: (String) -> Unit,
     onAddClick: () -> Unit,
-    onRemoveImage: () -> Unit,
+    onRemoveAttachment: (Uri) -> Unit,
     isTyping: Boolean,
     showQuickPrompts: Boolean
 ) {
@@ -657,10 +723,11 @@ fun BottomSection(
             modifier = Modifier
                 .navigationBarsPadding()
                 .padding(top = 16.dp, bottom = 12.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.Start // Align content to the left
         ) {
             androidx.compose.animation.AnimatedVisibility(
                 visible = showQuickPrompts,
+                modifier = Modifier.align(Alignment.CenterHorizontally),
                 enter = androidx.compose.animation.fadeIn() + androidx.compose.animation.expandVertically(),
                 exit = androidx.compose.animation.fadeOut() + androidx.compose.animation.shrinkVertically()
             ) {
@@ -723,34 +790,41 @@ fun BottomSection(
                 }
             }
 
-            // Image Preview Area
-            if (selectedImageUri != null) {
-                Box(
+            // Multiple Attachments Preview Area - Aligned Left
+            if (selectedAttachments.isNotEmpty()) {
+                LazyRow(
                     modifier = Modifier
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                        .size(100.dp)
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(MaterialTheme.colorScheme.surfaceVariant)
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    AsyncImage(
-                        model = selectedImageUri,
-                        contentDescription = null,
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop
-                    )
-                    IconButton(
-                        onClick = onRemoveImage,
-                        modifier = Modifier
-                            .align(Alignment.TopEnd)
-                            .size(24.dp)
-                            .background(Color.Black.copy(alpha = 0.6f), CircleShape)
-                    ) {
-                        Icon(
-                            Icons.Default.Close,
-                            contentDescription = stringResource(R.string.remove),
-                            tint = Color.White,
-                            modifier = Modifier.size(16.dp)
-                        )
+                    items(selectedAttachments) { uri ->
+                        Box(
+                            modifier = Modifier
+                                .size(80.dp)
+                                .clip(RoundedCornerShape(12.dp))
+                                .background(MaterialTheme.colorScheme.surfaceVariant)
+                        ) {
+                            AsyncImage(
+                                model = uri,
+                                contentDescription = null,
+                                modifier = Modifier.fillMaxSize(),
+                                contentScale = ContentScale.Crop
+                            )
+                            IconButton(
+                                onClick = { onRemoveAttachment(uri) },
+                                modifier = Modifier
+                                    .align(Alignment.TopEnd)
+                                    .size(20.dp)
+                                    .background(Color.Black.copy(alpha = 0.6f), CircleShape)
+                            ) {
+                                Icon(
+                                    Icons.Default.Close,
+                                    contentDescription = stringResource(R.string.remove),
+                                    tint = Color.White,
+                                    modifier = Modifier.size(14.dp)
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -798,13 +872,13 @@ fun BottomSection(
                     trailingIcon = {
                         IconButton(
                             onClick = onSendClick,
-                            enabled = (inputText.isNotBlank() || selectedImageUri != null) && !isTyping,
+                            enabled = (inputText.isNotBlank() || selectedAttachments.isNotEmpty()) && !isTyping,
                             modifier = Modifier
                                 .padding(end = 4.dp)
                                 .size(36.dp)
                                 .clip(CircleShape)
                                 .background(
-                                    if ((inputText.isNotBlank() || selectedImageUri != null) && !isTyping)
+                                    if ((inputText.isNotBlank() || selectedAttachments.isNotEmpty()) && !isTyping)
                                         MaterialTheme.colorScheme.primary
                                     else
                                         MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
@@ -813,7 +887,7 @@ fun BottomSection(
                             Icon(
                                 Icons.AutoMirrored.Filled.Send,
                                 contentDescription = null,
-                                tint = if ((inputText.isNotBlank() || selectedImageUri != null) && !isTyping)
+                                tint = if ((inputText.isNotBlank() || selectedAttachments.isNotEmpty()) && !isTyping)
                                     MaterialTheme.colorScheme.onPrimary
                                 else
                                     MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),

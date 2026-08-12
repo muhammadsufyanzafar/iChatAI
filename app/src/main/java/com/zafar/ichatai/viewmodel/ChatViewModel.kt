@@ -5,8 +5,7 @@ import android.net.Uri
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import android.util.Log
-import com.zafar.ichatai.data.ChatMessage
+    import com.zafar.ichatai.data.ChatMessage
 import com.zafar.ichatai.data.local.UserPreferences
 import com.zafar.ichatai.data.local.entity.ChatMessageEntity
 import com.zafar.ichatai.data.local.entity.ChatSessionWithCount
@@ -53,8 +52,8 @@ class ChatViewModel @Inject constructor(
     var isTyping = mutableStateOf(false)
         private set
 
-    var selectedImageUri = mutableStateOf<Uri?>(null)
-        private set
+    private val _selectedAttachments = MutableStateFlow<List<Uri>>(emptyList())
+    val selectedAttachments: StateFlow<List<Uri>> = _selectedAttachments.asStateFlow()
 
     private val _currentSessionId = MutableStateFlow<Long?>(null)
     val currentSessionId: StateFlow<Long?> = _currentSessionId.asStateFlow()
@@ -182,11 +181,20 @@ class ChatViewModel @Inject constructor(
     }
 
     fun onImageSelected(uri: Uri?) {
-        selectedImageUri.value = uri
+        if (uri != null) {
+            val current = _selectedAttachments.value
+            if (current.size < 3) {
+                _selectedAttachments.value = current + uri
+            }
+        }
     }
 
-    fun removeSelectedImage() {
-        selectedImageUri.value = null
+    fun removeSelectedImage(uri: Uri) {
+        _selectedAttachments.value -= uri
+    }
+
+    fun clearAttachments() {
+        _selectedAttachments.value = emptyList()
     }
 
     /**
@@ -212,8 +220,9 @@ class ChatViewModel @Inject constructor(
     }
 
     private suspend fun performSave(messages: List<ChatMessage>, sessionId: Long?): Long {
-        // Don't save if it's just the default welcome message or empty
-        if (messages.size <= 1 && messages.firstOrNull()?.role == "assistant") {
+        // Don't save if it's empty or just a system/assistant welcome message
+        val hasUserMessage = messages.any { it.role == "user" }
+        if (!hasUserMessage) {
             return sessionId ?: -1L
         }
 
@@ -256,21 +265,62 @@ class ChatViewModel @Inject constructor(
         }
     }
 
-    fun createNewChat(welcomeMessage: String) {
+    /**
+     * Persists a single message to the Room database.
+     */
+    private fun saveMessageRealtime(message: ChatMessage) {
+        val sessionId = _currentSessionId.value ?: return // Should not happen if logic is correct
+
+        persistenceScope.launch {
+            try {
+                repository.saveMessages(listOf(message.toEntity(sessionId)))
+                // Update session timestamp and potentially title
+                val session = repository.getSessionById(sessionId)
+                if (session != null) {
+                    val newTitle = if ((session.title == "New Chat" || session.title == "New Chat started") && message.role == "user") {
+                        message.content.take(30).ifBlank { "Image Chat" }
+                    } else session.title
+                    
+                    repository.updateSession(session.copy(
+                        title = newTitle,
+                        timestamp = System.currentTimeMillis()
+                    ))
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private suspend fun ensureSessionCreated(firstMessage: String): Long {
+        return _currentSessionId.value ?: withContext(Dispatchers.IO) {
+            val title = firstMessage.take(30).ifBlank { "New Chat" }
+            val newId = repository.createNewSession(title)
+            _currentSessionId.value = newId
+            newId
+        }
+    }
+
+    fun createNewChat() {
+        // Only allow if we have a current session or messages
+        if (_messages.value.isEmpty()) return
+
         viewModelScope.launch {
+            // Save state before clearing
             saveCurrentSessionSuspend()
-            // Reset UI immediately after save finishes
+            
             _currentSessionId.value = null
-            _messages.value = listOf(ChatMessage("assistant", welcomeMessage))
+            _messages.value = emptyList()
             inputText.value = ""
-            selectedImageUri.value = null
+            _selectedAttachments.value = emptyList()
         }
     }
 
     fun loadChat(sessionId: Long) {
         viewModelScope.launch {
-            // Save current before loading new
-            saveCurrentSessionSuspend()
+            if (_messages.value.isNotEmpty()) {
+                saveCurrentSessionSuspend()
+            }
             
             val historicalMessages = repository.getMessagesListBySessionId(sessionId)
             _messages.value = historicalMessages.map { it.toUiModel() }
@@ -283,7 +333,7 @@ class ChatViewModel @Inject constructor(
             repository.deleteSession(sessionId)
             if (_currentSessionId.value == sessionId) {
                 _currentSessionId.value = null
-                _messages.value = listOf(ChatMessage("assistant", "New chat started. Ask me anything!"))
+                _messages.value = emptyList()
             }
         }
     }
@@ -302,14 +352,14 @@ class ChatViewModel @Inject constructor(
 
     fun sendMessage(context: Context) {
         val text = inputText.value
-        val imageUri = selectedImageUri.value
+        val attachments = _selectedAttachments.value
         
-        if (text.isNotBlank() || imageUri != null) {
+        if (text.isNotBlank() || attachments.isNotEmpty()) {
             vibrationHelper.vibrateClick()
-            val userMsg = ChatMessage("user", text, imageUri)
-            _messages.value = _messages.value + userMsg
+            val userMsg = ChatMessage("user", text, attachments)
+            _messages.value += userMsg
             inputText.value = ""
-            selectedImageUri.value = null
+            _selectedAttachments.value = emptyList()
             
             if (text.isNotBlank()) {
                 viewModelScope.launch {
@@ -317,26 +367,30 @@ class ChatViewModel @Inject constructor(
                 }
             }
             
-            fetchAiResponse(context, text, imageUri)
+            fetchAiResponse(context, text, attachments)
         }
     }
 
     fun sendPrompt(context: Context, prompt: String) {
         val userMsg = ChatMessage("user", prompt)
-        _messages.value = _messages.value + userMsg
+        _messages.value += userMsg
         
         viewModelScope.launch {
             promptRepository.saveRecentPrompt(prompt)
         }
 
-        fetchAiResponse(context, prompt, null)
+        // Wait for successful AI response before persisting session
+        fetchAiResponse(context, prompt, emptyList())
     }
 
-    private fun fetchAiResponse(context: Context, query: String, imageUri: Uri?) {
+    private fun fetchAiResponse(context: Context, query: String, attachments: List<Uri>) {
+        // Capture the user message that triggered this response
+        val userMsg = _messages.value.lastOrNull { it.role == "user" }
+
         viewModelScope.launch {
             isTyping.value = true
             try {
-                val imageBase64 = imageUri?.let { AiClient.uriToBase64(context, it) }
+                val imageUrls = attachments.mapNotNull { AiClient.uriToBase64(context, it) }
                 
                 // Get translation settings
                 val translateEnabled = userPreferences.isTranslateEnabled()
@@ -346,28 +400,37 @@ class ChatViewModel @Inject constructor(
                 val selectedModelId = userPreferences.getSelectedModelId()
                 val temperature = userPreferences.getTemperature()
                 
-                // Find model info from Remote Config to get its specific API Key if it exists
                 val remoteModel = remoteConfigManager.getAIModels().find { it.id == selectedModelId }
-                
-                // Use the remote API key if available, otherwise fallback to the hardcoded local key
                 val apiKey = remoteModel?.apiKey ?: BuildConfig.OPENROUTER_API_KEY
                 
-                Log.d("ChatViewModel", "Using model: $selectedModelId with key starting with: ${apiKey.take(8)}...")
-
                 val responseContent = AiClient.getResponse(
                     query = query, 
-                    imageBase64DataUrl = imageBase64, 
+                    imageUrls = imageUrls,
                     targetLanguage = targetLang,
                     modelId = selectedModelId,
                     apiKey = apiKey,
                     temperature = temperature
                 )
+                
                 val assistantMsg = ChatMessage("assistant", responseContent)
-                _messages.value = _messages.value + assistantMsg
+                _messages.value += assistantMsg
                 vibrationHelper.vibrateMessageReceived()
                 
-                // Optional: Save after each AI response for better reliability 
-                // but we stay "deferred" per user request.
+                // Real-time Persistence: Only save if AI response is successful
+                viewModelScope.launch {
+                    // 1. Ensure session exists
+                    val sessionId = ensureSessionCreated(query)
+                    
+                    // 2. If this is a new session, save the triggering user message first
+                    val messagesInDb = repository.getMessagesListBySessionId(sessionId)
+                    if (messagesInDb.none { it.role == "user" } && userMsg != null) {
+                        repository.saveMessages(listOf(userMsg.toEntity(sessionId)))
+                    }
+                    
+                    // 3. Save the successful AI response
+                    saveMessageRealtime(assistantMsg)
+                }
+                
             } catch (e: Exception) {
                 val errorMessage = when (e) {
                     is SocketTimeoutException -> "The connection timed out. Please try again."
@@ -383,8 +446,10 @@ class ChatViewModel @Inject constructor(
                     else -> "Something went wrong. (Error: ${e.localizedMessage ?: "Unknown"})"
                 }
                 val assistantMsg = ChatMessage("assistant", errorMessage)
-                _messages.value = _messages.value + assistantMsg
+                _messages.value += assistantMsg
                 vibrationHelper.vibrateError()
+                // Error messages are NOT saved to the database. 
+                // Since we also didn't save the User message yet, no "failed" session is created.
             } finally {
                 isTyping.value = false
             }
@@ -409,7 +474,7 @@ class ChatViewModel @Inject constructor(
         sessionId = sessionId,
         role = role,
         content = content,
-        imageUri = imageUri,
+        imageUris = imageUris,
         timestamp = timestamp
     )
 
@@ -417,7 +482,7 @@ class ChatViewModel @Inject constructor(
         id = id,
         role = role,
         content = content,
-        imageUri = imageUri,
+        imageUris = imageUris,
         timestamp = timestamp
     )
 }

@@ -45,6 +45,7 @@
     <string name="exit">Esci</string>
     <string name="cancel">Annulla</string>
     <string name="thinking">Sto pensando...</string>
+    <string name="max_attachments_reached">Maximum 3 attachments allowed</string>
 
     <!-- Credits & Rewards -->
     <string name="credits_title">Crediti</string>

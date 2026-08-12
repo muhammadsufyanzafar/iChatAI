@@ -63,6 +63,7 @@
     <string name="exit">خروج</string>
     <string name="cancel">إلغاء</string>
     <string name="thinking">يفكر...</string>
+    <string name="max_attachments_reached">Maximum 3 attachments allowed</string>
 
     <!-- Credits & Rewards -->
     <string name="credits_title">الرصيد</string>

@@ -52,7 +52,7 @@ object AiClient {
      */
     suspend fun getResponse(
         query: String, 
-        imageBase64DataUrl: String? = null, 
+        imageUrls: List<String> = emptyList(), 
         targetLanguage: String? = null,
         modelId: String = "google/gemini-pro-1.5-exp-0827",
         apiKey: String = BuildConfig.OPENROUTER_API_KEY,
@@ -60,7 +60,7 @@ object AiClient {
     ): String {
         val contents = mutableListOf<ContentBlock>()
         
-        var finalQuery = if (query.isBlank() && imageBase64DataUrl != null) "Describe this image" else query
+        var finalQuery = if (query.isBlank() && imageUrls.isNotEmpty()) "Describe these images" else query
 
         // Add translation instruction if targetLanguage is provided
         if (targetLanguage != null && targetLanguage != "en") {
@@ -74,11 +74,11 @@ object AiClient {
             text = finalQuery
         ))
         
-        // Add image block if available (Requirement 2 structure)
-        imageBase64DataUrl?.let {
+        // Add image blocks
+        imageUrls.forEach { url ->
             contents.add(ContentBlock(
                 type = "image_url", 
-                imageUrl = ImageUrl(url = it)
+                imageUrl = ImageUrl(url = url)
             ))
         }
 

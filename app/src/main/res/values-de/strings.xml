@@ -63,6 +63,7 @@
     <string name="exit">Beenden</string>
     <string name="cancel">Abbrechen</string>
     <string name="thinking">Überlegt...</string>
+    <string name="max_attachments_reached">Maximum 3 attachments allowed</string>
 
     <!-- Credits & Rewards -->
     <string name="credits_title">Credits</string>

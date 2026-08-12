@@ -188,7 +188,7 @@ fun ModelOption(
                         shape = MaterialTheme.shapes.extraSmall
                     ) {
                         Text(
-                            text = "Recommended",
+                            text = stringResource(R.string.recommended),
                             modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.primary,
