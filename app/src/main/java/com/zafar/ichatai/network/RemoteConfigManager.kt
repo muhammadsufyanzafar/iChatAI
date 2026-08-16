@@ -5,7 +5,6 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.zafar.ichatai.BuildConfig
 import com.zafar.ichatai.data.AIModel
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -16,7 +15,7 @@ class RemoteConfigManager @Inject constructor() {
     private val remoteConfig: FirebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
 
     init {
-        val interval = if (BuildConfig.DEBUG) 0L else 3600L
+        val interval = if (com.zafar.ichatai.BuildConfig.DEBUG) 0L else 3600L
         val configSettings = FirebaseRemoteConfigSettings.Builder()
             .setMinimumFetchIntervalInSeconds(interval)
             .build()
@@ -36,19 +35,22 @@ class RemoteConfigManager @Inject constructor() {
 
     fun getAIModels(): List<AIModel> {
         val json = remoteConfig.getString("ai_models")
-        Log.d("RemoteConfig", "ai_models JSON: $json")
-        return if (json.isNotEmpty()) {
-            try {
-                val type = object : TypeToken<List<AIModel>>() {}.type
-                val models: List<AIModel> = Gson().fromJson(json, type)
-                Log.d("RemoteConfig", "Parsed ${models.size} models")
-                models
-            } catch (e: Exception) {
-                Log.e("RemoteConfig", "Parsing failed", e)
-                emptyList()
-            }
-        } else {
-            Log.w("RemoteConfig", "ai_models is empty")
+
+        if (json.isBlank()) {
+            return emptyList()
+        }
+
+        return try {
+            val type = object : TypeToken<List<AIModel>>() {}.type
+            Gson().fromJson<List<AIModel>>(json, type)
+                ?: emptyList()
+
+        } catch (e: Exception) {
+            Log.e(
+                "RemoteConfig",
+                "Failed to parse AI models",
+                e
+            )
             emptyList()
         }
     }

@@ -90,16 +90,18 @@ fun AIModelPreferencesScreen(
                                 )
                             } else {
                                 models.forEach { model ->
-                                    ModelOption(
-                                        model = model,
-                                        isSelected = model.id == selectedModelId,
-                                        onSelect = { viewModel.selectModel(model.id) }
-                                    )
-                                    if (model != models.last()) {
-                                        HorizontalDivider(
-                                            modifier = Modifier.padding(horizontal = 16.dp),
-                                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f)
+                                    key(model.id) {
+                                        ModelOption(
+                                            model = model,
+                                            isSelected = model.id == selectedModelId,
+                                            onSelect = { viewModel.selectModel(model.id) }
                                         )
+                                        if (model != models.last()) {
+                                            HorizontalDivider(
+                                                modifier = Modifier.padding(horizontal = 16.dp),
+                                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f)
+                                            )
+                                        }
                                     }
                                 }
                             }

@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Base64
 import android.util.Log
-import com.zafar.ichatai.BuildConfig
 import com.zafar.ichatai.data.*
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -35,7 +34,7 @@ object AiClient {
 
     private val okHttpClient = OkHttpClient.Builder()
         .addInterceptor(HttpLoggingInterceptor().apply {
-            level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+            level = if (com.zafar.ichatai.BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
         })
         .build()
 
@@ -55,7 +54,7 @@ object AiClient {
         imageUrls: List<String> = emptyList(), 
         targetLanguage: String? = null,
         modelId: String = "google/gemini-pro-1.5-exp-0827",
-        apiKey: String = BuildConfig.OPENROUTER_API_KEY,
+        apiKey: String = com.zafar.ichatai.BuildConfig.OPENROUTER_API_KEY,
         temperature: Float = 0.7f
     ): String {
         val contents = mutableListOf<ContentBlock>()

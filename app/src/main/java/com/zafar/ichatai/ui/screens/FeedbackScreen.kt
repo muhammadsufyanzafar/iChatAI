@@ -325,7 +325,7 @@ fun CategorySection(
             contentPadding = PaddingValues(horizontal = 0.dp)
         ) {
             categories.forEach { category ->
-                item {
+                item(key = category) {
                     val isSelected = selectedCategory == category
                     val icon = when (category) {
                         "General Feedback" -> Icons.AutoMirrored.Outlined.Message
@@ -337,20 +337,20 @@ fun CategorySection(
                         else -> Icons.Outlined.Info
                     }
 
-                    val translatedCategory = when (category) {
-                        "General Feedback" -> stringResource(R.string.feedback_general)
-                        "Bug / Crash Report" -> stringResource(R.string.feedback_bug)
-                        "Feature Request" -> stringResource(R.string.feedback_feature)
-                        "AI Model Accuracy / Hallucination" -> stringResource(R.string.feedback_accuracy)
-                        "UI / Design Suggestion" -> stringResource(R.string.feedback_ui)
-                        "Credit & Billing Inquiry" -> stringResource(R.string.feedback_billing)
-                        else -> category
-                    }
+                        val translatedCategory = when (category) {
+                            "General Feedback" -> stringResource(R.string.feedback_general)
+                            "Bug / Crash Report" -> stringResource(R.string.feedback_bug)
+                            "Feature Request" -> stringResource(R.string.feedback_feature)
+                            "AI Model Accuracy / Hallucination" -> stringResource(R.string.feedback_accuracy)
+                            "UI / Design Suggestion" -> stringResource(R.string.feedback_ui)
+                            "Credit & Billing Inquiry" -> stringResource(R.string.feedback_billing)
+                            else -> category
+                        }
 
-                    FilterChip(
-                        selected = isSelected,
-                        onClick = { onCategorySelected(category) },
-                        label = { Text(text = translatedCategory) },
+                        FilterChip(
+                            selected = isSelected,
+                            onClick = { onCategorySelected(category) },
+                            label = { Text(text = translatedCategory) },
                         leadingIcon = {
                             Icon(
                                 imageVector = icon,

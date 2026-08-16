@@ -4,7 +4,6 @@ import android.app.Application
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.zafar.ichatai.BuildConfig
 import com.zafar.ichatai.data.local.UserPreferences
 import com.zafar.ichatai.network.GitHubApiService
 import com.zafar.ichatai.network.GitHubIssueRequest
@@ -104,9 +103,9 @@ class FeedbackViewModel @Inject constructor(
                 )
 
                 val response = gitHubApiService.createIssue(
-                    owner = BuildConfig.GITHUB_OWNER,
-                    repo = BuildConfig.GITHUB_REPO,
-                    token = "Bearer ${BuildConfig.GITHUB_TOKEN}",
+                    owner = com.zafar.ichatai.BuildConfig.GITHUB_OWNER,
+                    repo = com.zafar.ichatai.BuildConfig.GITHUB_REPO,
+                    token = "Bearer ${com.zafar.ichatai.BuildConfig.GITHUB_TOKEN}",
                     request = request
                 )
 

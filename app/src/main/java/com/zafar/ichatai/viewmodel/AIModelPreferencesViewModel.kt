@@ -2,7 +2,6 @@ package com.zafar.ichatai.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.zafar.ichatai.BuildConfig
 import com.zafar.ichatai.data.AIModel
 import com.zafar.ichatai.data.local.UserPreferences
 import com.zafar.ichatai.network.RemoteConfigManager
@@ -23,7 +22,7 @@ class AIModelPreferencesViewModel @Inject constructor(
         id = "openrouter/free",
         name = "Model A - Standard",
         description = "Fast, balanced performance",
-        apiKey = BuildConfig.OPENROUTER_API_KEY,
+        apiKey = com.zafar.ichatai.BuildConfig.OPENROUTER_API_KEY,
         isRecommended = true
     )
 

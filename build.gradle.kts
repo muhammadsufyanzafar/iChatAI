@@ -6,5 +6,5 @@ plugins {
     alias(libs.plugins.ksp) apply false // Required for Room database annotation processing
     alias(libs.plugins.hilt) apply false
     alias(libs.plugins.google.services) apply false
-    id("com.google.firebase.crashlytics") version "3.0.2" apply false
+    alias(libs.plugins.firebaseCrashlytics) apply false
 }

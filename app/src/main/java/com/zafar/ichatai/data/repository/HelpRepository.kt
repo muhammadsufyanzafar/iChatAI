@@ -2,6 +2,7 @@ package com.zafar.ichatai.data.repository
 
 import android.content.Context
 import com.google.gson.Gson
+import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
 import com.zafar.ichatai.data.FaqData
 import com.zafar.ichatai.data.HelpCategory
@@ -35,9 +36,9 @@ class HelpRepository(private val context: Context) {
     }
 
     private data class FaqJson(
-        val question: String,
-        val answer: String,
-        val category: String
+        @SerializedName("question") val question: String,
+        @SerializedName("answer") val answer: String,
+        @SerializedName("category") val category: String
     ) {
         fun toDomain(): FaqData {
             return FaqData(

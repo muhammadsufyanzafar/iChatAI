@@ -10,7 +10,6 @@ import android.os.BatteryManager
 import android.os.Build
 import android.os.Environment
 import android.os.StatFs
-import com.zafar.ichatai.BuildConfig
 import com.zafar.ichatai.data.local.UserPreferences
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -25,8 +24,8 @@ object DeviceInfoCollector {
         sb.append("### Application Information\n")
         sb.append("| Property | Value |\n")
         sb.append("| :--- | :--- |\n")
-        sb.append("| Version Name | ${BuildConfig.VERSION_NAME} |\n")
-        sb.append("| Version Code | ${BuildConfig.VERSION_CODE} |\n")
+        sb.append("| Version Name | ${com.zafar.ichatai.BuildConfig.VERSION_NAME} |\n")
+        sb.append("| Version Code | ${com.zafar.ichatai.BuildConfig.VERSION_CODE} |\n")
         sb.append("| Environment | PRODUCTION |\n\n")
 
         sb.append("### Device & OS\n")
@@ -113,8 +112,8 @@ object DeviceInfoCollector {
     fun getCrashlyticsKeys(context: Context, userPreferences: UserPreferences): Map<String, Any> {
         val keys = mutableMapOf<String, Any>()
 
-        keys["app_version"] = BuildConfig.VERSION_NAME
-        keys["app_code"] = BuildConfig.VERSION_CODE
+        keys["app_version"] = com.zafar.ichatai.BuildConfig.VERSION_NAME
+        keys["app_code"] = com.zafar.ichatai.BuildConfig.VERSION_CODE
         keys["manufacturer"] = Build.MANUFACTURER
         keys["model"] = Build.MODEL
         keys["android_version"] = Build.VERSION.RELEASE

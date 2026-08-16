@@ -5,7 +5,7 @@ import android.net.Uri
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-    import com.zafar.ichatai.data.ChatMessage
+import com.zafar.ichatai.data.ChatMessage
 import com.zafar.ichatai.data.local.UserPreferences
 import com.zafar.ichatai.data.local.entity.ChatMessageEntity
 import com.zafar.ichatai.data.local.entity.ChatSessionWithCount
@@ -15,7 +15,6 @@ import com.zafar.ichatai.network.AiClient
 import com.zafar.ichatai.network.RemoteConfigManager
 import com.zafar.ichatai.utils.NetworkObserver
 import com.zafar.ichatai.utils.VibrationHelper
-import com.zafar.ichatai.BuildConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -401,7 +400,7 @@ class ChatViewModel @Inject constructor(
                 val temperature = userPreferences.getTemperature()
                 
                 val remoteModel = remoteConfigManager.getAIModels().find { it.id == selectedModelId }
-                val apiKey = remoteModel?.apiKey ?: BuildConfig.OPENROUTER_API_KEY
+                val apiKey = remoteModel?.apiKey ?: com.zafar.ichatai.BuildConfig.OPENROUTER_API_KEY
                 
                 val responseContent = AiClient.getResponse(
                     query = query, 
