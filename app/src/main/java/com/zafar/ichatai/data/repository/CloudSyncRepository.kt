@@ -1,12 +1,12 @@
 package com.zafar.ichatai.data.repository
 
 import android.content.Context
-import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.google.api.client.http.ByteArrayContent
 import com.google.api.client.http.javanet.NetHttpTransport
 import com.google.api.client.json.gson.GsonFactory
+import com.google.api.client.googleapis.json.GoogleJsonResponseException
 import com.google.api.services.drive.Drive
 import com.google.api.services.drive.DriveScopes
 import com.google.api.services.drive.model.File
@@ -19,6 +19,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
+import java.io.IOException
 import java.util.Collections
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -61,21 +62,31 @@ class CloudSyncRepository @Inject constructor(
 
             val files = driveService.files().list()
                 .setSpaces("appDataFolder")
-                .setQ("name = 'ichatai_backup.json'")
+                .setQ("name = 'ichatai_backup.json' and trashed = false")
+                .setFields("files(id,name,size,modifiedTime)")
                 .execute()
 
-            if (files.files.isNotEmpty()) {
+            val uploadedFile = if (files.files.isNotEmpty()) {
                 val fileId = files.files[0].id
-                driveService.files().update(fileId, metadata, contentStream).execute()
+                driveService.files().update(fileId, metadata, contentStream)
+                    .setFields("id,name,size,modifiedTime")
+                    .execute()
             } else {
-                driveService.files().create(metadata, contentStream).execute()
+                driveService.files().create(metadata, contentStream)
+                    .setFields("id,name,size,modifiedTime")
+                    .execute()
+            }
+
+            if (uploadedFile.id.isNullOrBlank() || uploadedFile.name != "ichatai_backup.json") {
+                throw IOException("Backup upload could not be verified: Drive did not return valid file metadata.")
             }
 
             userPreferences.setLastSyncTime(System.currentTimeMillis())
             Result.success(Unit)
         } catch (e: Exception) {
-            userPreferences.appendSyncError(e.message ?: "Unknown backup error")
-            Result.failure(e)
+            val diagnostic = formatDriveException("Backup failed", e)
+            userPreferences.appendSyncError(diagnostic)
+            Result.failure(IOException(diagnostic, e))
         }
     }
 
@@ -84,7 +95,8 @@ class CloudSyncRepository @Inject constructor(
             val driveService = getDriveService(account)
             val files = driveService.files().list()
                 .setSpaces("appDataFolder")
-                .setQ("name = 'ichatai_backup.json'")
+                .setQ("name = 'ichatai_backup.json' and trashed = false")
+                .setFields("files(id,name,size,modifiedTime)")
                 .execute()
 
             if (files.files.isEmpty()) {
@@ -94,21 +106,20 @@ class CloudSyncRepository @Inject constructor(
             val fileId = files.files[0].id
             val outputStream = ByteArrayOutputStream()
             driveService.files().get(fileId).executeMediaAndDownloadTo(outputStream)
-            
-            val json = outputStream.toString()
+
+            val json = outputStream.toString(Charsets.UTF_8.name())
             val type = object : TypeToken<Map<String, Any>>() {}.type
             val backupData: Map<String, Any> = gson.fromJson(json, type)
 
             performRestore(backupData)
-            
-            userPreferences.setLastSyncTime(System.currentTimeMillis())
             Result.success(Unit)
         } catch (e: Exception) {
-            userPreferences.appendSyncError(e.message ?: "Unknown restore error")
-            Result.failure(e)
+            val diagnostic = formatDriveException("Restore failed", e)
+            userPreferences.appendSyncError(diagnostic)
+            Result.failure(IOException(diagnostic, e))
         }
     }
-    
+
     private suspend fun performRestore(backupData: Map<String, Any>) = withContext(Dispatchers.IO) {
         if (userPreferences.isSyncSettingsEnabled()) {
             backupData["user_profile"]?.let {
@@ -149,6 +160,7 @@ class CloudSyncRepository @Inject constructor(
             val driveService = getDriveService(account)
             val files = driveService.files().list()
                 .setSpaces("appDataFolder")
+                .setQ("trashed = false")
                 .execute()
 
             for (file in files.files) {
@@ -156,8 +168,9 @@ class CloudSyncRepository @Inject constructor(
             }
             Result.success(Unit)
         } catch (e: Exception) {
-            userPreferences.appendSyncError(e.message ?: "Error deleting cloud data")
-            Result.failure(e)
+            val diagnostic = formatDriveException("Cloud deletion failed", e)
+            userPreferences.appendSyncError(diagnostic)
+            Result.failure(IOException(diagnostic, e))
         }
     }
 
@@ -171,5 +184,18 @@ class CloudSyncRepository @Inject constructor(
             GsonFactory.getDefaultInstance(),
             credential
         ).setApplicationName("iChatAI").build()
+    }
+
+    private fun formatDriveException(operation: String, exception: Exception): String {
+        val responseCode = (exception as? GoogleJsonResponseException)?.statusCode
+        val responseMessage = (exception as? GoogleJsonResponseException)?.details?.message
+
+        return buildString {
+            append(operation)
+            if (responseCode != null) append(" | http=$responseCode")
+            append(" | type=${exception::class.java.simpleName}")
+            val message = responseMessage ?: exception.message
+            if (!message.isNullOrBlank()) append(" | message=$message")
+        }
     }
 }

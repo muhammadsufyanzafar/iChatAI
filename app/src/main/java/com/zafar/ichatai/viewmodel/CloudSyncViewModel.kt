@@ -7,6 +7,8 @@ import androidx.work.*
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes
+import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.Scope
 import com.google.api.services.drive.DriveScopes
 import com.zafar.ichatai.data.local.UserPreferences
@@ -33,9 +35,11 @@ class CloudSyncViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(CloudSyncUiState())
     val uiState: StateFlow<CloudSyncUiState> = _uiState.asStateFlow()
 
+    private val driveScope = Scope(DriveScopes.DRIVE_APPDATA)
+
     private val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
         .requestEmail()
-        .requestScopes(Scope(DriveScopes.DRIVE_APPDATA))
+        .requestScopes(driveScope)
         .build()
 
     private val googleSignInClient = GoogleSignIn.getClient(application, googleSignInOptions)
@@ -48,7 +52,17 @@ class CloudSyncViewModel @Inject constructor(
 
     private fun checkLastAccount() {
         val account = GoogleSignIn.getLastSignedInAccount(getApplication())
-        _uiState.value = _uiState.value.copy(googleAccount = account)
+        if (account != null && GoogleSignIn.hasPermissions(account, driveScope)) {
+            _uiState.value = _uiState.value.copy(
+                googleAccount = account,
+                isDriveAuthorized = true
+            )
+        } else {
+            _uiState.value = _uiState.value.copy(
+                googleAccount = account,
+                isDriveAuthorized = false
+            )
+        }
     }
 
     private fun loadPreferences() {
@@ -66,25 +80,56 @@ class CloudSyncViewModel @Inject constructor(
 
     fun getSignInIntent() = googleSignInClient.signInIntent
 
-    fun handleSignInResult(account: GoogleSignInAccount?) {
+    fun handleSignInResult(account: GoogleSignInAccount?, exception: ApiException? = null) {
         if (account != null) {
-            _uiState.value = _uiState.value.copy(googleAccount = account)
-            if (_uiState.value.isAutoSyncEnabled) {
-                scheduleSync()
+            val hasDrivePermission = GoogleSignIn.hasPermissions(account, driveScope)
+            _uiState.value = _uiState.value.copy(
+                googleAccount = account,
+                isDriveAuthorized = hasDrivePermission
+            )
+
+            if (hasDrivePermission) {
+                if (_uiState.value.isAutoSyncEnabled) {
+                    scheduleSync()
+                }
+            } else {
+                recordAuthError(
+                    "Google account selected, but Drive app-data permission was not granted. " +
+                        "The account is connected but backup authorization is incomplete."
+                )
             }
         } else {
-            // Log that sign in failed
-            userPreferences.appendSyncError("Sign-in failed or was cancelled by user.")
-            _uiState.value = _uiState.value.copy(googleAccount = null, errorLog = userPreferences.getSyncErrorLog())
+            val statusCode = exception?.statusCode
+            val statusName = statusCode?.let { GoogleSignInStatusCodes.getStatusCodeString(it) }
+            val statusMessage = exception?.status?.statusMessage
+
+            val diagnostic = buildString {
+                append("Google sign-in failed")
+                if (statusCode != null) append(" | code=$statusCode")
+                if (!statusName.isNullOrBlank()) append(" | status=$statusName")
+                if (!statusMessage.isNullOrBlank()) append(" | message=$statusMessage")
+                append(" | package=com.zafar.ichatai")
+            }
+
+            recordAuthError(diagnostic)
+            _uiState.value = _uiState.value.copy(
+                googleAccount = null,
+                isDriveAuthorized = false
+            )
         }
+    }
+
+    private fun recordAuthError(message: String) {
+        userPreferences.appendSyncError(message)
+        _uiState.value = _uiState.value.copy(errorLog = userPreferences.getSyncErrorLog())
     }
 
     fun toggleAutoSync(enabled: Boolean) {
         userPreferences.setCloudSyncEnabled(enabled)
         _uiState.value = _uiState.value.copy(isAutoSyncEnabled = enabled)
-        if (enabled) {
+        if (enabled && _uiState.value.isDriveAuthorized) {
             scheduleSync()
-        } else {
+        } else if (!enabled) {
             workManager.cancelUniqueWork("cloud_sync_work")
         }
     }
@@ -92,7 +137,7 @@ class CloudSyncViewModel @Inject constructor(
     private fun scheduleSync() {
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(
-                if (userPreferences.isSyncOverWifiOnly()) NetworkType.UNMETERED 
+                if (userPreferences.isSyncOverWifiOnly()) NetworkType.UNMETERED
                 else NetworkType.CONNECTED
             )
             .build()
@@ -111,7 +156,7 @@ class CloudSyncViewModel @Inject constructor(
     fun toggleSyncOverWifi(enabled: Boolean) {
         userPreferences.setSyncOverWifiOnly(enabled)
         _uiState.value = _uiState.value.copy(isSyncOverWifiOnly = enabled)
-        if (_uiState.value.isAutoSyncEnabled) {
+        if (_uiState.value.isAutoSyncEnabled && _uiState.value.isDriveAuthorized) {
             scheduleSync()
         }
     }
@@ -138,9 +183,8 @@ class CloudSyncViewModel @Inject constructor(
 
     fun syncNow() {
         val account = _uiState.value.googleAccount
-        if (account == null) {
-            userPreferences.appendSyncError("Cannot sync: No Google account connected.")
-            _uiState.value = _uiState.value.copy(errorLog = userPreferences.getSyncErrorLog())
+        if (account == null || !_uiState.value.isDriveAuthorized) {
+            recordAuthError("Cannot sync: Google account is not connected with Drive backup permission.")
             vibrationHelper.vibrateError()
             return
         }
@@ -152,7 +196,8 @@ class CloudSyncViewModel @Inject constructor(
                 vibrationHelper.vibrateSuccess()
             } else {
                 vibrationHelper.vibrateError()
-                NotificationHelper.showSyncErrorNotification(getApplication(), result.exceptionOrNull()?.message ?: "Unknown Error")
+                val error = result.exceptionOrNull()?.message ?: "Unknown backup error"
+                NotificationHelper.showSyncErrorNotification(getApplication(), error)
             }
             _uiState.value = _uiState.value.copy(
                 isSyncing = false,
@@ -164,9 +209,8 @@ class CloudSyncViewModel @Inject constructor(
 
     fun importFromCloud() {
         val account = _uiState.value.googleAccount
-        if (account == null) {
-            userPreferences.appendSyncError("Cannot import: No Google account connected.")
-            _uiState.value = _uiState.value.copy(errorLog = userPreferences.getSyncErrorLog())
+        if (account == null || !_uiState.value.isDriveAuthorized) {
+            recordAuthError("Cannot import: Google account is not connected with Drive backup permission.")
             vibrationHelper.vibrateError()
             return
         }
@@ -178,7 +222,7 @@ class CloudSyncViewModel @Inject constructor(
                 vibrationHelper.vibrateSuccess()
             } else {
                 vibrationHelper.vibrateError()
-                NotificationHelper.showSyncErrorNotification(getApplication(), result.exceptionOrNull()?.message ?: "Unknown Error")
+                NotificationHelper.showSyncErrorNotification(getApplication(), result.exceptionOrNull()?.message ?: "Unknown restore error")
             }
             _uiState.value = _uiState.value.copy(
                 isSyncing = false,
@@ -189,6 +233,10 @@ class CloudSyncViewModel @Inject constructor(
 
     fun deleteCloudData() {
         val account = _uiState.value.googleAccount ?: return
+        if (!_uiState.value.isDriveAuthorized) {
+            recordAuthError("Cannot delete cloud data: Drive backup permission is not granted.")
+            return
+        }
         viewModelScope.launch {
             repository.deleteAllCloudData(account)
             _uiState.value = _uiState.value.copy(errorLog = userPreferences.getSyncErrorLog())
@@ -203,6 +251,7 @@ class CloudSyncViewModel @Inject constructor(
 
 data class CloudSyncUiState(
     val googleAccount: GoogleSignInAccount? = null,
+    val isDriveAuthorized: Boolean = false,
     val isSyncing: Boolean = false,
     val isAutoSyncEnabled: Boolean = false,
     val isSyncOverWifiOnly: Boolean = true,

@@ -5,6 +5,7 @@ import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.api.client.googleapis.json.GoogleJsonResponseException
 import com.zafar.ichatai.data.repository.CloudSyncRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -17,14 +18,23 @@ class SyncWorker @AssistedInject constructor(
 ) : CoroutineWorker(appContext, workerParams) {
 
     override suspend fun doWork(): Result {
-        val account = GoogleSignIn.getLastSignedInAccount(applicationContext) ?: return Result.failure()
-        
+        val account = GoogleSignIn.getLastSignedInAccount(applicationContext)
+            ?: return Result.failure()
+
         val syncResult = repository.backupToCloud(account)
-        
-        return if (syncResult.isSuccess) {
-            Result.success()
-        } else {
-            Result.retry()
+        if (syncResult.isSuccess) {
+            return Result.success()
         }
+
+        val exception = syncResult.exceptionOrNull()
+        if (exception is GoogleJsonResponseException) {
+            val statusCode = exception.statusCode
+            // Do not repeatedly retry permanent authorization/configuration failures.
+            if (statusCode in 400..499 && statusCode != 408 && statusCode != 429) {
+                return Result.failure()
+            }
+        }
+
+        return Result.retry()
     }
 }
