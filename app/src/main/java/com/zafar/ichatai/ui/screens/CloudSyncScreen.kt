@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.common.api.ApiException
 import com.zafar.ichatai.R
 import com.zafar.ichatai.ui.components.GlassCard
 import com.zafar.ichatai.ui.components.GlowBackground
@@ -40,10 +41,11 @@ fun CloudSyncScreen(
         if (data != null) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
-                val account = task.getResult(com.google.android.gms.common.api.ApiException::class.java)
+                val account = task.getResult(ApiException::class.java)
                 viewModel.handleSignInResult(account)
+            } catch (e: ApiException) {
+                viewModel.handleSignInResult(null, e)
             } catch (e: Exception) {
-                e.printStackTrace()
                 viewModel.handleSignInResult(null)
             }
         } else {
@@ -91,7 +93,6 @@ fun CloudSyncScreen(
                 verticalArrangement = Arrangement.spacedBy(20.dp),
                 contentPadding = PaddingValues(bottom = 40.dp)
             ) {
-                // Google Account Section
                 item {
                     GlassCard(modifier = Modifier.fillMaxWidth()) {
                         Row(
@@ -100,18 +101,30 @@ fun CloudSyncScreen(
                         ) {
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
-                                    text = if (uiState.googleAccount != null) stringResource(R.string.connected_as) else stringResource(R.string.google_drive_sync),
+                                    text = if (uiState.isDriveAuthorized) stringResource(R.string.connected_as) else stringResource(R.string.google_drive_sync),
                                     style = MaterialTheme.typography.titleMedium,
                                     fontWeight = FontWeight.Bold,
                                     color = colorScheme.onSurface
                                 )
                                 Text(
-                                    text = uiState.googleAccount?.email ?: stringResource(R.string.sign_in_backup_msg),
+                                    text = if (uiState.googleAccount != null) {
+                                        uiState.googleAccount.email ?: stringResource(R.string.sign_in_backup_msg)
+                                    } else {
+                                        stringResource(R.string.sign_in_backup_msg)
+                                    },
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = colorScheme.onSurface.copy(alpha = 0.7f)
                                 )
+                                if (uiState.googleAccount != null && !uiState.isDriveAuthorized) {
+                                    Text(
+                                        text = stringResource(R.string.sign_in_backup_msg),
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = colorScheme.error,
+                                        modifier = Modifier.padding(top = 4.dp)
+                                    )
+                                }
                             }
-                            if (uiState.googleAccount == null) {
+                            if (!uiState.isDriveAuthorized) {
                                 Button(
                                     onClick = { signInLauncher.launch(viewModel.getSignInIntent()) },
                                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
@@ -123,7 +136,6 @@ fun CloudSyncScreen(
                     }
                 }
 
-                // Cloud Sync Status Section
                 item {
                     SyncSection(title = stringResource(R.string.cloud_sync_status)) {
                         Row(
@@ -152,7 +164,7 @@ fun CloudSyncScreen(
                                 )
                             )
                         }
-                        
+
                         Spacer(modifier = Modifier.height(16.dp))
 
                         Row(
@@ -181,14 +193,14 @@ fun CloudSyncScreen(
                                 )
                             )
                         }
-                        
+
                         Spacer(modifier = Modifier.height(12.dp))
-                        
+
                         val context = androidx.compose.ui.platform.LocalContext.current
-                        val lastSyncText = if (uiState.lastSyncTime > 0) 
-                            stringResource(R.string.last_synced_format, TimeUtils.formatRelativeTime(uiState.lastSyncTime, context)) 
-                            else stringResource(R.string.never_synced)
-                        
+                        val lastSyncText = if (uiState.lastSyncTime > 0)
+                            stringResource(R.string.last_synced_format, TimeUtils.formatRelativeTime(uiState.lastSyncTime, context))
+                        else stringResource(R.string.never_synced)
+
                         Text(
                             text = lastSyncText,
                             style = MaterialTheme.typography.bodySmall,
@@ -199,7 +211,6 @@ fun CloudSyncScreen(
                     }
                 }
 
-                // Manual Sync Section
                 item {
                     SyncSection(title = stringResource(R.string.manual_sync)) {
                         Text(
@@ -208,11 +219,11 @@ fun CloudSyncScreen(
                             color = colorScheme.onSurface.copy(alpha = 0.7f),
                             modifier = Modifier.padding(bottom = 16.dp)
                         )
-                        
+
                         Button(
                             onClick = { viewModel.syncNow() },
                             modifier = Modifier.fillMaxWidth(),
-                            enabled = uiState.googleAccount != null && !uiState.isSyncing,
+                            enabled = uiState.isDriveAuthorized && !uiState.isSyncing,
                             shape = RoundedCornerShape(16.dp),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = MaterialTheme.colorScheme.primary,
@@ -227,13 +238,13 @@ fun CloudSyncScreen(
                                 Text(stringResource(R.string.sync_now), fontWeight = FontWeight.Bold)
                             }
                         }
-                        
+
                         Spacer(modifier = Modifier.height(12.dp))
-                        
+
                         OutlinedButton(
                             onClick = { viewModel.importFromCloud() },
                             modifier = Modifier.fillMaxWidth(),
-                            enabled = uiState.googleAccount != null && !uiState.isSyncing,
+                            enabled = uiState.isDriveAuthorized && !uiState.isSyncing,
                             shape = RoundedCornerShape(16.dp),
                             colors = ButtonDefaults.outlinedButtonColors(
                                 contentColor = colorScheme.onSurface
@@ -245,7 +256,6 @@ fun CloudSyncScreen(
                     }
                 }
 
-                // Sync Options Section
                 item {
                     SyncSection(title = stringResource(R.string.sync_options)) {
                         SyncOptionItem(stringResource(R.string.sync_conversations), uiState.isSyncHistoryEnabled) { viewModel.toggleSyncHistory(it) }
@@ -258,7 +268,6 @@ fun CloudSyncScreen(
                     }
                 }
 
-                // Delete Section
                 item {
                     Column(
                         modifier = Modifier.fillMaxWidth(),
@@ -272,9 +281,9 @@ fun CloudSyncScreen(
                                 fontWeight = FontWeight.Bold
                             )
                         }
-                        
+
                         Spacer(modifier = Modifier.height(16.dp))
-                        
+
                         Text(
                             text = stringResource(R.string.sync_error_log),
                             modifier = Modifier.clickable { showErrorLogDialog = true },
