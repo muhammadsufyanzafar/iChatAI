@@ -110,6 +110,7 @@ class FeedbackViewModel @Inject constructor(
                 )
 
                 if (response.isSuccessful) {
+                    response.body()?.close()
                     _uiState.update { it.copy(isSubmitting = false, submitSuccess = true) }
                 } else {
                     _uiState.update { it.copy(isSubmitting = false, submitSuccess = false) }
