@@ -174,6 +174,28 @@ class CloudSyncRepository @Inject constructor(
         }
     }
 
+    suspend fun getBackupMetadata(account: GoogleSignInAccount): Result<Pair<Long, Long>> = withContext(Dispatchers.IO) {
+        try {
+            val driveService = getDriveService(account)
+            val files = driveService.files().list()
+                .setSpaces("appDataFolder")
+                .setQ("name = 'ichatai_backup.json' and trashed = false")
+                .setFields("files(id,size,modifiedTime)")
+                .execute()
+
+            if (files.files.isNotEmpty()) {
+                val file = files.files[0]
+                val size = file.getSize() ?: 0L
+                val modifiedTime = file.getModifiedTime()?.value ?: 0L
+                Result.success(Pair(size, modifiedTime))
+            } else {
+                Result.failure(Exception("No backup found"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     private fun getDriveService(account: GoogleSignInAccount): Drive {
         val credential = GoogleAccountCredential.usingOAuth2(
             context, Collections.singleton(DriveScopes.DRIVE_APPDATA)

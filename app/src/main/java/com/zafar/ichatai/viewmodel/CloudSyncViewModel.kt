@@ -1,6 +1,8 @@
 package com.zafar.ichatai.viewmodel
 
 import android.app.Application
+import android.content.Intent
+import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.*
@@ -10,7 +12,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.Scope
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.api.services.drive.DriveScopes
+import com.zafar.ichatai.R
 import com.zafar.ichatai.data.local.UserPreferences
 import com.zafar.ichatai.data.repository.CloudSyncRepository
 import com.zafar.ichatai.service.SyncWorker
@@ -20,6 +25,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -39,15 +45,17 @@ class CloudSyncViewModel @Inject constructor(
 
     private val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
         .requestEmail()
-        .requestScopes(driveScope)
+        // .requestScopes(driveScope) // Temporarily disabled
         .build()
 
     private val googleSignInClient = GoogleSignIn.getClient(application, googleSignInOptions)
     private val workManager = WorkManager.getInstance(application)
+    private val firebaseAuth = FirebaseAuth.getInstance()
 
     init {
         checkLastAccount()
         loadPreferences()
+        refreshMetadata()
     }
 
     private fun checkLastAccount() {
@@ -63,6 +71,30 @@ class CloudSyncViewModel @Inject constructor(
                 isDriveAuthorized = false
             )
         }
+    }
+
+    fun refreshMetadata() {
+        val account = _uiState.value.googleAccount ?: return
+        if (!_uiState.value.isDriveAuthorized) return
+
+        viewModelScope.launch {
+            repository.getBackupMetadata(account).onSuccess { (size, time) ->
+                _uiState.update { it.copy(
+                    backupSize = formatFileSize(size),
+                    lastSyncTime = if (time > 0) time else it.lastSyncTime,
+                    syncStatus = "Synced"
+                ) }
+            }.onFailure {
+                _uiState.update { it.copy(syncStatus = "Not Synced") }
+            }
+        }
+    }
+
+    private fun formatFileSize(size: Long): String {
+        if (size <= 0) return "0 KB"
+        val units = arrayOf("B", "KB", "MB", "GB", "TB")
+        val digitGroups = (Math.log10(size.toDouble()) / Math.log10(1024.0)).toInt()
+        return java.text.DecimalFormat("#,##0.#").format(size / Math.pow(1024.0, digitGroups.toDouble())) + " " + units[digitGroups]
     }
 
     private fun loadPreferences() {
@@ -82,46 +114,90 @@ class CloudSyncViewModel @Inject constructor(
 
     fun handleSignInResult(account: GoogleSignInAccount?, exception: ApiException? = null) {
         if (account != null) {
+            // Firebase Auth Integration
+            val idToken = account.idToken
+            if (idToken != null) {
+                val credential = GoogleAuthProvider.getCredential(idToken, null)
+                firebaseAuth.signInWithCredential(credential).addOnCompleteListener { task ->
+                    if (!task.isSuccessful) {
+                        recordAuthError("Firebase Auth failed: ${task.exception?.message}")
+                    }
+                }
+            }
+
             val hasDrivePermission = GoogleSignIn.hasPermissions(account, driveScope)
-            _uiState.value = _uiState.value.copy(
+            _uiState.update { it.copy(
                 googleAccount = account,
                 isDriveAuthorized = hasDrivePermission
-            )
+            ) }
 
             if (hasDrivePermission) {
+                refreshMetadata()
                 if (_uiState.value.isAutoSyncEnabled) {
                     scheduleSync()
                 }
-            } else {
-                recordAuthError(
-                    "Google account selected, but Drive app-data permission was not granted. " +
-                        "The account is connected but backup authorization is incomplete."
-                )
             }
         } else {
-            val statusCode = exception?.statusCode
-            val statusName = statusCode?.let { GoogleSignInStatusCodes.getStatusCodeString(it) }
-            val statusMessage = exception?.status?.statusMessage
-
+            val statusCode = exception?.statusCode ?: -1
+            val statusName = GoogleSignInStatusCodes.getStatusCodeString(statusCode)
+            val statusMessage = exception?.status?.statusMessage ?: "No detailed message"
+            
             val diagnostic = buildString {
-                append("Google sign-in failed")
-                if (statusCode != null) append(" | code=$statusCode")
-                if (!statusName.isNullOrBlank()) append(" | status=$statusName")
-                if (!statusMessage.isNullOrBlank()) append(" | message=$statusMessage")
-                append(" | package=com.zafar.ichatai")
+                append("Sign-in failed (Code $statusCode: $statusName)\n")
+                append("Reason: $statusMessage\n")
+                
+                // Diagnostic: Check signature at runtime
+                try {
+                    val pm = getApplication<Application>().packageManager
+                    val packageInfo = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+                        pm.getPackageInfo(getApplication<Application>().packageName, android.content.pm.PackageManager.GET_SIGNING_CERTIFICATES)
+                    } else {
+                        @Suppress("DEPRECATION")
+                        pm.getPackageInfo(getApplication<Application>().packageName, android.content.pm.PackageManager.GET_SIGNATURES)
+                    }
+                    
+                    val signatures = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+                        packageInfo.signingInfo.apkContentsSigners
+                    } else {
+                        @Suppress("DEPRECATION")
+                        packageInfo.signatures
+                    }
+
+                    for (sig in signatures) {
+                        val md = java.security.MessageDigest.getInstance("SHA-1")
+                        val digest = md.digest(sig.toByteArray())
+                        val hexString = digest.joinToString(":") { "%02X".format(it) }
+                        append("Runtime SHA-1: $hexString\n")
+                    }
+                } catch (e: Exception) {
+                    append("Could not read Runtime SHA-1: ${e.message}\n")
+                }
+                
+                append("Package: ${getApplication<Application>().packageName}\n")
             }
 
             recordAuthError(diagnostic)
-            _uiState.value = _uiState.value.copy(
+            _uiState.update { it.copy(googleAccount = null, isDriveAuthorized = false) }
+        }
+    }
+
+    fun signOut() {
+        viewModelScope.launch {
+            googleSignInClient.signOut()
+            firebaseAuth.signOut()
+            _uiState.update { it.copy(
                 googleAccount = null,
-                isDriveAuthorized = false
-            )
+                isDriveAuthorized = false,
+                backupSize = "0 KB",
+                syncStatus = "Not Synced"
+            ) }
+            workManager.cancelUniqueWork("cloud_sync_work")
         }
     }
 
     private fun recordAuthError(message: String) {
         userPreferences.appendSyncError(message)
-        _uiState.value = _uiState.value.copy(errorLog = userPreferences.getSyncErrorLog())
+        _uiState.update { it.copy(errorLog = userPreferences.getSyncErrorLog()) }
     }
 
     fun toggleAutoSync(enabled: Boolean) {
@@ -142,7 +218,7 @@ class CloudSyncViewModel @Inject constructor(
             )
             .build()
 
-        val syncRequest = PeriodicWorkRequestBuilder<SyncWorker>(6, TimeUnit.HOURS)
+        val syncRequest = PeriodicWorkRequestBuilder<SyncWorker>(24, TimeUnit.HOURS)
             .setConstraints(constraints)
             .build()
 
@@ -256,6 +332,8 @@ data class CloudSyncUiState(
     val isAutoSyncEnabled: Boolean = false,
     val isSyncOverWifiOnly: Boolean = true,
     val lastSyncTime: Long = 0L,
+    val backupSize: String = "0 KB",
+    val syncStatus: String = "Not Synced",
     val isSyncHistoryEnabled: Boolean = true,
     val isSyncImagesEnabled: Boolean = false,
     val isSyncSettingsEnabled: Boolean = true,

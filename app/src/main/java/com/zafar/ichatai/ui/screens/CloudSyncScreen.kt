@@ -1,29 +1,39 @@
 package com.zafar.ichatai.ui.screens
 
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.CloudDone
+import androidx.compose.material.icons.filled.Sync
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.zafar.ichatai.R
 import com.zafar.ichatai.ui.components.GlassCard
 import com.zafar.ichatai.ui.components.GlowBackground
-import com.zafar.ichatai.utils.TimeUtils
 import com.zafar.ichatai.viewmodel.CloudSyncViewModel
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,6 +43,7 @@ fun CloudSyncScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val colorScheme = MaterialTheme.colorScheme
+    val context = LocalContext.current
 
     val signInLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
@@ -45,15 +56,16 @@ fun CloudSyncScreen(
                 viewModel.handleSignInResult(account)
             } catch (e: ApiException) {
                 viewModel.handleSignInResult(null, e)
+                Toast.makeText(context, "Sign-in failed: ${e.statusCode}", Toast.LENGTH_LONG).show()
             } catch (e: Exception) {
                 viewModel.handleSignInResult(null)
+                Toast.makeText(context, "An unexpected error occurred", Toast.LENGTH_SHORT).show()
             }
         } else {
             viewModel.handleSignInResult(null)
         }
     }
 
-    var showDeleteDialog by remember { mutableStateOf(false) }
     var showErrorLogDialog by remember { mutableStateOf(false) }
 
     GlowBackground {
@@ -62,9 +74,9 @@ fun CloudSyncScreen(
                 TopAppBar(
                     title = {
                         Text(
-                            stringResource(R.string.cloud_sync),
+                            text = "Cloud Backup",
                             style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Bold,
+                            fontWeight = FontWeight.ExtraBold,
                             color = colorScheme.onBackground
                         )
                     },
@@ -78,8 +90,7 @@ fun CloudSyncScreen(
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = Color.Transparent,
-                        titleContentColor = colorScheme.onBackground
+                        containerColor = Color.Transparent
                     )
                 )
             },
@@ -90,274 +101,198 @@ fun CloudSyncScreen(
                     .fillMaxSize()
                     .padding(paddingValues)
                     .padding(horizontal = 20.dp),
-                verticalArrangement = Arrangement.spacedBy(20.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
                 contentPadding = PaddingValues(bottom = 40.dp)
             ) {
+                // Account Section
                 item {
                     GlassCard(modifier = Modifier.fillMaxWidth()) {
-                        Row(
-                            modifier = Modifier.padding(16.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    text = if (uiState.isDriveAuthorized) stringResource(R.string.connected_as) else stringResource(R.string.google_drive_sync),
-                                    style = MaterialTheme.typography.titleMedium,
-                                    fontWeight = FontWeight.Bold,
-                                    color = colorScheme.onSurface
-                                )
-                                Text(
-                                    text = if (uiState.googleAccount != null) {
-                                        uiState.googleAccount.email ?: stringResource(R.string.sign_in_backup_msg)
-                                    } else {
-                                        stringResource(R.string.sign_in_backup_msg)
-                                    },
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = colorScheme.onSurface.copy(alpha = 0.7f)
-                                )
-                                if (uiState.googleAccount != null && !uiState.isDriveAuthorized) {
-                                    Text(
-                                        text = stringResource(R.string.sign_in_backup_msg),
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = colorScheme.error,
-                                        modifier = Modifier.padding(top = 4.dp)
-                                    )
-                                }
-                            }
-                            if (!uiState.isDriveAuthorized) {
-                                Button(
-                                    onClick = { signInLauncher.launch(viewModel.getSignInIntent()) },
-                                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
-                                ) {
-                                    Text(stringResource(R.string.sign_in), color = Color.White)
-                                }
-                            }
-                        }
-                    }
-                }
-
-                item {
-                    SyncSection(title = stringResource(R.string.cloud_sync_status)) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    stringResource(R.string.automatic_backup),
-                                    style = MaterialTheme.typography.titleSmall,
-                                    fontWeight = FontWeight.Bold,
-                                    color = colorScheme.onSurface
-                                )
-                                Text(
-                                    stringResource(R.string.automatic_backup_desc),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = colorScheme.onSurface.copy(alpha = 0.6f)
-                                )
-                            }
-                            Switch(
-                                checked = uiState.isAutoSyncEnabled,
-                                onCheckedChange = { viewModel.toggleAutoSync(it) },
-                                colors = SwitchDefaults.colors(
-                                    checkedThumbColor = Color.White,
-                                    checkedTrackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
-                                )
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    stringResource(R.string.sync_wifi_cellular),
-                                    style = MaterialTheme.typography.titleSmall,
-                                    fontWeight = FontWeight.Bold,
-                                    color = colorScheme.onSurface
-                                )
-                                Text(
-                                    stringResource(R.string.sync_wifi_cellular_desc),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = colorScheme.onSurface.copy(alpha = 0.6f)
-                                )
-                            }
-                            Switch(
-                                checked = !uiState.isSyncOverWifiOnly,
-                                onCheckedChange = { viewModel.toggleSyncOverWifi(!it) },
-                                colors = SwitchDefaults.colors(
-                                    checkedThumbColor = Color.White,
-                                    checkedTrackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
-                                )
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.height(12.dp))
-
-                        val context = androidx.compose.ui.platform.LocalContext.current
-                        val lastSyncText = if (uiState.lastSyncTime > 0)
-                            stringResource(R.string.last_synced_format, TimeUtils.formatRelativeTime(uiState.lastSyncTime, context))
-                        else stringResource(R.string.never_synced)
-
-                        Text(
-                            text = lastSyncText,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = if (uiState.lastSyncTime > 0) Color(0xFF10B981) else colorScheme.onSurface.copy(alpha = 0.5f),
-                            modifier = Modifier.align(Alignment.End),
-                            fontWeight = FontWeight.Medium
-                        )
-                    }
-                }
-
-                item {
-                    SyncSection(title = stringResource(R.string.manual_sync)) {
-                        Text(
-                            stringResource(R.string.manual_sync_desc),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = colorScheme.onSurface.copy(alpha = 0.7f),
-                            modifier = Modifier.padding(bottom = 16.dp)
-                        )
-
-                        Button(
-                            onClick = { viewModel.syncNow() },
-                            modifier = Modifier.fillMaxWidth(),
-                            enabled = uiState.isDriveAuthorized && !uiState.isSyncing,
-                            shape = RoundedCornerShape(16.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.primary,
-                                contentColor = Color.White,
-                                disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
-                                disabledContentColor = Color.White.copy(alpha = 0.5f)
-                            )
-                        ) {
-                            if (uiState.isSyncing) {
-                                CircularProgressIndicator(modifier = Modifier.size(24.dp), color = Color.White, strokeWidth = 2.dp)
-                            } else {
-                                Text(stringResource(R.string.sync_now), fontWeight = FontWeight.Bold)
-                            }
-                        }
-
-                        Spacer(modifier = Modifier.height(12.dp))
-
-                        OutlinedButton(
-                            onClick = { viewModel.importFromCloud() },
-                            modifier = Modifier.fillMaxWidth(),
-                            enabled = uiState.isDriveAuthorized && !uiState.isSyncing,
-                            shape = RoundedCornerShape(16.dp),
-                            colors = ButtonDefaults.outlinedButtonColors(
-                                contentColor = colorScheme.onSurface
-                            ),
-                            border = androidx.compose.foundation.BorderStroke(1.dp, colorScheme.onSurface.copy(alpha = 0.2f))
-                        ) {
-                            Text(stringResource(R.string.import_from_cloud), fontWeight = FontWeight.Medium)
-                        }
-                    }
-                }
-
-                item {
-                    SyncSection(title = stringResource(R.string.sync_options)) {
-                        SyncOptionItem(stringResource(R.string.sync_conversations), uiState.isSyncHistoryEnabled) { viewModel.toggleSyncHistory(it) }
-                        HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp), color = colorScheme.onSurface.copy(alpha = 0.1f))
-                        SyncOptionItem(stringResource(R.string.sync_images), uiState.isSyncImagesEnabled) { viewModel.toggleSyncImages(it) }
-                        HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp), color = colorScheme.onSurface.copy(alpha = 0.1f))
-                        SyncOptionItem(stringResource(R.string.sync_settings), uiState.isSyncSettingsEnabled) { viewModel.toggleSyncSettings(it) }
-                        HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp), color = colorScheme.onSurface.copy(alpha = 0.1f))
-                        SyncOptionItem(stringResource(R.string.sync_prompts), uiState.isSyncPromptsEnabled) { viewModel.toggleSyncPrompts(it) }
-                    }
-                }
-
-                item {
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        TextButton(onClick = { showDeleteDialog = true }) {
+                        Column(modifier = Modifier.padding(20.dp)) {
                             Text(
-                                stringResource(R.string.delete_cloud_data),
-                                color = Color(0xFFEF4444),
-                                style = MaterialTheme.typography.bodyMedium,
+                                text = "Google Account",
+                                style = MaterialTheme.typography.labelMedium,
+                                color = colorScheme.primary,
                                 fontWeight = FontWeight.Bold
                             )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = uiState.googleAccount?.email ?: "Not Connected",
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = colorScheme.onSurface
+                            )
+                            
+                            if (uiState.googleAccount == null) {
+                                Spacer(modifier = Modifier.height(16.dp))
+                                Button(
+                                    onClick = { signInLauncher.launch(viewModel.getSignInIntent()) },
+                                    modifier = Modifier.fillMaxWidth(),
+                                    shape = RoundedCornerShape(12.dp)
+                                ) {
+                                    Text("Connect Google Account")
+                                }
+                            } else if (!uiState.isDriveAuthorized) {
+                                Spacer(modifier = Modifier.height(16.dp))
+                                Button(
+                                    onClick = { signInLauncher.launch(viewModel.getSignInIntent()) },
+                                    modifier = Modifier.fillMaxWidth(),
+                                    shape = RoundedCornerShape(12.dp),
+                                    colors = ButtonDefaults.buttonColors(containerColor = colorScheme.error)
+                                ) {
+                                    Text("Grant Drive Permission")
+                                }
+                                Text(
+                                    text = "Drive permission is required for backup. Please connect again and check the 'Drive app-data' box.",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = colorScheme.error,
+                                    modifier = Modifier.padding(top = 8.dp)
+                                )
+                            }
                         }
+                    }
+                }
 
-                        Spacer(modifier = Modifier.height(16.dp))
+                if (uiState.isDriveAuthorized) {
+                    // Status Section
+                    item {
+                        GlassCard(modifier = Modifier.fillMaxWidth()) {
+                            Column(modifier = Modifier.padding(20.dp)) {
+                                StatusRow("Backup enabled", true)
+                                HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp), color = colorScheme.onSurface.copy(alpha = 0.05f))
+                                
+                                val lastBackup = if (uiState.lastSyncTime > 0) {
+                                    SimpleDateFormat("Today, h:mm a", Locale.getDefault()).format(Date(uiState.lastSyncTime))
+                                } else "Never"
+                                
+                                StatusRow("Last backup", lastBackup)
+                                StatusRow("Backup size", uiState.backupSize)
+                                
+                                val statusColor = when(uiState.syncStatus) {
+                                    "Synced" -> Color(0xFF10B981)
+                                    "Error" -> Color(0xFFEF4444)
+                                    else -> colorScheme.onSurface.copy(alpha = 0.6f)
+                                }
+                                
+                                Row(
+                                    modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text("Status", style = MaterialTheme.typography.bodyMedium, color = colorScheme.onSurface.copy(alpha = 0.6f))
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        Icon(
+                                            imageVector = if (uiState.syncStatus == "Synced") Icons.Default.CloudDone else Icons.Default.Sync,
+                                            contentDescription = null,
+                                            tint = statusColor,
+                                            modifier = Modifier.size(16.dp)
+                                        )
+                                        Spacer(modifier = Modifier.width(4.dp))
+                                        Text(uiState.syncStatus, fontWeight = FontWeight.Bold, color = statusColor)
+                                    }
+                                }
+                            }
+                        }
+                    }
 
+                    // Action Buttons
+                    item {
+                        Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                            Button(
+                                onClick = { viewModel.syncNow() },
+                                modifier = Modifier.fillMaxWidth().height(56.dp),
+                                shape = RoundedCornerShape(16.dp),
+                                enabled = !uiState.isSyncing
+                            ) {
+                                if (uiState.isSyncing) {
+                                    CircularProgressIndicator(modifier = Modifier.size(24.dp), color = Color.White)
+                                } else {
+                                    Text("Backup Now", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                                }
+                            }
+                            
+                            OutlinedButton(
+                                onClick = { viewModel.importFromCloud() },
+                                modifier = Modifier.fillMaxWidth().height(56.dp),
+                                shape = RoundedCornerShape(16.dp),
+                                enabled = !uiState.isSyncing
+                            ) {
+                                Text("Restore Backup", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                            }
+                        }
+                    }
+
+                    // Settings Section
+                    item {
                         Text(
-                            text = stringResource(R.string.sync_error_log),
-                            modifier = Modifier.clickable { showErrorLogDialog = true },
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = colorScheme.primary,
-                            textDecoration = TextDecoration.Underline,
-                            fontWeight = FontWeight.Medium
+                            text = "Settings",
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(vertical = 8.dp)
                         )
+                        GlassCard(modifier = Modifier.fillMaxWidth()) {
+                            Column(modifier = Modifier.padding(16.dp)) {
+                                SettingSwitch("Automatic Backup", uiState.isAutoSyncEnabled) { viewModel.toggleAutoSync(it) }
+                                HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp), color = colorScheme.onSurface.copy(alpha = 0.05f))
+                                
+                                SettingInfo("Backup frequency", "Every 24 hours")
+                                HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp), color = colorScheme.onSurface.copy(alpha = 0.05f))
+                                
+                                SettingSwitch("Wi-Fi only", uiState.isSyncOverWifiOnly) { viewModel.toggleSyncOverWifi(it) }
+                            }
+                        }
+                    }
+
+                    // Footer Actions
+                    item {
+                        Column(
+                            modifier = Modifier.fillMaxWidth().padding(top = 20.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            TextButton(onClick = { viewModel.signOut() }) {
+                                Text("Disconnect Google Account", color = Color(0xFFEF4444), fontWeight = FontWeight.Bold)
+                            }
+                            
+                            if (uiState.lastSyncTime > 0) {
+                                Spacer(modifier = Modifier.height(16.dp))
+                                Text(
+                                    text = "Last successful backup:\n${SimpleDateFormat("dd MMM yyyy, h:mm a", Locale.getDefault()).format(Date(uiState.lastSyncTime))}",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = colorScheme.onSurface.copy(alpha = 0.4f),
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                            
+                            Text(
+                                text = "View Sync Error Log",
+                                modifier = Modifier.clickable { showErrorLogDialog = true }.padding(top = 16.dp),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = colorScheme.primary,
+                                textDecoration = TextDecoration.Underline
+                            )
+                        }
                     }
                 }
             }
         }
-    }
-
-    if (showDeleteDialog) {
-        AlertDialog(
-            onDismissRequest = { showDeleteDialog = false },
-            containerColor = colorScheme.surface,
-            titleContentColor = colorScheme.onSurface,
-            textContentColor = colorScheme.onSurface.copy(alpha = 0.8f),
-            title = { Text(stringResource(R.string.delete_cloud_data_title)) },
-            text = { Text(stringResource(R.string.delete_cloud_data_msg)) },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        viewModel.deleteCloudData()
-                        showDeleteDialog = false
-                    },
-                    colors = ButtonDefaults.textButtonColors(contentColor = Color(0xFFEF4444))
-                ) {
-                    Text(stringResource(R.string.delete), fontWeight = FontWeight.Bold)
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { showDeleteDialog = false }) {
-                    Text(stringResource(R.string.cancel), color = colorScheme.onSurface.copy(alpha = 0.6f))
-                }
-            }
-        )
     }
 
     if (showErrorLogDialog) {
         AlertDialog(
             onDismissRequest = { showErrorLogDialog = false },
-            containerColor = colorScheme.surface,
-            titleContentColor = colorScheme.onSurface,
-            textContentColor = colorScheme.onSurface.copy(alpha = 0.8f),
-            title = { Text(stringResource(R.string.sync_error_log)) },
+            title = { Text("Sync Error Log") },
             text = {
-                Column(modifier = Modifier.heightIn(max = 300.dp)) {
-                    if (uiState.errorLog.isBlank()) {
-                        Text(stringResource(R.string.no_errors_reported), color = colorScheme.onSurface.copy(alpha = 0.6f))
-                    } else {
-                        LazyColumn {
-                            item {
-                                Text(
-                                    uiState.errorLog,
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = colorScheme.onSurface.copy(alpha = 0.9f)
-                                )
-                            }
-                        }
-                    }
-                }
+                Text(
+                    text = uiState.errorLog.ifBlank { "No errors reported." },
+                    style = MaterialTheme.typography.bodySmall
+                )
             },
             confirmButton = {
-                TextButton(onClick = { showErrorLogDialog = false }) {
-                    Text(stringResource(R.string.close), color = colorScheme.primary, fontWeight = FontWeight.Bold)
-                }
+                TextButton(onClick = { showErrorLogDialog = false }) { Text("Close") }
             },
             dismissButton = {
                 if (uiState.errorLog.isNotBlank()) {
                     TextButton(onClick = { viewModel.clearErrorLog() }) {
-                        Text(stringResource(R.string.clear_log), color = Color(0xFFEF4444))
+                        Text("Clear", color = Color(0xFFEF4444))
                     }
                 }
             }
@@ -366,54 +301,44 @@ fun CloudSyncScreen(
 }
 
 @Composable
-fun SyncSection(
-    title: String,
-    content: @Composable ColumnScope.() -> Unit
-) {
-    val colorScheme = MaterialTheme.colorScheme
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.ExtraBold,
-            color = colorScheme.onBackground,
-            modifier = Modifier.padding(bottom = 12.dp)
-        )
-        GlassCard(modifier = Modifier.fillMaxWidth()) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                content()
+fun StatusRow(label: String, value: Any) {
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(label, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
+        if (value is Boolean) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(modifier = Modifier.size(8.dp).background(if (value) Color(0xFF10B981) else Color(0xFFEF4444), CircleShape))
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(if (value) "Enabled" else "Disabled", fontWeight = FontWeight.Bold)
             }
+        } else {
+            Text(value.toString(), fontWeight = FontWeight.Bold)
         }
     }
 }
 
 @Composable
-fun SyncOptionItem(
-    title: String,
-    checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit
-) {
-    val colorScheme = MaterialTheme.colorScheme
+fun SettingSwitch(label: String, checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.bodyLarge,
-            color = colorScheme.onSurface,
-            modifier = Modifier.weight(1f)
-        )
-        Checkbox(
-            checked = checked,
-            onCheckedChange = onCheckedChange,
-            colors = CheckboxDefaults.colors(
-                checkedColor = MaterialTheme.colorScheme.primary,
-                uncheckedColor = colorScheme.onSurface.copy(alpha = 0.3f),
-                checkmarkColor = Color.White
-            )
-        )
+        Text(label, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Medium)
+        Switch(checked = checked, onCheckedChange = onCheckedChange)
+    }
+}
+
+@Composable
+fun SettingInfo(label: String, value: String) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(label, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Medium)
+        Text(value, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
     }
 }
