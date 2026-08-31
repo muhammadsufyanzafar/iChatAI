@@ -473,6 +473,6 @@
 
     <string name="user_profile_pic">User Profile Picture</string>
 
-    <!-- Firebase / Google Auth (Use the Type 1 Web Client ID here) -->
-    <string name="default_web_client_id">662619264204-q3vq7ojn93dt4poo11kv0po45l7rf72b.apps.googleusercontent.com</string>
+    <!-- Firebase / Google Auth -->
+    <string name="default_web_client_id">662619264204-3npddputf7mjcn74p2ugpsbd52tnrcui.apps.googleusercontent.com</string>
 </resources>
