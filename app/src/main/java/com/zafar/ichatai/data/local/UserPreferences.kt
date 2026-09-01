@@ -170,4 +170,41 @@ class UserPreferences @Inject constructor(
     fun clearAllData() {
         sharedPreferences.edit().clear().apply()
     }
+
+    fun getAllPreferences(): Map<String, *> {
+        return sharedPreferences.all.filterKeys { key ->
+            key != "sync_error_log" && key != "last_sync_time" && key != "sync_device_id"
+        }
+    }
+
+    fun importPreferences(prefs: Map<String, *>) {
+        val editor = sharedPreferences.edit()
+        prefs.forEach { (key, value) ->
+            when (value) {
+                is String -> editor.putString(key, value)
+                is Boolean -> editor.putBoolean(key, value)
+                is Int -> editor.putInt(key, value)
+                is Float -> editor.putFloat(key, value)
+                is Long -> editor.putLong(key, value)
+                is Double -> {
+                    // Gson often parses numbers as Double. Convert back based on common usage.
+                    if (value == value.toInt().toDouble()) {
+                        editor.putInt(key, value.toInt())
+                    } else {
+                        editor.putFloat(key, value.toFloat())
+                    }
+                }
+            }
+        }
+        editor.apply()
+    }
+
+    fun getDeviceId(): String {
+        var id = sharedPreferences.getString("sync_device_id", null)
+        if (id == null) {
+            id = java.util.UUID.randomUUID().toString()
+            sharedPreferences.edit().putString("sync_device_id", id).apply()
+        }
+        return id
+    }
 }

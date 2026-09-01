@@ -69,6 +69,30 @@
 }
 
 # ============================================================
+# Google API Client & Drive
+# ============================================================
+
+-keep class com.google.api.client.** { *; }
+-keep class com.google.api.services.drive.** { *; }
+-keep class com.google.api.client.json.gson.** { *; }
+-keep interface com.google.api.client.** { *; }
+-dontwarn com.google.api.client.**
+-dontwarn com.google.api.services.drive.**
+
+# Google API client reflection rules
+-keepclassmembers class * {
+  @com.google.api.client.util.Key <fields>;
+}
+-keepattributes RuntimeVisibleAnnotations,RuntimeInvisibleAnnotations
+
+# Needed for NetHttpTransport
+-keep class com.google.api.client.http.javanet.** { *; }
+-keep class com.google.api.client.http.apache.** { *; }
+
+# Prevent stripping of Google services model classes
+-keep class com.google.api.services.drive.model.** { *; }
+
+# ============================================================
 # Hilt / Dagger
 # ============================================================
 

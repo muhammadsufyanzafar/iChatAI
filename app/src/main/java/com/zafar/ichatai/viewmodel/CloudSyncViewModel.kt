@@ -27,6 +27,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -41,11 +43,14 @@ class CloudSyncViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(CloudSyncUiState())
     val uiState: StateFlow<CloudSyncUiState> = _uiState.asStateFlow()
 
+    private var syncJob: Job? = null
+
     private val driveScope = Scope(DriveScopes.DRIVE_APPDATA)
 
     private val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        .requestIdToken(application.getString(R.string.default_web_client_id))
         .requestEmail()
-        // .requestScopes(driveScope) // Temporarily disabled
+        .requestScopes(driveScope)
         .build()
 
     private val googleSignInClient = GoogleSignIn.getClient(application, googleSignInOptions)
@@ -145,34 +150,7 @@ class CloudSyncViewModel @Inject constructor(
             val diagnostic = buildString {
                 append("Sign-in failed (Code $statusCode: $statusName)\n")
                 append("Reason: $statusMessage\n")
-                
-                // Diagnostic: Check signature at runtime
-                try {
-                    val pm = getApplication<Application>().packageManager
-                    val packageInfo = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
-                        pm.getPackageInfo(getApplication<Application>().packageName, android.content.pm.PackageManager.GET_SIGNING_CERTIFICATES)
-                    } else {
-                        @Suppress("DEPRECATION")
-                        pm.getPackageInfo(getApplication<Application>().packageName, android.content.pm.PackageManager.GET_SIGNATURES)
-                    }
-                    
-                    val signatures = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
-                        packageInfo.signingInfo.apkContentsSigners
-                    } else {
-                        @Suppress("DEPRECATION")
-                        packageInfo.signatures
-                    }
-
-                    for (sig in signatures) {
-                        val md = java.security.MessageDigest.getInstance("SHA-1")
-                        val digest = md.digest(sig.toByteArray())
-                        val hexString = digest.joinToString(":") { "%02X".format(it) }
-                        append("Runtime SHA-1: $hexString\n")
-                    }
-                } catch (e: Exception) {
-                    append("Could not read Runtime SHA-1: ${e.message}\n")
-                }
-                
+                append("Client ID used: ${getApplication<Application>().getString(R.string.default_web_client_id)}\n")
                 append("Package: ${getApplication<Application>().packageName}\n")
             }
 
@@ -264,23 +242,53 @@ class CloudSyncViewModel @Inject constructor(
             vibrationHelper.vibrateError()
             return
         }
-        viewModelScope.launch {
+        
+        syncJob?.cancel()
+        syncJob = viewModelScope.launch {
             vibrationHelper.vibrateClick()
-            _uiState.value = _uiState.value.copy(isSyncing = true)
+            _uiState.update { it.copy(
+                isSyncing = true, 
+                syncProgress = 0.1f, 
+                syncStage = "Preparing backup..."
+            ) }
+            
+            delay(500)
+            _uiState.update { it.copy(syncProgress = 0.3f, syncStage = "Collecting local data...") }
+            delay(500)
+            _uiState.update { it.copy(syncProgress = 0.6f, syncStage = "Uploading to Google Drive...") }
+
             val result = repository.backupToCloud(account)
+            
             if (result.isSuccess) {
+                _uiState.update { it.copy(syncProgress = 1.0f, syncStage = "Backup complete!") }
                 vibrationHelper.vibrateSuccess()
+                delay(800)
+                refreshMetadata()
             } else {
                 vibrationHelper.vibrateError()
                 val error = result.exceptionOrNull()?.message ?: "Unknown backup error"
+                _uiState.update { it.copy(syncError = error) }
                 NotificationHelper.showSyncErrorNotification(getApplication(), error)
             }
-            _uiState.value = _uiState.value.copy(
+            
+            _uiState.update { it.copy(
                 isSyncing = false,
+                syncProgress = 0f,
+                syncStage = "",
                 lastSyncTime = userPreferences.getLastSyncTime(),
                 errorLog = userPreferences.getSyncErrorLog()
-            )
+            ) }
         }
+    }
+
+    fun cancelSync() {
+        syncJob?.cancel()
+        _uiState.update { it.copy(
+            isSyncing = false,
+            syncProgress = 0f,
+            syncStage = ""
+        ) }
+        vibrationHelper.vibrateClick()
     }
 
     fun importFromCloud() {
@@ -290,20 +298,41 @@ class CloudSyncViewModel @Inject constructor(
             vibrationHelper.vibrateError()
             return
         }
-        viewModelScope.launch {
+        
+        syncJob?.cancel()
+        syncJob = viewModelScope.launch {
             vibrationHelper.vibrateClick()
-            _uiState.value = _uiState.value.copy(isSyncing = true)
+            _uiState.update { it.copy(
+                isSyncing = true,
+                syncProgress = 0.1f,
+                syncStage = "Locating backup file..."
+            ) }
+            
+            delay(500)
+            _uiState.update { it.copy(syncProgress = 0.4f, syncStage = "Downloading data...") }
+            delay(500)
+            _uiState.update { it.copy(syncProgress = 0.7f, syncStage = "Restoring local database...") }
+
             val result = repository.restoreFromCloud(account)
+            
             if (result.isSuccess) {
+                _uiState.update { it.copy(syncProgress = 1.0f, syncStage = "Restore successful!") }
                 vibrationHelper.vibrateSuccess()
+                delay(800)
+                refreshMetadata()
             } else {
                 vibrationHelper.vibrateError()
-                NotificationHelper.showSyncErrorNotification(getApplication(), result.exceptionOrNull()?.message ?: "Unknown restore error")
+                val error = result.exceptionOrNull()?.message ?: "Unknown restore error"
+                _uiState.update { it.copy(syncError = error) }
+                NotificationHelper.showSyncErrorNotification(getApplication(), error)
             }
-            _uiState.value = _uiState.value.copy(
+            
+            _uiState.update { it.copy(
                 isSyncing = false,
+                syncProgress = 0f,
+                syncStage = "",
                 errorLog = userPreferences.getSyncErrorLog()
-            )
+            ) }
         }
     }
 
@@ -315,13 +344,21 @@ class CloudSyncViewModel @Inject constructor(
         }
         viewModelScope.launch {
             repository.deleteAllCloudData(account)
-            _uiState.value = _uiState.value.copy(errorLog = userPreferences.getSyncErrorLog())
+            _uiState.update { it.copy(
+                backupSize = "0 KB",
+                syncStatus = "Not Synced",
+                errorLog = userPreferences.getSyncErrorLog()
+            ) }
         }
     }
 
     fun clearErrorLog() {
         userPreferences.clearSyncErrorLog()
-        _uiState.value = _uiState.value.copy(errorLog = "")
+        _uiState.update { it.copy(errorLog = "") }
+    }
+
+    fun clearSyncError() {
+        _uiState.update { it.copy(syncError = null) }
     }
 }
 
@@ -329,6 +366,9 @@ data class CloudSyncUiState(
     val googleAccount: GoogleSignInAccount? = null,
     val isDriveAuthorized: Boolean = false,
     val isSyncing: Boolean = false,
+    val syncProgress: Float = 0f,
+    val syncStage: String = "",
+    val syncError: String? = null,
     val isAutoSyncEnabled: Boolean = false,
     val isSyncOverWifiOnly: Boolean = true,
     val lastSyncTime: Long = 0L,
